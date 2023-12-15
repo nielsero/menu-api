@@ -97,5 +97,10 @@ describe("AuthRouter", () => {
       const { status } = await api.post("/api/auth/register").send(invalidPasswordRequest);
       expect(status).toBe(400);
     });
+
+    it("Should return a 409 status code if user already exists", async () => {
+      const { status } = await api.post("/api/auth/register").send(registerRequest);
+      expect(status).toBe(409);
+    });
   });
 });

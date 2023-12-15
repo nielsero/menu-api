@@ -1,5 +1,6 @@
 import { UserRepository } from "@/modules/user/protocols";
 import { User } from "@/modules/user";
+import { UserAlreadyExists } from "../errors";
 
 export type CreateUserRequest = {
   name: string;
@@ -15,7 +16,7 @@ export class CreateUserService {
   async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
     const user = new User(request);
     const userExists = await this.userRepository.findByEmail(user.email);
-    if (userExists) throw new Error("User already exists");
+    if (userExists) throw new UserAlreadyExists();
     await this.userRepository.add(user);
   }
 }
