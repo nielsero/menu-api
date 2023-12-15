@@ -14,6 +14,8 @@ export class CreateUserService {
 
   async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
     const user = new User(request);
+    const userExists = await this.userRepository.findByEmail(user.email);
+    if (userExists) throw new Error("User already exists");
     await this.userRepository.add(user);
   }
 }

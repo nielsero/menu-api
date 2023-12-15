@@ -1,3 +1,4 @@
+import { User } from "@/modules/user";
 import { UserRepository } from "@/modules/user/protocols";
 import { InMemoryUserRepository } from "@/modules/user/providers/repositories";
 import { CreateUserService } from "@/modules/user/services";
@@ -34,6 +35,21 @@ describe("CreateUserService", () => {
       password: request.password,
     };
 
-    expect(user).resolves.toEqual(expectedUser);
+    expect(user).toEqual(expectedUser);
+  });
+
+  it("Should throw an error if user already exists", async () => {
+    const { sut, repository } = makeSut();
+
+    const request = {
+      name: "John Doe",
+      email: "john.doe@gmail.com",
+      password: "password",
+    };
+
+    const user = new User(request);
+    repository.add(user);
+
+    expect(sut.execute(request)).rejects.toThrow();
   });
 });
