@@ -1,6 +1,6 @@
+import { makeUser } from "@/factories";
 import { User } from "@/modules/user";
 import { UserRepository } from "@/modules/user/protocols";
-import { InMemoryUserRepository } from "@/modules/user/providers/repositories";
 import { CreateUserService } from "@/modules/user/services";
 
 type SutTypes = {
@@ -9,8 +9,7 @@ type SutTypes = {
 };
 
 const makeSut = (): SutTypes => {
-  const repository = new InMemoryUserRepository();
-  const sut = new CreateUserService(repository);
+  const { createUserService: sut, userRepository: repository } = makeUser();
   return { sut, repository };
 };
 

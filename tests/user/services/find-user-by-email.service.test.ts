@@ -1,6 +1,6 @@
+import { makeUser } from "@/factories";
 import { User } from "@/modules/user";
 import { UserRepository } from "@/modules/user/protocols";
-import { InMemoryUserRepository } from "@/modules/user/providers/repositories";
 import { FindUserByEmailService } from "@/modules/user/services";
 
 type SutTypes = {
@@ -11,8 +11,7 @@ type SutTypes = {
 const request = { email: "john.doe@gmail.com" };
 
 const makeSut = (): SutTypes => {
-  const repository = new InMemoryUserRepository();
-  const sut = new FindUserByEmailService(repository);
+  const { findUserByEmailService: sut, userRepository: repository } = makeUser();
   return { sut, repository };
 };
 

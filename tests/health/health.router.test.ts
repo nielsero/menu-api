@@ -1,4 +1,5 @@
 import { app } from "@/app";
+import { makeHealth } from "@/factories";
 import { HealthController, HealthRouter } from "@/modules/health";
 import supertest from "supertest";
 
@@ -10,8 +11,7 @@ type SutTypes = {
 };
 
 const makeSut = (): SutTypes => {
-  const controller = new HealthController();
-  const sut = new HealthRouter(controller);
+  const { healthRouter: sut, healthController: controller } = makeHealth();
   return { sut, controller };
 };
 

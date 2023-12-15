@@ -1,31 +1,19 @@
-import { SALT_ROUNDS, TOKEN_SECRET } from "@/config";
+import { makeAuth } from "@/factories/auth.factory";
 import { HashProvider, TokenProvider } from "@/modules/auth/protocols";
-import { BCryptHashProvider, JwtTokenProvider } from "@/modules/auth/providers";
-import { ZodRegisterUserRequestValidator } from "@/modules/auth/providers/validators";
-import { RegisterUserRequest, RegisterUserService } from "@/modules/auth/services";
+import { RegisterUserService } from "@/modules/auth/services";
 import { User } from "@/modules/user";
 import { UserRepository } from "@/modules/user/protocols";
-import { InMemoryUserRepository } from "@/modules/user/providers/repositories";
-import { CreateUserService } from "@/modules/user/services";
-import { RequestValidator } from "@/shared/protocols";
 
 type SutTypes = {
   sut: RegisterUserService;
-  validator: RequestValidator<RegisterUserRequest>;
   hashProvider: HashProvider;
-  createUserService: CreateUserService;
   repository: UserRepository;
   tokenProvider: TokenProvider;
 };
 
 const makeSut = (): SutTypes => {
-  const repository = new InMemoryUserRepository();
-  const validator = new ZodRegisterUserRequestValidator();
-  const hashProvider = new BCryptHashProvider(SALT_ROUNDS);
-  const createUserService = new CreateUserService(repository);
-  const tokenProvider = new JwtTokenProvider(TOKEN_SECRET);
-  const sut = new RegisterUserService(validator, hashProvider, createUserService, tokenProvider);
-  return { sut, validator, hashProvider, createUserService, repository, tokenProvider };
+  const { registerUserService: sut, hashProvider, userRepository: repository, tokenProvider } = makeAuth();
+  return { sut, hashProvider, repository, tokenProvider };
 };
 
 const request = {
