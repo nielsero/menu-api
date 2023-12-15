@@ -8,6 +8,8 @@ type SutTypes = {
   repository: UserRepository;
 };
 
+const request = { email: "john.doe@gmail.com" };
+
 const makeSut = (): SutTypes => {
   const repository = new InMemoryUserRepository();
   const sut = new FindUserByEmailService(repository);
@@ -17,7 +19,6 @@ const makeSut = (): SutTypes => {
 describe("FindUserByEmailService", () => {
   it("Should return null if user doesn't exist", async () => {
     const { sut } = makeSut();
-    const request = { email: "john.doe@gmail.com" };
     const response = await sut.execute(request);
     expect(response).toBeNull();
   });
@@ -30,7 +31,6 @@ describe("FindUserByEmailService", () => {
       password: "password",
     });
     repository.add(user);
-    const request = { email: "john.doe@gmail.com" };
     const response = await sut.execute(request);
     expect(response).toEqual(user);
   });

@@ -14,14 +14,15 @@ const makeSut = (): SutTypes => {
   return { sut, repository };
 };
 
+const request = {
+  name: "John Doe",
+  email: "john.doe@gmail.com",
+  password: "password",
+};
+
 describe("CreateUserService", () => {
   it("Should create user and add it to the database", async () => {
     const { sut, repository } = makeSut();
-    const request = {
-      name: "John Doe",
-      email: "john.doe@gmail.com",
-      password: "password",
-    };
     await sut.execute(request);
     const user = await repository.findByEmail(request.email);
     const expectedUser = {
@@ -35,11 +36,6 @@ describe("CreateUserService", () => {
 
   it("Should throw an error if user already exists", async () => {
     const { sut, repository } = makeSut();
-    const request = {
-      name: "John Doe",
-      email: "john.doe@gmail.com",
-      password: "password",
-    };
     const user = new User(request);
     repository.add(user);
     expect(sut.execute(request)).rejects.toThrow();
