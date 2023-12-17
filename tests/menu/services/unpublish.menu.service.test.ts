@@ -1,18 +1,18 @@
 import { makeMenu } from "@/factories";
 import { Menu } from "@/modules/menu/entities";
 import { MenuRepository } from "@/modules/menu/protocols";
-import { PublishMenuService } from "@/modules/menu/services";
+import { UnpublishMenuService } from "@/modules/menu/services";
 import { User } from "@/modules/user";
 import { UserRepository } from "@/modules/user/protocols";
 
 type SutTypes = {
-  sut: PublishMenuService;
+  sut: UnpublishMenuService;
   menuRepository: MenuRepository;
   userRepository: UserRepository;
 };
 
 const makeSut = (): SutTypes => {
-  const { publishMenuService: sut, menuRepository, userRepository } = makeMenu();
+  const { unpublishMenuService: sut, menuRepository, userRepository } = makeMenu();
   return { sut, menuRepository, userRepository };
 };
 
@@ -26,6 +26,7 @@ let menu = new Menu({
   name: "Menu 1",
   description: "Menu 1 description",
   userId: user.id,
+  published: true,
 });
 
 const request = {
@@ -33,7 +34,7 @@ const request = {
   userId: user.id,
 };
 
-describe("PublishMenuService", () => {
+describe("UnpublishMenuService", () => {
   beforeEach(async () => {
     const { userRepository, menuRepository } = makeSut();
     await userRepository.add(user);
@@ -48,15 +49,16 @@ describe("PublishMenuService", () => {
       name: "Menu 1",
       description: "Menu 1 description",
       userId: user.id,
+      published: true,
     });
   });
 
-  it("Should publish a menu", async () => {
+  it("Should unpublish a menu", async () => {
     const { sut, menuRepository } = makeSut();
     await sut.execute(request);
     const menus = await menuRepository.findAllByUser(user.id);
-    const publishedMenu = menus[0];
-    expect(publishedMenu.published).toBe(true);
+    const unpublishedMenu = menus[0];
+    expect(unpublishedMenu.published).toBe(false);
   });
 
   it("Should throw if menu does not exist", async () => {
