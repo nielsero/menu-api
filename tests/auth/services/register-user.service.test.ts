@@ -23,6 +23,11 @@ const request = {
 };
 
 describe("RegisterUserService", () => {
+  afterEach(async () => {
+    const { userRepository } = makeSut();
+    await userRepository.clear();
+  });
+
   it("Should register a user if request is valid", async () => {
     const { sut } = makeSut();
     const response = await sut.execute(request);

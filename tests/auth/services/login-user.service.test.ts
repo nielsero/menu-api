@@ -22,6 +22,11 @@ const request = {
 };
 
 describe("LoginUserService", () => {
+  afterEach(async () => {
+    const { userRepository } = makeSut();
+    await userRepository.clear();
+  });
+
   it("Should login a user if he's already registered", async () => {
     const { sut, hashProvider, userRepository } = makeSut();
     const hashedPassword = await hashProvider.hash("password");

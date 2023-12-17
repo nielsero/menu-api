@@ -2,17 +2,19 @@ import { app } from "@/app";
 import { makeAuth } from "@/factories/auth.factory";
 import { domainErrorHandler, errorHandler } from "@/middleware";
 import { AuthRouter } from "@/modules/auth";
+import { UserRepository } from "@/modules/user/protocols";
 import supertest from "supertest";
 
 let api: supertest.SuperTest<supertest.Test>;
 
 type SutTypes = {
   sut: AuthRouter;
+  userRepository: UserRepository;
 };
 
 const makeSut = (): SutTypes => {
-  const { authRouter: sut } = makeAuth();
-  return { sut };
+  const { authRouter: sut, userRepository } = makeAuth();
+  return { sut, userRepository };
 };
 
 const registerRequest = {
@@ -39,8 +41,13 @@ describe("AuthRouter", () => {
     api = supertest(app);
   });
 
+  afterAll(async () => {
+    const { userRepository } = makeSut();
+    await userRepository.clear();
+  });
+
   describe("POST /api/auth/register", () => {
-    it("Should return a 201 status with a token if request is valid", async () => {
+    it("Should return a 201 status code with a token if request is valid", async () => {
       const { status, body } = await api.post("/api/auth/register").send(registerRequest);
       expect(status).toBe(201);
       expect(body).toEqual(response);

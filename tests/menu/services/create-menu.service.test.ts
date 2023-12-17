@@ -28,6 +28,11 @@ const request = {
 };
 
 describe("CreateMenuService", () => {
+  afterEach(async () => {
+    const { userRepository } = makeSut();
+    await userRepository.clear();
+  });
+
   it("Should create menu and add it to the database", async () => {
     const { sut, menuRepository, userRepository } = makeSut();
     await userRepository.add(user);

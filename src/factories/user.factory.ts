@@ -9,8 +9,9 @@ export type UserTypes = {
   userRepository: UserRepository;
 };
 
+const inMemoryUserRepository = new InMemoryUserRepository();
+
 export const makeUser = (): UserTypes => {
-  const inMemoryUserRepository = new InMemoryUserRepository();
   const findUserByEmailService = new FindUserByEmailService({ userRepository: inMemoryUserRepository });
   const findUserByIdService = new FindUserByIdService({ userRepository: inMemoryUserRepository });
   const createUserService = new CreateUserService({ userRepository: inMemoryUserRepository });

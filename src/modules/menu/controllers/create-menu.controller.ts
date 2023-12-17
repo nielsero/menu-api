@@ -11,6 +11,6 @@ export class CreateMenuController {
     const userId = res.locals.userId;
     checkRequiredFields({ name }, ["name"]);
     const response = await this.service.execute({ name, description, userId });
-    return res.status(200).json(response);
+    return res.status(201).json(response);
   }
 }
