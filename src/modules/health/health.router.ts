@@ -1,10 +1,18 @@
 import { Router } from "express";
-import { HealthController } from "@/modules/health";
+import { GetHealthController } from "@/modules/health";
+
+export type HealthControllers = {
+  getHealthController: GetHealthController;
+};
 
 export class HealthRouter {
-  constructor(private readonly controller: HealthController) {}
+  private readonly getHealthController: GetHealthController;
+
+  constructor(private readonly controllers: HealthControllers) {
+    this.getHealthController = controllers.getHealthController;
+  }
 
   setup(router: Router) {
-    router.get("/health", this.controller.handle.bind(this.controller));
+    router.get("/health", this.getHealthController.handle.bind(this.getHealthController));
   }
 }

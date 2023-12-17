@@ -1,2 +1,2 @@
-export * from "./health.controller";
+export * from "./get-health.controller";
 export * from "./health.router";

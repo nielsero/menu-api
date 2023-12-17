@@ -43,7 +43,7 @@ export const makeAuth = (): AuthTypes => {
     hashProvider: bcryptHashProvider,
     tokenProvider: jwtTokenProvider,
   });
-  const authRouter = new AuthRouter(registerUserController);
+  const authRouter = new AuthRouter({ registerUserController });
   return {
     authRouter,
     registerUserController,

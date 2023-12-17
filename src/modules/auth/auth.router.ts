@@ -1,10 +1,18 @@
 import { Router } from "express";
 import { RegisterUserController } from "@/modules/auth/controllers";
 
+export type AuthControllers = {
+  registerUserController: RegisterUserController;
+};
+
 export class AuthRouter {
-  constructor(private readonly controller: RegisterUserController) {}
+  private readonly registerUserController: RegisterUserController;
+
+  constructor(private readonly controllers: AuthControllers) {
+    this.registerUserController = controllers.registerUserController;
+  }
 
   setup(router: Router) {
-    router.post("/api/auth/register", this.controller.handle.bind(this.controller));
+    router.post("/api/auth/register", this.registerUserController.handle.bind(this.registerUserController));
   }
 }

@@ -1,18 +1,17 @@
 import { app } from "@/app";
 import { makeHealth } from "@/factories";
-import { HealthController, HealthRouter } from "@/modules/health";
+import { HealthRouter } from "@/modules/health";
 import supertest from "supertest";
 
 let api: supertest.SuperTest<supertest.Test>;
 
 type SutTypes = {
   sut: HealthRouter;
-  controller: HealthController;
 };
 
 const makeSut = (): SutTypes => {
-  const { healthRouter: sut, healthController: controller } = makeHealth();
-  return { sut, controller };
+  const { healthRouter: sut } = makeHealth();
+  return { sut };
 };
 
 describe("HealthRouter", () => {
