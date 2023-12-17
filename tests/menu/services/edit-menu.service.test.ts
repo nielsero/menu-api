@@ -4,7 +4,6 @@ import { MenuRepository } from "@/modules/menu/protocols";
 import { EditMenuService } from "@/modules/menu/services";
 import { User } from "@/modules/user";
 import { UserRepository } from "@/modules/user/protocols";
-import { after } from "node:test";
 
 type SutTypes = {
   sut: EditMenuService;

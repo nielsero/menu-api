@@ -4,17 +4,20 @@ import {
   ZodCreateMenuRequestValidator,
   ZodEditMenuRequestValidator,
 } from "@/modules/menu/providers/validators";
-import { CreateMenuService, EditMenuService } from "@/modules/menu/services";
+import { CreateMenuService, DeleteMenuService, EditMenuService } from "@/modules/menu/services";
 import { makeUser } from "@/factories";
 import { UserRepository } from "@/modules/user/protocols";
 import { MenuRouter } from "@/modules/menu";
-import { CreateMenuController } from "@/modules/menu/controllers";
+import { CreateMenuController, DeleteMenuController, EditMenuController } from "@/modules/menu/controllers";
 
 export type MenuTypes = {
   menuRouter: MenuRouter;
   createMenuController: CreateMenuController;
   createMenuService: CreateMenuService;
+  editMenuController: EditMenuController;
   editMenuService: EditMenuService;
+  deleteMenuController: DeleteMenuController;
+  deleteMenuService: DeleteMenuService;
   menuRepository: MenuRepository;
   userRepository: UserRepository;
 };
@@ -36,12 +39,22 @@ export const makeMenu = (): MenuTypes => {
     requestValidator: editMenuRequestValidator,
     menuRepository: inMemoryMenuRepository,
   });
-  const menuRouter = new MenuRouter({ createMenuController });
+  const editMenuController = new EditMenuController(editMenuService);
+  const deleteMenuService = new DeleteMenuService({
+    findUserByIdService,
+    requestValidator: editMenuRequestValidator,
+    menuRepository: inMemoryMenuRepository,
+  });
+  const deleteMenuController = new DeleteMenuController(deleteMenuService);
+  const menuRouter = new MenuRouter({ createMenuController, editMenuController, deleteMenuController });
   return {
     menuRouter,
     createMenuController,
     createMenuService,
+    editMenuController,
     editMenuService,
+    deleteMenuController,
+    deleteMenuService,
     userRepository,
     menuRepository: inMemoryMenuRepository,
   };

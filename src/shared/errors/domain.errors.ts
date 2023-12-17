@@ -25,3 +25,10 @@ export class DuplicateMenuName extends Error {
     this.name = "DuplicateMenuName";
   }
 }
+
+export class MenuNotFound extends Error {
+  constructor() {
+    super("Menu not found");
+    this.name = "MenuNotFound";
+  }
+}
