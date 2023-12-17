@@ -13,10 +13,10 @@ export class User {
   email: string;
   password: string;
 
-  constructor(user: UserProps) {
-    this.id = user.id ?? crypto.randomUUID();
-    this.name = user.name;
-    this.email = user.email;
-    this.password = user.password;
+  constructor(props: UserProps) {
+    this.id = props.id ?? crypto.randomUUID();
+    this.name = props.name;
+    this.email = props.email;
+    this.password = props.password;
   }
 }
