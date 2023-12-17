@@ -3,7 +3,7 @@ import { ZodRequestValidator } from "@/shared/providers";
 import { z } from "zod";
 
 const createMenuSchema = z.object({
-  name: z.string(),
+  name: z.string().min(3),
   description: z.string().optional(),
   userId: z.string(),
 });
