@@ -1,4 +1,4 @@
 export interface TokenProvider {
-  generateToken(payload: string): Promise<string>;
-  verifyToken(token: string): Promise<string>;
+  generate(payload: string): Promise<string>;
+  verify(token: string): Promise<string>;
 }

@@ -58,12 +58,14 @@ describe("RegisterUserService", () => {
     expect(sut.execute(request)).rejects.toThrow();
   });
 
-  it("Should hash user password", async () => {
-    const { sut, repository } = makeSut();
+  it("Should correctly hash user password", async () => {
+    const { sut, repository, hashProvider } = makeSut();
     await sut.execute(request);
     const user = await repository.findByEmail(request.email);
     expect(user).toBeDefined();
     expect(user?.password).not.toBe(request.password);
+    const isPasswordCorrect = await hashProvider.compare(request.password, user?.password || "");
+    expect(isPasswordCorrect).toBe(true);
   });
 
   it("Should generate a valid token", async () => {
@@ -71,7 +73,7 @@ describe("RegisterUserService", () => {
     const response = await sut.execute(request);
     expect(response.token).toBeDefined();
     const token = response.token;
-    const decodedToken = await tokenProvider.verifyToken(token);
+    const decodedToken = await tokenProvider.verify(token);
     expect(decodedToken).toBe(request.email);
   });
 });

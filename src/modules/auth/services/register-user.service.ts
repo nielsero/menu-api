@@ -28,7 +28,7 @@ export class RegisterUserService {
       email: request.email,
       password: hashedPassword,
     });
-    const token = await this.tokenProvider.generateToken(request.email);
+    const token = await this.tokenProvider.generate(request.email);
     return { token };
   }
 }
