@@ -1,4 +1,4 @@
-import { RegisterUserRequest } from "../../services";
+import { RegisterUserRequest } from "@/modules/auth/services";
 import { ZodRequestValidator } from "@/shared/providers";
 import { z } from "zod";
 

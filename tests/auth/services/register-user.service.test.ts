@@ -7,13 +7,13 @@ import { UserRepository } from "@/modules/user/protocols";
 type SutTypes = {
   sut: RegisterUserService;
   hashProvider: HashProvider;
-  repository: UserRepository;
+  userRepository: UserRepository;
   tokenProvider: TokenProvider;
 };
 
 const makeSut = (): SutTypes => {
-  const { registerUserService: sut, hashProvider, userRepository: repository, tokenProvider } = makeAuth();
-  return { sut, hashProvider, repository, tokenProvider };
+  const { registerUserService: sut, hashProvider, userRepository, tokenProvider } = makeAuth();
+  return { sut, hashProvider, userRepository, tokenProvider };
 };
 
 const request = {
@@ -52,16 +52,16 @@ describe("RegisterUserService", () => {
   });
 
   it("Should throw an error if user already exists", async () => {
-    const { sut, repository } = makeSut();
+    const { sut, userRepository } = makeSut();
     const user = new User(request);
-    repository.add(user);
+    userRepository.add(user);
     expect(sut.execute(request)).rejects.toThrow();
   });
 
   it("Should correctly hash user password", async () => {
-    const { sut, repository, hashProvider } = makeSut();
+    const { sut, userRepository, hashProvider } = makeSut();
     await sut.execute(request);
-    const user = await repository.findByEmail(request.email);
+    const user = await userRepository.findByEmail(request.email);
     expect(user).toBeDefined();
     expect(user?.password).not.toBe(request.password);
     const isPasswordCorrect = await hashProvider.compare(request.password, user?.password || "");
