@@ -1,6 +1,6 @@
 import { UserRepository } from "@/modules/user/protocols";
 import { User } from "@/modules/user";
-import { UserAlreadyExists } from "../errors";
+import { UserAlreadyExists } from "@/shared/errors";
 
 export type CreateUserRequest = {
   name: string;
