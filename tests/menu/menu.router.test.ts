@@ -8,8 +8,6 @@ import { UserRepository } from "@/modules/user/protocols";
 import supertest from "supertest";
 
 let api: supertest.SuperTest<supertest.Test>;
-let userRepository: UserRepository;
-let tokenProvider: TokenProvider;
 
 type SutTypes = {
   sut: MenuRouter;
@@ -32,18 +30,16 @@ const user = new User({
 const request = {
   name: "Menu 1",
   description: "Menu 1 description",
-  userId: user.id,
 };
 
 describe("MenuRouter", () => {
-  beforeAll(() => {
-    const { sut, userRepository: repository, tokenProvider: provider } = makeSut();
+  beforeAll(async () => {
+    const { sut, userRepository } = makeSut();
     sut.setup(app);
     app.use(domainErrorHandler);
     app.use(errorHandler);
     api = supertest(app);
-    userRepository = repository;
-    tokenProvider = provider;
+    await userRepository.add(user);
   });
 
   afterAll(async () => {
@@ -53,10 +49,56 @@ describe("MenuRouter", () => {
 
   describe("POST /api/menu", () => {
     it("Should return a 201 status code if user is authorized", async () => {
-      await userRepository.add(user);
+      const { tokenProvider } = makeAuth();
       const token = await tokenProvider.generate(user.email);
       const { status } = await api.post("/api/menu").set("Authorization", `Bearer ${token}`).send(request);
       expect(status).toBe(201);
+    });
+
+    it("Should return a 401 status code if authorization token is not given", async () => {
+      const { status } = await api.post("/api/menu").send(request);
+      expect(status).toBe(401);
+    });
+
+    it("Should return a 401 status code if user is not authorized", async () => {
+      const { tokenProvider } = makeAuth();
+      const token = await tokenProvider.generate("wrong-email@gmail.com");
+      const { status } = await api.post("/api/menu").set("Authorization", `Bearer ${token}`).send(request);
+      expect(status).toBe(401);
+    });
+
+    it("Should return a 400 status code if request is missing a name", async () => {
+      const { tokenProvider } = makeAuth();
+      const token = await tokenProvider.generate(user.email);
+      const missingNameRequest = {
+        description: "Menu 1 description",
+      };
+      const { status } = await api
+        .post("/api/menu")
+        .set("Authorization", `Bearer ${token}`)
+        .send(missingNameRequest);
+      expect(status).toBe(400);
+    });
+
+    it("Should return a 400 status code if request name is invalid", async () => {
+      const { tokenProvider } = makeAuth();
+      const token = await tokenProvider.generate(user.email);
+      const nameTooShortRequest = {
+        name: "",
+        description: "Menu 1 description",
+      };
+      const { status } = await api
+        .post("/api/menu")
+        .set("Authorization", `Bearer ${token}`)
+        .send(nameTooShortRequest);
+      expect(status).toBe(400);
+    });
+
+    it("Should return a 409 status code if request name was already taken by user", async () => {
+      const { tokenProvider } = makeAuth();
+      const token = await tokenProvider.generate(user.email);
+      const { status } = await api.post("/api/menu").set("Authorization", `Bearer ${token}`).send(request);
+      expect(status).toBe(409);
     });
   });
 });

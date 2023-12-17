@@ -2,7 +2,7 @@ import { RequestValidator } from "@/shared/protocols";
 import { MenuRepository } from "@/modules/menu/protocols";
 import { Menu } from "@/modules/menu/entities";
 import { FindUserByIdService } from "@/modules/user/services";
-import { UserNotFound } from "@/shared/errors";
+import { DuplicateMenuName, UserNotFound } from "@/shared/errors";
 
 export type CreateMenuRequest = {
   name: string;
@@ -35,7 +35,7 @@ export class CreateMenuService {
     if (!user) throw new UserNotFound();
     const menus = await this.menuRepository.findAllByUser(user.id);
     const menuAlreadyExists = menus.some((menu) => menu.name === request.name);
-    if (menuAlreadyExists) throw new Error("Menu already exists");
+    if (menuAlreadyExists) throw new DuplicateMenuName();
     const menu = new Menu(request);
     await this.menuRepository.add(menu);
   }

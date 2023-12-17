@@ -18,3 +18,10 @@ export class UserNotFound extends Error {
     this.name = "UserNotFound";
   }
 }
+
+export class DuplicateMenuName extends Error {
+  constructor() {
+    super("Duplicate menu name");
+    this.name = "DuplicateMenuName";
+  }
+}
