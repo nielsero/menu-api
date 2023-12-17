@@ -7,8 +7,15 @@ export type FindUserByEmailRequest = {
 
 export type FindUserByEmailResponse = User | null;
 
+export type FindUserByEmailProviders = {
+  userRepository: UserRepository;
+};
+
 export class FindUserByEmailService {
-  constructor(private readonly userRepository: UserRepository) {}
+  private readonly userRepository: UserRepository;
+  constructor(private readonly providers: FindUserByEmailProviders) {
+    this.userRepository = providers.userRepository;
+  }
 
   async execute(request: FindUserByEmailRequest): Promise<FindUserByEmailResponse> {
     return await this.userRepository.findByEmail(request.email);

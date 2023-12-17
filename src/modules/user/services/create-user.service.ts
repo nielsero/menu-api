@@ -10,8 +10,15 @@ export type CreateUserRequest = {
 
 export type CreateUserResponse = void;
 
+export type CreateUserProviders = {
+  userRepository: UserRepository;
+};
+
 export class CreateUserService {
-  constructor(private readonly userRepository: UserRepository) {}
+  private readonly userRepository: UserRepository;
+  constructor(private readonly providers: CreateUserProviders) {
+    this.userRepository = providers.userRepository;
+  }
 
   async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
     const user = new User(request);
