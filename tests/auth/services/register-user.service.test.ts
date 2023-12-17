@@ -1,7 +1,6 @@
 import { makeAuth } from "@/factories/auth.factory";
 import { HashProvider, TokenProvider } from "@/modules/auth/protocols";
 import { RegisterUserService } from "@/modules/auth/services";
-import { User } from "@/modules/user";
 import { UserRepository } from "@/modules/user/protocols";
 
 type SutTypes = {
@@ -51,16 +50,9 @@ describe("RegisterUserService", () => {
       email: "john.doe@gmail.com",
       password: "pass",
     };
-    expect(sut.execute(nameTooShortRequest)).rejects.toThrow();
-    expect(sut.execute(invalidEmailRequest)).rejects.toThrow();
-    expect(sut.execute(passwordTooShortRequest)).rejects.toThrow();
-  });
-
-  it("Should throw an error if user already exists", async () => {
-    const { sut, userRepository } = makeSut();
-    const user = new User(request);
-    userRepository.add(user);
-    expect(sut.execute(request)).rejects.toThrow();
+    await expect(sut.execute(nameTooShortRequest)).rejects.toThrow();
+    await expect(sut.execute(invalidEmailRequest)).rejects.toThrow();
+    await expect(sut.execute(passwordTooShortRequest)).rejects.toThrow();
   });
 
   it("Should correctly hash user password", async () => {
@@ -80,5 +72,11 @@ describe("RegisterUserService", () => {
     const token = response.token;
     const decodedToken = await tokenProvider.verify(token);
     expect(decodedToken).toBe(request.email);
+  });
+
+  it("Should throw an error if user already exists", async () => {
+    const { sut } = makeSut();
+    await sut.execute(request);
+    await expect(sut.execute(request)).rejects.toThrow();
   });
 });

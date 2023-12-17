@@ -19,11 +19,11 @@ export type MenuTypes = {
   userRepository: UserRepository;
 };
 
+const inMemoryMenuRepository = new InMemoryMenuRepository();
 const createMenuRequestValidator = new ZodCreateMenuRequestValidator();
 const editMenuRequestValidator = new ZodEditMenuRequestValidator();
 
 export const makeMenu = (): MenuTypes => {
-  const inMemoryMenuRepository = new InMemoryMenuRepository();
   const { findUserByIdService, userRepository } = makeUser();
   const createMenuService = new CreateMenuService({
     findUserByIdService,

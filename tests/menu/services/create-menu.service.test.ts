@@ -28,14 +28,19 @@ const request = {
 };
 
 describe("CreateMenuService", () => {
-  afterEach(async () => {
+  beforeEach(async () => {
     const { userRepository } = makeSut();
+    await userRepository.add(user);
+  });
+
+  afterEach(async () => {
+    const { userRepository, menuRepository } = makeSut();
     await userRepository.clear();
+    await menuRepository.clear();
   });
 
   it("Should create menu and add it to the database", async () => {
-    const { sut, menuRepository, userRepository } = makeSut();
-    await userRepository.add(user);
+    const { sut, menuRepository } = makeSut();
     await sut.execute(request);
     const menus = await menuRepository.findAllByUser(user.id);
     expect(menus).toHaveLength(1);
@@ -43,12 +48,16 @@ describe("CreateMenuService", () => {
 
   it("Should throw an error if user does not exist", async () => {
     const { sut } = makeSut();
-    await expect(sut.execute(request)).rejects.toThrow();
+    const invalidUserRequest = {
+      name: "Menu 1",
+      description: "Menu 1 description",
+      userId: "invalid-user-id",
+    };
+    await expect(sut.execute(invalidUserRequest)).rejects.toThrow();
   });
 
-  it("Should throw if request name is invalid", async () => {
-    const { sut, userRepository } = makeSut();
-    await userRepository.add(user);
+  it("Should throw an error if request name is invalid", async () => {
+    const { sut } = makeSut();
     const nameTooShortRequest = {
       name: "Me",
       description: "Menu 1 description",
@@ -57,9 +66,8 @@ describe("CreateMenuService", () => {
     await expect(sut.execute(nameTooShortRequest)).rejects.toThrow();
   });
 
-  it("Should throw if user already has menu with same name", async () => {
-    const { sut, userRepository } = makeSut();
-    await userRepository.add(user);
+  it("Should throw an error if user already has menu with same name", async () => {
+    const { sut } = makeSut();
     await sut.execute(request);
     await expect(sut.execute(request)).rejects.toThrow();
   });

@@ -36,7 +36,7 @@ export class EditMenuService {
     const menus = await this.menuRepository.findAllByUser(user.id);
     const menu = menus.find((menu) => menu.id === request.id);
     if (!menu) throw new Error("Menu not found");
-    const isNameAlreadyTaken = menus.some((menu) => menu.name === request.name);
+    const isNameAlreadyTaken = menus.some((menu) => menu.name === request.name && menu.id !== request.id);
     if (isNameAlreadyTaken) throw new DuplicateMenuName();
     if (request.name) menu.name = request.name;
     if (request.description) menu.description = request.description;

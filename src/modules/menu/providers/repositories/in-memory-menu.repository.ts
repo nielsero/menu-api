@@ -17,4 +17,8 @@ export class InMemoryMenuRepository implements MenuRepository {
     const menuIndex = this.menus.findIndex((m) => m.id === menu.id);
     this.menus[menuIndex] = menu;
   }
+
+  async clear(): Promise<void> {
+    this.menus.length = 0;
+  }
 }

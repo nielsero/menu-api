@@ -46,12 +46,12 @@ describe("LoginUserService", () => {
       email: "john.doe",
       password: "password",
     };
-    expect(sut.execute(invalidEmailRequest)).rejects.toThrow();
+    await expect(sut.execute(invalidEmailRequest)).rejects.toThrow();
   });
 
   it("Should throw an error if user is not found", async () => {
     const { sut } = makeSut();
-    expect(sut.execute(request)).rejects.toThrow();
+    await expect(sut.execute(request)).rejects.toThrow();
   });
 
   it("Should throw an error if password is incorrect", async () => {
@@ -67,7 +67,7 @@ describe("LoginUserService", () => {
       email: "john.doe@gmail.com",
       password: "not-password",
     };
-    expect(sut.execute(incorrectPasswordRequest)).rejects.toThrow();
+    await expect(sut.execute(incorrectPasswordRequest)).rejects.toThrow();
   });
 
   it("Should generate a valid token", async () => {

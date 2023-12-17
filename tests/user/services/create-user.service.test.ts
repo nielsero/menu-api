@@ -2,6 +2,7 @@ import { makeUser } from "@/factories";
 import { User } from "@/modules/user";
 import { UserRepository } from "@/modules/user/protocols";
 import { CreateUserService } from "@/modules/user/services";
+import { UserAlreadyExists } from "@/shared/errors";
 
 type SutTypes = {
   sut: CreateUserService;
@@ -37,6 +38,6 @@ describe("CreateUserService", () => {
     const { sut, repository } = makeSut();
     const user = new User(request);
     repository.add(user);
-    expect(sut.execute(request)).rejects.toThrow();
+    await expect(sut.execute(request)).rejects.toThrow(UserAlreadyExists);
   });
 });
