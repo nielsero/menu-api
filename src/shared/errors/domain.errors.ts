@@ -11,3 +11,10 @@ export class InvalidCredentials extends Error {
     this.name = "InvalidCredentials";
   }
 }
+
+export class UserNotFound extends Error {
+  constructor() {
+    super("User not found");
+    this.name = "UserNotFound";
+  }
+}
