@@ -21,6 +21,11 @@ const registerRequest = {
   password: "password",
 };
 
+const loginRequest = {
+  email: "john.doe@gmail.com",
+  password: "password",
+};
+
 const response = {
   token: expect.any(String),
 };
@@ -101,6 +106,57 @@ describe("AuthRouter", () => {
     it("Should return a 409 status code if user already exists", async () => {
       const { status } = await api.post("/api/auth/register").send(registerRequest);
       expect(status).toBe(409);
+    });
+  });
+
+  describe("POST /api/auth/login", () => {
+    it("Should return a 200 status code with token if request is valid", async () => {
+      const { status, body } = await api.post("/api/auth/login").send(loginRequest);
+      expect(status).toBe(200);
+      expect(body).toEqual(response);
+    });
+
+    it("Should return a 400 status code if request is missing an email", async () => {
+      const missingEmailRequest = {
+        password: "password",
+      };
+      const { status } = await api.post("/api/auth/login").send(missingEmailRequest);
+      expect(status).toBe(400);
+    });
+
+    it("Should return a 400 status code if request is missing a password", async () => {
+      const missingPasswordRequest = {
+        email: "john.doe@gmail.com",
+      };
+      const { status } = await api.post("/api/auth/login").send(missingPasswordRequest);
+      expect(status).toBe(400);
+    });
+
+    it("Should return a 400 status code if email is not valid", async () => {
+      const invalidEmailRequest = {
+        email: "john.doe",
+        password: "password",
+      };
+      const { status } = await api.post("/api/auth/login").send(invalidEmailRequest);
+      expect(status).toBe(400);
+    });
+
+    it("Should return a 401 status code if user does not exist", async () => {
+      const notRegisteredRequest = {
+        email: "not-registered@gmail.com",
+        password: "password",
+      };
+      const { status } = await api.post("/api/auth/login").send(notRegisteredRequest);
+      expect(status).toBe(401);
+    });
+
+    it("Should return a 401 status code if password is incorrect", async () => {
+      const incorrectPasswordRequest = {
+        email: "john.doe@gmail.com",
+        password: "not-password",
+      };
+      const { status } = await api.post("/api/auth/login").send(incorrectPasswordRequest);
+      expect(status).toBe(401);
     });
   });
 });

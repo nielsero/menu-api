@@ -1,6 +1,6 @@
 import { SALT_ROUNDS, TOKEN_SECRET } from "@/config";
 import { AuthRouter } from "@/modules/auth";
-import { RegisterUserController } from "@/modules/auth/controllers";
+import { LoginUserController, RegisterUserController } from "@/modules/auth/controllers";
 import { HashProvider, TokenProvider } from "@/modules/auth/protocols";
 import { BcryptHashProvider, JwtTokenProvider } from "@/modules/auth/providers";
 import { LoginUserService, RegisterUserService } from "@/modules/auth/services";
@@ -16,6 +16,7 @@ export type AuthTypes = {
   authRouter: AuthRouter;
   registerUserController: RegisterUserController;
   registerUserService: RegisterUserService;
+  loginUserController: LoginUserController;
   loginUserService: LoginUserService;
   hashProvider: HashProvider;
   createUserService: CreateUserService;
@@ -43,11 +44,13 @@ export const makeAuth = (): AuthTypes => {
     hashProvider: bcryptHashProvider,
     tokenProvider: jwtTokenProvider,
   });
-  const authRouter = new AuthRouter({ registerUserController });
+  const loginUserController = new LoginUserController(loginUserService);
+  const authRouter = new AuthRouter({ registerUserController, loginUserController });
   return {
     authRouter,
     registerUserController,
     registerUserService,
+    loginUserController,
     loginUserService,
     createUserService,
     userRepository,
