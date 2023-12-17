@@ -4,7 +4,7 @@ export type MenuProps = {
   id?: string;
   name: string;
   description?: string;
-  published: boolean;
+  published?: boolean;
   userId: string;
 };
 
@@ -19,7 +19,7 @@ export class Menu {
     this.id = props.id ?? crypto.randomUUID();
     this.name = props.name;
     this.description = props.description;
-    this.published = props.published;
+    this.published = props.published ?? false;
     this.userId = props.userId;
   }
 }
