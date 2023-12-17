@@ -17,7 +17,13 @@ import {
 import { makeUser } from "@/factories";
 import { UserRepository } from "@/modules/user/protocols";
 import { MenuRouter } from "@/modules/menu";
-import { CreateMenuController, DeleteMenuController, EditMenuController } from "@/modules/menu/controllers";
+import {
+  CreateMenuController,
+  DeleteMenuController,
+  EditMenuController,
+  PublishMenuController,
+  UnpublishMenuController,
+} from "@/modules/menu/controllers";
 
 export type MenuTypes = {
   menuRouter: MenuRouter;
@@ -27,7 +33,9 @@ export type MenuTypes = {
   editMenuService: EditMenuService;
   deleteMenuController: DeleteMenuController;
   deleteMenuService: DeleteMenuService;
+  publishMenuController: PublishMenuController;
   publishMenuService: PublishMenuService;
+  unpublishMenuController: UnpublishMenuController;
   unpublishMenuService: UnpublishMenuService;
   menuRepository: MenuRepository;
   userRepository: UserRepository;
@@ -64,11 +72,19 @@ export const makeMenu = (): MenuTypes => {
     requestValidator: publishMenuRequestValidator,
     menuRepository: inMemoryMenuRepository,
   });
+  const publishMenuController = new PublishMenuController(publishMenuService);
   const unpublishMenuService = new UnpublishMenuService({
     requestValidator: unpublishMenuRequestValidator,
     menuRepository: inMemoryMenuRepository,
   });
-  const menuRouter = new MenuRouter({ createMenuController, editMenuController, deleteMenuController });
+  const unpublishMenuController = new UnpublishMenuController(unpublishMenuService);
+  const menuRouter = new MenuRouter({
+    createMenuController,
+    editMenuController,
+    deleteMenuController,
+    publishMenuController,
+    unpublishMenuController,
+  });
   return {
     menuRouter,
     createMenuController,
@@ -77,7 +93,9 @@ export const makeMenu = (): MenuTypes => {
     editMenuService,
     deleteMenuController,
     deleteMenuService,
+    publishMenuController,
     publishMenuService,
+    unpublishMenuController,
     unpublishMenuService,
     userRepository,
     menuRepository: inMemoryMenuRepository,

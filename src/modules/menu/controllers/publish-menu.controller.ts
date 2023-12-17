@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { DeleteMenuService } from "@/modules/menu/services";
+import { PublishMenuService } from "@/modules/menu/services";
 import { checkRequiredFields } from "@/utils";
 
-export class DeleteMenuController {
-  constructor(private readonly service: DeleteMenuService) {}
+export class PublishMenuController {
+  constructor(private readonly service: PublishMenuService) {}
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   async handle(req: Request<{ id: string }>, res: Response) {
