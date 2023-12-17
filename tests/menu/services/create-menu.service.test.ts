@@ -51,4 +51,11 @@ describe("CreateMenuService", () => {
     };
     await expect(sut.execute(nameTooShortRequest)).rejects.toThrow();
   });
+
+  it("Should throw if user already has menu with same name", async () => {
+    const { sut, userRepository } = makeSut();
+    await userRepository.add(user);
+    await sut.execute(request);
+    await expect(sut.execute(request)).rejects.toThrow();
+  });
 });

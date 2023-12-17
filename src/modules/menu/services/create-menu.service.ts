@@ -33,6 +33,9 @@ export class CreateMenuService {
     await this.requestValidator.validate(request);
     const user = await this.findUserByIdService.execute({ id: request.userId });
     if (!user) throw new UserNotFound();
+    const menus = await this.menuRepository.findAllByUser(user.id);
+    const menuAlreadyExists = menus.some((menu) => menu.name === request.name);
+    if (menuAlreadyExists) throw new Error("Menu already exists");
     const menu = new Menu(request);
     await this.menuRepository.add(menu);
   }
