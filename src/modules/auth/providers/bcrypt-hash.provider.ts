@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { HashProvider } from "@/modules/auth/protocols";
 
-export class BCryptHashProvider implements HashProvider {
+export class BcryptHashProvider implements HashProvider {
   constructor(private readonly salt: number) {}
 
   hash(payload: string): Promise<string> {

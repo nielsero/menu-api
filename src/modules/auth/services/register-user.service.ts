@@ -12,13 +12,25 @@ export type RegisterUserResponse = {
   token: string;
 };
 
+export type RegisterUserProviders = {
+  requestValidator: RequestValidator<RegisterUserRequest>;
+  hashProvider: HashProvider;
+  createUserService: CreateUserService;
+  tokenProvider: TokenProvider;
+};
+
 export class RegisterUserService {
-  constructor(
-    private readonly requestValidator: RequestValidator<RegisterUserRequest>,
-    private readonly hashProvider: HashProvider,
-    private readonly createUserService: CreateUserService,
-    private readonly tokenProvider: TokenProvider,
-  ) {}
+  private readonly requestValidator: RequestValidator<RegisterUserRequest>;
+  private readonly hashProvider: HashProvider;
+  private readonly createUserService: CreateUserService;
+  private readonly tokenProvider: TokenProvider;
+
+  constructor(private readonly providers: RegisterUserProviders) {
+    this.requestValidator = providers.requestValidator;
+    this.hashProvider = providers.hashProvider;
+    this.createUserService = providers.createUserService;
+    this.tokenProvider = providers.tokenProvider;
+  }
 
   async execute(request: RegisterUserRequest): Promise<RegisterUserResponse> {
     await this.requestValidator.validate(request);

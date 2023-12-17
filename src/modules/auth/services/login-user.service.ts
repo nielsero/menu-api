@@ -12,13 +12,25 @@ export type LoginUserResponse = {
   token: string;
 };
 
+export type LoginUserProviders = {
+  requestValidator: RequestValidator<LoginUserRequest>;
+  hashProvider: HashProvider;
+  findUserByEmailService: FindUserByEmailService;
+  tokenProvider: TokenProvider;
+};
+
 export class LoginUserService {
-  constructor(
-    private readonly requestValidator: RequestValidator<LoginUserRequest>,
-    private readonly hashProvider: HashProvider,
-    private readonly findUserByEmailService: FindUserByEmailService,
-    private readonly tokenProvider: TokenProvider,
-  ) {}
+  private readonly requestValidator: RequestValidator<LoginUserRequest>;
+  private readonly hashProvider: HashProvider;
+  private readonly findUserByEmailService: FindUserByEmailService;
+  private readonly tokenProvider: TokenProvider;
+
+  constructor(private readonly providers: LoginUserProviders) {
+    this.requestValidator = providers.requestValidator;
+    this.hashProvider = providers.hashProvider;
+    this.findUserByEmailService = providers.findUserByEmailService;
+    this.tokenProvider = providers.tokenProvider;
+  }
 
   async execute(request: LoginUserRequest): Promise<LoginUserResponse> {
     await this.requestValidator.validate(request);

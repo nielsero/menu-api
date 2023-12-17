@@ -13,6 +13,7 @@ export type FindUserByEmailProviders = {
 
 export class FindUserByEmailService {
   private readonly userRepository: UserRepository;
+
   constructor(private readonly providers: FindUserByEmailProviders) {
     this.userRepository = providers.userRepository;
   }

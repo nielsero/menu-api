@@ -10,12 +10,11 @@ export type CreateUserRequest = {
 
 export type CreateUserResponse = void;
 
-export type CreateUserProviders = {
-  userRepository: UserRepository;
-};
+export type CreateUserProviders = { userRepository: UserRepository };
 
 export class CreateUserService {
   private readonly userRepository: UserRepository;
+
   constructor(private readonly providers: CreateUserProviders) {
     this.userRepository = providers.userRepository;
   }
