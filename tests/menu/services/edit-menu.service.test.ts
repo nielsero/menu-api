@@ -23,7 +23,7 @@ const user = new User({
   password: "hashed-password",
 });
 
-const menu = new Menu({
+let menu = new Menu({
   name: "Menu 1",
   description: "Menu 1 description",
   userId: user.id,
@@ -47,6 +47,11 @@ describe("EditMenuService", () => {
     const { userRepository, menuRepository } = makeSut();
     await userRepository.clear();
     await menuRepository.clear();
+    menu = new Menu({
+      name: "Menu 1",
+      description: "Menu 1 description",
+      userId: user.id,
+    });
   });
 
   it("Should update menu and save it to the database", async () => {
@@ -106,6 +111,21 @@ describe("EditMenuService", () => {
       userId: user.id,
     };
     await expect(sut.execute(sameNameRequest)).rejects.toThrow();
+  });
+
+  it("Should update menu if current name is sent", async () => {
+    const { sut, menuRepository } = makeSut();
+    const currentNameRequest = {
+      id: menu.id,
+      name: menu.name,
+      description: "Updated Menu 1 description",
+      userId: user.id,
+    };
+    await sut.execute(currentNameRequest);
+    const menus = await menuRepository.findAllByUser(user.id);
+    const updatedMenu = menus[0];
+    expect(updatedMenu.name).toBe(currentNameRequest.name);
+    expect(updatedMenu.description).toBe(currentNameRequest.description);
   });
 
   it("Should throw an error if user tries to update another user's menu", async () => {
