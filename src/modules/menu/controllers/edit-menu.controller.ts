@@ -6,7 +6,7 @@ export class EditMenuController {
   constructor(private readonly service: EditMenuService) {}
 
   // eslint-disable-next-line @typescript-eslint/ban-types
-  async handle(req: Request<{ id: string }, {}, Omit<EditMenuRequest, "userId">>, res: Response) {
+  async handle(req: Request<{ id: string }, {}, Omit<EditMenuRequest, "userId" | "id">>, res: Response) {
     const { id } = req.params;
     const { name, description } = req.body;
     const userId = res.locals.userId;
