@@ -4,6 +4,7 @@ import {
   DeleteMenuItemController,
   EditMenuItemController,
   GetAllMenuItemsController,
+  GetMenuItemController,
 } from "@/modules/menu/controllers";
 import { Router } from "express";
 
@@ -12,6 +13,7 @@ export type MenuItemControllers = {
   editMenuItemController: EditMenuItemController;
   deleteMenuItemController: DeleteMenuItemController;
   getAllMenuItemsController: GetAllMenuItemsController;
+  getMenuItemController: GetMenuItemController;
 };
 
 export class MenuItemRouter {
@@ -19,12 +21,14 @@ export class MenuItemRouter {
   private readonly editMenuItemController: EditMenuItemController;
   private readonly deleteMenuItemController: DeleteMenuItemController;
   private readonly getAllMenuItemsController: GetAllMenuItemsController;
+  private readonly getMenuItemController: GetMenuItemController;
 
   constructor(private readonly controllers: MenuItemControllers) {
     this.addMenuItemController = controllers.addMenuItemController;
     this.editMenuItemController = controllers.editMenuItemController;
     this.deleteMenuItemController = controllers.deleteMenuItemController;
     this.getAllMenuItemsController = controllers.getAllMenuItemsController;
+    this.getMenuItemController = controllers.getMenuItemController;
   }
 
   setup(router: Router) {
@@ -47,6 +51,11 @@ export class MenuItemRouter {
       "/api/menu/:menuId/item",
       requireAuth,
       this.getAllMenuItemsController.handle.bind(this.getAllMenuItemsController),
+    );
+    router.get(
+      "/api/menu/:menuId/item/:id",
+      requireAuth,
+      this.getMenuItemController.handle.bind(this.getMenuItemController),
     );
   }
 }
