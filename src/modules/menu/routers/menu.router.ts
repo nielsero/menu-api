@@ -40,12 +40,12 @@ export class MenuRouter {
   }
 
   setup(router: Router) {
-    router.post("/api/menu", requireAuth, this.create.handle.bind(this.create));
-    router.patch("/api/menu/:id", requireAuth, this.edit.handle.bind(this.edit));
-    router.delete("/api/menu/:id", requireAuth, this.delete.handle.bind(this.delete));
-    router.post("/api/menu/:id/publish", requireAuth, this.publish.handle.bind(this.publish));
-    router.post("/api/menu/:id/unpublish", requireAuth, this.unpublish.handle.bind(this.unpublish));
-    router.get("/api/menu", requireAuth, this.getAll.handle.bind(this.getAll));
-    router.get("/api/menu/published", requireAuth, this.getAllPublished.handle.bind(this.getAllPublished));
+    router.post("/api/menus", requireAuth, this.create.handle.bind(this.create));
+    router.patch("/api/menus/:id", requireAuth, this.edit.handle.bind(this.edit));
+    router.delete("/api/menus/:id", requireAuth, this.delete.handle.bind(this.delete));
+    router.post("/api/menus/:id/publish", requireAuth, this.publish.handle.bind(this.publish));
+    router.post("/api/menus/:id/unpublish", requireAuth, this.unpublish.handle.bind(this.unpublish));
+    router.get("/api/menus", requireAuth, this.getAll.handle.bind(this.getAll));
+    router.get("/api/menus/published", this.getAllPublished.handle.bind(this.getAllPublished));
   }
 }
