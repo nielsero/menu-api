@@ -39,3 +39,10 @@ export class DuplicateMenuItemName extends Error {
     this.name = "DuplicateMenuItemName";
   }
 }
+
+export class MenuItemNotFound extends Error {
+  constructor() {
+    super("Menu item not found");
+    this.name = "MenuItemNotFound";
+  }
+}
