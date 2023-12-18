@@ -10,7 +10,13 @@ export type CreateMenuRequest = {
   userId: string;
 };
 
-export type CreateMenuResponse = void;
+export type CreateMenuResponse = {
+  id: string;
+  name: string;
+  description: string;
+  published: boolean;
+  userId: string;
+};
 
 export type CreateMenuProviders = {
   requestValidator: RequestValidator<CreateMenuRequest>;
@@ -38,5 +44,6 @@ export class CreateMenuService {
     if (menuAlreadyExists) throw new DuplicateMenuName();
     const menu = new Menu(request);
     await this.menuRepository.add(menu);
+    return menu;
   }
 }

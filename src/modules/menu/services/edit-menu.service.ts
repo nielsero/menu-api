@@ -10,7 +10,13 @@ export type EditMenuRequest = {
   userId: string;
 };
 
-export type EditMenuResponse = void;
+export type EditMenuResponse = {
+  id: string;
+  name: string;
+  description: string;
+  published: boolean;
+  userId: string;
+};
 
 export type EditMenuProviders = {
   requestValidator: RequestValidator<EditMenuRequest>;
@@ -41,5 +47,6 @@ export class EditMenuService {
     if (request.name) menu.name = request.name;
     if (request.description) menu.description = request.description;
     await this.menuRepository.update(menu);
+    return menu;
   }
 }

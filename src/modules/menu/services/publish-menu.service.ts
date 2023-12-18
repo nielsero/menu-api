@@ -7,7 +7,13 @@ export type PublishMenuRequest = {
   userId: string;
 };
 
-export type PublishMenuResponse = void;
+export type PublishMenuResponse = {
+  id: string;
+  name: string;
+  description: string;
+  published: boolean;
+  userId: string;
+};
 
 export type PublishMenuProviders = {
   requestValidator: RequestValidator<PublishMenuRequest>;
@@ -28,8 +34,9 @@ export class PublishMenuService {
     const menus = await this.menuRepository.findAllByUser(request.userId);
     const menu = menus.find((menu) => menu.id === request.id);
     if (!menu) throw new MenuNotFound();
-    if (menu.published) return;
+    if (menu.published) return menu;
     menu.published = true;
     await this.menuRepository.update(menu);
+    return menu;
   }
 }
