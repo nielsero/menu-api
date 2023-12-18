@@ -1,6 +1,9 @@
 import crypto from "crypto";
 
-export type MenuItemType = "food" | "beverage";
+export enum MenuItemType {
+  FOOD = "food",
+  BEVERAGE = "beverage",
+}
 
 export type MenuItemProps = {
   id?: string;

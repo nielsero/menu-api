@@ -2,7 +2,7 @@ import { app } from "@/app";
 import { makeAuth, makeMenu } from "@/factories";
 import { domainErrorHandler, errorHandler } from "@/middleware";
 import { TokenProvider } from "@/modules/auth/protocols";
-import { MenuRouter } from "@/modules/menu";
+import { MenuRouter } from "@/modules/menu/routers";
 import { Menu } from "@/modules/menu/entities";
 import { MenuRepository } from "@/modules/menu/protocols";
 import { User } from "@/modules/user";

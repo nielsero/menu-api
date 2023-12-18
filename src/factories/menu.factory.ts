@@ -18,7 +18,7 @@ import {
 } from "@/modules/menu/services";
 import { makeUser } from "@/factories";
 import { UserRepository } from "@/modules/user/protocols";
-import { MenuRouter } from "@/modules/menu";
+import { MenuRouter } from "@/modules/menu/routers";
 import {
   CreateMenuController,
   DeleteMenuController,

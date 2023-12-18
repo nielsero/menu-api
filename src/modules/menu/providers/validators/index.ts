@@ -4,3 +4,4 @@ export * from "./zod-delete-menu-request.validator";
 export * from "./zod-publish-menu-request.validator";
 export * from "./zod-unpublish-menu-request.validator";
 export * from "./zod-get-all-menus-request.validator";
+export * from "./zod-add-menu-item-request.validator";
