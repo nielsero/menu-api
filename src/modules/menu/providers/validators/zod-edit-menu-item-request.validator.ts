@@ -1,18 +1,19 @@
 import { ZodRequestValidator } from "@/shared/providers";
 import { z } from "zod";
-import { AddMenuItemRequest } from "@/modules/menu/services";
+import { EditMenuItemRequest } from "../../services";
 
 const schema = z.object({
+  id: z.string(),
   name: z.string().min(3).optional(),
-  price: z.number().min(0),
-  type: z.enum(["food", "drink"]),
+  price: z.number().min(0).optional(),
+  type: z.enum(["food", "drink"]).optional(),
   description: z.string().optional(),
   image: z.string().optional(),
   menuId: z.string(),
   userId: z.string(),
 });
 
-export class ZodAddMenuItemRequestValidator extends ZodRequestValidator<AddMenuItemRequest> {
+export class ZodEditMenuItemRequestValidator extends ZodRequestValidator<EditMenuItemRequest> {
   constructor() {
     super(schema);
   }
