@@ -4,6 +4,7 @@ import {
   ZodCreateMenuRequestValidator,
   ZodDeleteMenuRequestValidator,
   ZodEditMenuRequestValidator,
+  ZodGetAllMenusRequestValidator,
   ZodPublishMenuRequestValidator,
   ZodUnpublishMenuRequestValidator,
 } from "@/modules/menu/providers/validators";
@@ -11,6 +12,7 @@ import {
   CreateMenuService,
   DeleteMenuService,
   EditMenuService,
+  GetAllMenusService,
   PublishMenuService,
   UnpublishMenuService,
 } from "@/modules/menu/services";
@@ -21,6 +23,7 @@ import {
   CreateMenuController,
   DeleteMenuController,
   EditMenuController,
+  GetAllMenusController,
   PublishMenuController,
   UnpublishMenuController,
 } from "@/modules/menu/controllers";
@@ -37,6 +40,8 @@ export type MenuTypes = {
   publishMenuService: PublishMenuService;
   unpublishMenuController: UnpublishMenuController;
   unpublishMenuService: UnpublishMenuService;
+  getAllMenusController: GetAllMenusController;
+  getAllMenusService: GetAllMenusService;
   menuRepository: MenuRepository;
   userRepository: UserRepository;
 };
@@ -47,6 +52,7 @@ const editMenuRequestValidator = new ZodEditMenuRequestValidator();
 const deleteMenuRequestValidator = new ZodDeleteMenuRequestValidator();
 const publishMenuRequestValidator = new ZodPublishMenuRequestValidator();
 const unpublishMenuRequestValidator = new ZodUnpublishMenuRequestValidator();
+const getAllMenusRequestValidar = new ZodGetAllMenusRequestValidator();
 
 export const makeMenu = (): MenuTypes => {
   const { userRepository } = makeUser();
@@ -75,12 +81,18 @@ export const makeMenu = (): MenuTypes => {
     menuRepository: inMemoryMenuRepository,
   });
   const unpublishMenuController = new UnpublishMenuController(unpublishMenuService);
+  const getAllMenusService = new GetAllMenusService({
+    requestValidator: getAllMenusRequestValidar,
+    menuRepository: inMemoryMenuRepository,
+  });
+  const getAllMenusController = new GetAllMenusController(getAllMenusService);
   const menuRouter = new MenuRouter({
     createMenuController,
     editMenuController,
     deleteMenuController,
     publishMenuController,
     unpublishMenuController,
+    getAllMenusController,
   });
   return {
     menuRouter,
@@ -94,6 +106,8 @@ export const makeMenu = (): MenuTypes => {
     publishMenuService,
     unpublishMenuController,
     unpublishMenuService,
+    getAllMenusController,
+    getAllMenusService,
     userRepository,
     menuRepository: inMemoryMenuRepository,
   };

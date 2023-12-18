@@ -1,6 +1,6 @@
 import { RequestValidator } from "@/shared/protocols";
 import { MenuRepository } from "@/modules/menu/protocols";
-import { MenuNotFound, UserNotFound } from "@/shared/errors";
+import { MenuNotFound } from "@/shared/errors";
 
 export type UnpublishMenuRequest = {
   id: string;

@@ -3,6 +3,7 @@ import {
   CreateMenuController,
   DeleteMenuController,
   EditMenuController,
+  GetAllMenusController,
   PublishMenuController,
   UnpublishMenuController,
 } from "@/modules/menu/controllers";
@@ -14,6 +15,7 @@ export type MenuControllers = {
   deleteMenuController: DeleteMenuController;
   publishMenuController: PublishMenuController;
   unpublishMenuController: UnpublishMenuController;
+  getAllMenusController: GetAllMenusController;
 };
 
 export class MenuRouter {
@@ -22,6 +24,7 @@ export class MenuRouter {
   private readonly deleteMenuController: DeleteMenuController;
   private readonly publishMenuController: PublishMenuController;
   private readonly unpublishMenuController: UnpublishMenuController;
+  private readonly getAllMenusController: GetAllMenusController;
 
   constructor(private readonly controllers: MenuControllers) {
     this.createMenuController = controllers.createMenuController;
@@ -29,6 +32,7 @@ export class MenuRouter {
     this.deleteMenuController = controllers.deleteMenuController;
     this.publishMenuController = controllers.publishMenuController;
     this.unpublishMenuController = controllers.unpublishMenuController;
+    this.getAllMenusController = controllers.getAllMenusController;
   }
 
   setup(router: Router) {
@@ -49,5 +53,6 @@ export class MenuRouter {
       requireAuth,
       this.unpublishMenuController.handle.bind(this.unpublishMenuController),
     );
+    router.get("/api/menu", requireAuth, this.getAllMenusController.handle.bind(this.getAllMenusController));
   }
 }

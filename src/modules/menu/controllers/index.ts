@@ -3,3 +3,4 @@ export * from "./edit-menu.controller";
 export * from "./delete-menu.controller";
 export * from "./publish-menu.controller";
 export * from "./unpublish-menu.controller";
+export * from "./get-all-menus.controller";
