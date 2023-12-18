@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-type MenuItemType = "food" | "beverage";
+export type MenuItemType = "food" | "beverage";
 
 export type MenuItemProps = {
   id?: string;
@@ -17,8 +17,8 @@ export class MenuItem {
   name: string;
   price: number;
   type: MenuItemType;
-  description?: string;
-  image?: string;
+  description: string;
+  image: string;
   menuId: string;
 
   constructor(props: MenuItemProps) {
@@ -26,8 +26,8 @@ export class MenuItem {
     this.name = props.name;
     this.price = props.price;
     this.type = props.type;
-    this.description = props.description;
-    this.image = props.image;
+    this.description = props.description ?? "";
+    this.image = props.image ?? "";
     this.menuId = props.menuId;
   }
 }
