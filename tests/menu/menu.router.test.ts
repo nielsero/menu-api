@@ -64,12 +64,12 @@ describe("MenuRouter", () => {
     await menuRepository.clear();
   });
 
-  describe("POST /api/menu", () => {
+  describe("POST /api/menus", () => {
     it("Should return a 201 status code with created menu if user is authorized", async () => {
       const { tokenProvider } = makeSut();
       const token = await tokenProvider.generate(user.email);
       const { status, body } = await api
-        .post("/api/menu")
+        .post("/api/menus")
         .set("Authorization", `Bearer ${token}`)
         .send(createMenuRequest);
       const expectedResponse = {
@@ -84,7 +84,7 @@ describe("MenuRouter", () => {
     });
 
     it("Should return a 401 status code if authorization token is not given", async () => {
-      const { status } = await api.post("/api/menu").send(createMenuRequest);
+      const { status } = await api.post("/api/menus").send(createMenuRequest);
       expect(status).toBe(401);
     });
 
@@ -92,7 +92,7 @@ describe("MenuRouter", () => {
       const { tokenProvider } = makeSut();
       const token = await tokenProvider.generate("wrong-email@gmail.com");
       const { status } = await api
-        .post("/api/menu")
+        .post("/api/menus")
         .set("Authorization", `Bearer ${token}`)
         .send(createMenuRequest);
       expect(status).toBe(401);
@@ -105,7 +105,7 @@ describe("MenuRouter", () => {
         description: "Menu 1 description",
       };
       const { status } = await api
-        .post("/api/menu")
+        .post("/api/menus")
         .set("Authorization", `Bearer ${token}`)
         .send(missingNameRequest);
       expect(status).toBe(400);
@@ -119,7 +119,7 @@ describe("MenuRouter", () => {
         description: "Menu 1 description",
       };
       const { status } = await api
-        .post("/api/menu")
+        .post("/api/menus")
         .set("Authorization", `Bearer ${token}`)
         .send(nameTooShortRequest);
       expect(status).toBe(400);
@@ -129,19 +129,19 @@ describe("MenuRouter", () => {
       const { tokenProvider } = makeAuth();
       const token = await tokenProvider.generate(user.email);
       const { status } = await api
-        .post("/api/menu")
+        .post("/api/menus")
         .set("Authorization", `Bearer ${token}`)
         .send(createMenuRequest);
       expect(status).toBe(409);
     });
   });
 
-  describe("PATCH /api/menu/:id", () => {
+  describe("PATCH /api/menus/:id", () => {
     it("Should return a 200 status code with updated menu if user is authorized", async () => {
       const { tokenProvider } = makeSut();
       const token = await tokenProvider.generate(user.email);
       const { status, body } = await api
-        .patch(`/api/menu/${menu.id}`)
+        .patch(`/api/menus/${menu.id}`)
         .set("Authorization", `Bearer ${token}`)
         .send(editMenuRequest);
       const expectedResponse = {
@@ -156,7 +156,7 @@ describe("MenuRouter", () => {
     });
 
     it("Should return a 401 status code if authorization token is not given", async () => {
-      const { status } = await api.patch(`/api/menu/${menu.id}`).send(editMenuRequest);
+      const { status } = await api.patch(`/api/menus/${menu.id}`).send(editMenuRequest);
       expect(status).toBe(401);
     });
 
@@ -164,7 +164,7 @@ describe("MenuRouter", () => {
       const { tokenProvider } = makeSut();
       const token = await tokenProvider.generate("wrong-user@gmail.com");
       const { status } = await api
-        .patch(`/api/menu/${menu.id}`)
+        .patch(`/api/menus/${menu.id}`)
         .set("Authorization", `Bearer ${token}`)
         .send(editMenuRequest);
       expect(status).toBe(401);
@@ -174,7 +174,7 @@ describe("MenuRouter", () => {
       const { tokenProvider } = makeSut();
       const token = await tokenProvider.generate(user.email);
       const { status } = await api
-        .patch("/api/menu/invalid-menu-id")
+        .patch("/api/menus/invalid-menu-id")
         .set("Authorization", `Bearer ${token}`)
         .send(editMenuRequest);
       expect(status).toBe(404);
@@ -188,7 +188,7 @@ describe("MenuRouter", () => {
         name: createMenuRequest.name,
       };
       const { status } = await api
-        .patch(`/api/menu/${menu.id}`)
+        .patch(`/api/menus/${menu.id}`)
         .set("Authorization", `Bearer ${token}`)
         .send(nameAlreadyTakenRequest);
       expect(status).toBe(409);
@@ -202,14 +202,14 @@ describe("MenuRouter", () => {
         name: "Me",
       };
       const { status } = await api
-        .patch(`/api/menu/${menu.id}`)
+        .patch(`/api/menus/${menu.id}`)
         .set("Authorization", `Bearer ${token}`)
         .send(nameTooShortRequest);
       expect(status).toBe(400);
     });
   });
 
-  describe("DELETE /api/menu/:id", () => {
+  describe("DELETE /api/menus/:id", () => {
     it("Should return a 204 status code if user is authorized", async () => {
       const { tokenProvider } = makeSut();
       const token = await tokenProvider.generate(user.email);
@@ -218,14 +218,14 @@ describe("MenuRouter", () => {
     });
 
     it("Should return a 401 status code if authorization token is not given", async () => {
-      const { status } = await api.delete(`/api/menu/${menu.id}`);
+      const { status } = await api.delete(`/api/menus/${menu.id}`);
       expect(status).toBe(401);
     });
 
     it("Should return a 401 status code if user is not authorized", async () => {
       const { tokenProvider } = makeSut();
       const token = await tokenProvider.generate("wrong-email@gmail.com");
-      const { status } = await api.delete(`/api/menu/${menu.id}`).set("Authorization", `Bearer ${token}`);
+      const { status } = await api.delete(`/api/menus/${menu.id}`).set("Authorization", `Bearer ${token}`);
       expect(status).toBe(401);
     });
 
@@ -233,7 +233,7 @@ describe("MenuRouter", () => {
       const { tokenProvider } = makeSut();
       const token = await tokenProvider.generate(user.email);
       const { status } = await api
-        .delete("/api/menu/invalid-menu-id")
+        .delete("/api/menus/invalid-menu-id")
         .set("Authorization", `Bearer ${token}`);
       expect(status).toBe(404);
     });
