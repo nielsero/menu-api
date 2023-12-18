@@ -1,5 +1,6 @@
-import { MenuItemRepository, MenuRepository } from "@/modules/menu/protocols";
-import { InMemoryMenuItemRepository } from "@/modules/menu/providers/repositories";
+import { MenuRepository } from "@/modules/menu/protocols";
+import { MenuItemRepository } from "@/modules/menu-item/protocols";
+import { InMemoryMenuItemRepository } from "@/modules/menu-item/providers/repositories";
 import {
   ZodAddMenuItemRequestValidator,
   ZodDeleteMenuItemRequestValidator,
@@ -17,10 +18,10 @@ import {
   GetAllPublishedMenuItemsService,
   GetMenuItemService,
   GetPublishedMenuItemService,
-} from "@/modules/menu/services";
+} from "@/modules/menu-item/services";
 import { UserRepository } from "@/modules/user/protocols";
 import { makeMenu } from "@/factories/menu.factory";
-import { MenuItemRouter } from "@/modules/menu/routers";
+import { MenuItemRouter } from "@/modules/menu-item";
 import {
   AddMenuItemController,
   DeleteMenuItemController,
@@ -29,7 +30,7 @@ import {
   GetAllPublishedMenuItemsController,
   GetMenuItemController,
   GetPublishedMenuItemController,
-} from "@/modules/menu/controllers";
+} from "@/modules/menu-item/controllers";
 
 export type MenuItemTypes = {
   menuItemRouter: MenuItemRouter;

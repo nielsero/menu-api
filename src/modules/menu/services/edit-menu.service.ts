@@ -1,6 +1,7 @@
 import { RequestValidator } from "@/shared/protocols";
 import { MenuRepository } from "@/modules/menu/protocols";
-import { DuplicateMenuName, MenuNotFound, UserNotFound } from "@/shared/errors";
+import { DuplicateMenuName, MenuNotFound } from "@/shared/errors";
+import { Menu } from "@/modules/menu";
 
 export type EditMenuRequest = {
   id: string;
@@ -9,13 +10,7 @@ export type EditMenuRequest = {
   userId: string;
 };
 
-export type EditMenuResponse = {
-  id: string;
-  name: string;
-  description: string;
-  published: boolean;
-  userId: string;
-};
+export type EditMenuResponse = Menu;
 
 export type EditMenuProviders = {
   requestValidator: RequestValidator<EditMenuRequest>;

@@ -1,5 +1,5 @@
-import { Menu } from "../entities";
-import { MenuRepository } from "../protocols";
+import { Menu } from "@/modules/menu";
+import { MenuRepository } from "@/modules/menu/protocols";
 
 export type GetAllPublishedMenusRequest = void;
 

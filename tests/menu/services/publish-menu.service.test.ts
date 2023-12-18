@@ -1,5 +1,5 @@
 import { makeMenu } from "@/factories";
-import { Menu } from "@/modules/menu/entities";
+import { Menu } from "@/modules/menu";
 import { MenuRepository } from "@/modules/menu/protocols";
 import { PublishMenuService } from "@/modules/menu/services";
 import { User } from "@/modules/user";

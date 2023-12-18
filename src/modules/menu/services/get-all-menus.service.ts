@@ -1,6 +1,6 @@
 import { RequestValidator } from "@/shared/protocols";
 import { MenuRepository } from "@/modules/menu/protocols";
-import { Menu } from "@/modules/menu/entities";
+import { Menu } from "@/modules/menu";
 
 export type GetAllMenusRequest = {
   userId: string;

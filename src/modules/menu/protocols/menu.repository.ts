@@ -1,4 +1,4 @@
-import { Menu } from "@/modules/menu/entities";
+import { Menu } from "@/modules/menu";
 
 export interface MenuRepository {
   add(menu: Menu): Promise<void>;

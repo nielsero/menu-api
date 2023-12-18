@@ -1,7 +1,7 @@
 import { RequestValidator } from "@/shared/protocols";
 import { MenuRepository } from "@/modules/menu/protocols";
-import { Menu } from "@/modules/menu/entities";
-import { DuplicateMenuName, UserNotFound } from "@/shared/errors";
+import { Menu } from "@/modules/menu";
+import { DuplicateMenuName } from "@/shared/errors";
 
 export type CreateMenuRequest = {
   name: string;
@@ -9,13 +9,7 @@ export type CreateMenuRequest = {
   userId: string;
 };
 
-export type CreateMenuResponse = {
-  id: string;
-  name: string;
-  description: string;
-  published: boolean;
-  userId: string;
-};
+export type CreateMenuResponse = Menu;
 
 export type CreateMenuProviders = {
   requestValidator: RequestValidator<CreateMenuRequest>;

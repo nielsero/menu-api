@@ -1,19 +1,14 @@
 import { RequestValidator } from "@/shared/protocols";
 import { MenuRepository } from "@/modules/menu/protocols";
 import { MenuNotFound } from "@/shared/errors";
+import { Menu } from "@/modules/menu";
 
 export type PublishMenuRequest = {
   id: string;
   userId: string;
 };
 
-export type PublishMenuResponse = {
-  id: string;
-  name: string;
-  description: string;
-  published: boolean;
-  userId: string;
-};
+export type PublishMenuResponse = Menu;
 
 export type PublishMenuProviders = {
   requestValidator: RequestValidator<PublishMenuRequest>;
