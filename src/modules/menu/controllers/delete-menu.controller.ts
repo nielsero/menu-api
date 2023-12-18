@@ -11,6 +11,6 @@ export class DeleteMenuController {
     const userId = res.locals.userId;
     checkRequiredFields({ id }, ["id"]);
     await this.service.execute({ id, userId });
-    return res.status(204);
+    return res.sendStatus(204);
   }
 }

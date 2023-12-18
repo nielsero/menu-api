@@ -63,7 +63,6 @@ export const makeMenu = (): MenuTypes => {
   });
   const editMenuController = new EditMenuController(editMenuService);
   const deleteMenuService = new DeleteMenuService({
-    findUserByIdService,
     requestValidator: deleteMenuRequestValidator,
     menuRepository: inMemoryMenuRepository,
   });

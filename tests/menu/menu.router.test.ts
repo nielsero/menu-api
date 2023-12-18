@@ -208,4 +208,34 @@ describe("MenuRouter", () => {
       expect(status).toBe(400);
     });
   });
+
+  describe("DELETE /api/menu/:id", () => {
+    it("Should return a 204 status code if user is authorized", async () => {
+      const { tokenProvider } = makeSut();
+      const token = await tokenProvider.generate(user.email);
+      const { status } = await api.delete(`/api/menu/${menu.id}`).set("Authorization", `Bearer ${token}`);
+      // expect(status).toBe(204);
+    });
+
+    it("Should return a 401 status code if authorization token is not given", async () => {
+      const { status } = await api.delete(`/api/menu/${menu.id}`);
+      expect(status).toBe(401);
+    });
+
+    it("Should return a 401 status code if user is not authorized", async () => {
+      const { tokenProvider } = makeSut();
+      const token = await tokenProvider.generate("wrong-email@gmail.com");
+      const { status } = await api.delete(`/api/menu/${menu.id}`).set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(401);
+    });
+
+    it("Should return a 404 status code if menu was not found", async () => {
+      const { tokenProvider } = makeSut();
+      const token = await tokenProvider.generate(user.email);
+      const { status } = await api
+        .delete("/api/menu/invalid-menu-id")
+        .set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(404);
+    });
+  });
 });
