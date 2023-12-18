@@ -1,15 +1,10 @@
 import crypto from "crypto";
 
-export enum MenuItemType {
-  FOOD = "food",
-  BEVERAGE = "beverage",
-}
-
 export type MenuItemProps = {
   id?: string;
   name: string;
   price: number;
-  type: MenuItemType;
+  type: string;
   description?: string;
   image?: string;
   menuId: string;
@@ -19,7 +14,7 @@ export class MenuItem {
   readonly id: string;
   name: string;
   price: number;
-  type: MenuItemType;
+  type: string;
   description: string;
   image: string;
   menuId: string;

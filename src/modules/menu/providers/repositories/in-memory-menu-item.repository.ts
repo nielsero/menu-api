@@ -12,4 +12,8 @@ export class InMemoryMenuItemRepository implements MenuItemRepository {
     const menuItems = this.menuItems.filter((menuItem) => menuItem.menuId === menuId);
     return menuItems;
   }
+
+  async clear(): Promise<void> {
+    this.menuItems.length = 0;
+  }
 }

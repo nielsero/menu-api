@@ -1,13 +1,13 @@
-import { MenuItem, MenuItemType } from "@/modules/menu/entities";
+import { MenuItem } from "@/modules/menu/entities";
 import { RequestValidator } from "@/shared/protocols";
 import { MenuItemRepository, MenuRepository } from "@/modules/menu/protocols";
-import { MenuNotFound } from "@/shared/errors";
+import { DuplicateMenuItemName, MenuNotFound } from "@/shared/errors";
 
 export type AddMenuItemRequest = {
   name: string;
   description?: string;
   price: number;
-  type: MenuItemType;
+  type: string;
   image?: string;
   menuId: string;
   userId: string;
@@ -37,6 +37,9 @@ export class AddMenuItemService {
     const menus = await this.menuRepository.findAllByUser(request.userId);
     const menu = menus.find((menu) => menu.id === request.menuId);
     if (!menu) throw new MenuNotFound();
+    const menuItems = await this.menuItemRepository.findAllInMenu(menu.id);
+    const menuItemAlreadyExists = menuItems.some((item) => item.name === request.name);
+    if (menuItemAlreadyExists) throw new DuplicateMenuItemName();
     const menuItem = new MenuItem(request);
     await this.menuItemRepository.add(menuItem);
     return menuItem;
