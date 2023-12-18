@@ -11,13 +11,13 @@ import {
 import requireAuth from "@/middleware/require-auth";
 
 export type MenuControllers = {
-  create: CreateMenuController;
-  edit: EditMenuController;
-  delete: DeleteMenuController;
-  publish: PublishMenuController;
-  unpublish: UnpublishMenuController;
-  getAll: GetAllMenusController;
-  getAllPublished: GetAllPublishedMenusController;
+  createMenuController: CreateMenuController;
+  editMenuController: EditMenuController;
+  deleteMenuController: DeleteMenuController;
+  publishMenuController: PublishMenuController;
+  unpublishMenuController: UnpublishMenuController;
+  getAllMenusController: GetAllMenusController;
+  getAllPublishedMenusController: GetAllPublishedMenusController;
 };
 
 export class MenuRouter {
@@ -30,13 +30,13 @@ export class MenuRouter {
   private readonly getAllPublished: GetAllPublishedMenusController;
 
   constructor(private readonly controllers: MenuControllers) {
-    this.create = controllers.create;
-    this.edit = controllers.edit;
-    this.delete = controllers.delete;
-    this.publish = controllers.publish;
-    this.unpublish = controllers.unpublish;
-    this.getAll = controllers.getAll;
-    this.getAllPublished = controllers.getAllPublished;
+    this.create = controllers.createMenuController;
+    this.edit = controllers.editMenuController;
+    this.delete = controllers.deleteMenuController;
+    this.publish = controllers.publishMenuController;
+    this.unpublish = controllers.unpublishMenuController;
+    this.getAll = controllers.getAllMenusController;
+    this.getAllPublished = controllers.getAllPublishedMenusController;
   }
 
   setup(router: Router) {

@@ -6,16 +6,18 @@ import {
   GetAllMenuItemsController,
   GetAllPublishedMenuItemsController,
   GetMenuItemController,
+  GetPublishedMenuItemController,
 } from "@/modules/menu/controllers";
 import { Router } from "express";
 
 export type MenuItemControllers = {
-  add: AddMenuItemController;
-  edit: EditMenuItemController;
-  delete: DeleteMenuItemController;
-  getAll: GetAllMenuItemsController;
-  get: GetMenuItemController;
-  getAllPublished: GetAllPublishedMenuItemsController;
+  addMenuItemController: AddMenuItemController;
+  editMenuItemController: EditMenuItemController;
+  deleteMenuItemController: DeleteMenuItemController;
+  getAllMenuItemsController: GetAllMenuItemsController;
+  getMenuItemController: GetMenuItemController;
+  getAllPublishedMenuItemsController: GetAllPublishedMenuItemsController;
+  getPublishedMenuItemController: GetPublishedMenuItemController;
 };
 
 export class MenuItemRouter {
@@ -25,14 +27,16 @@ export class MenuItemRouter {
   private readonly getAll: GetAllMenuItemsController;
   private readonly get: GetMenuItemController;
   private readonly getAllPublished: GetAllPublishedMenuItemsController;
+  private readonly getPublished: GetPublishedMenuItemController;
 
   constructor(private readonly controllers: MenuItemControllers) {
-    this.add = controllers.add;
-    this.edit = controllers.edit;
-    this.delete = controllers.delete;
-    this.getAll = controllers.getAll;
-    this.get = controllers.get;
-    this.getAllPublished = controllers.getAllPublished;
+    this.add = controllers.addMenuItemController;
+    this.edit = controllers.editMenuItemController;
+    this.delete = controllers.deleteMenuItemController;
+    this.getAll = controllers.getAllMenuItemsController;
+    this.get = controllers.getMenuItemController;
+    this.getAllPublished = controllers.getAllPublishedMenuItemsController;
+    this.getPublished = controllers.getPublishedMenuItemController;
   }
 
   setup(router: Router) {
@@ -41,10 +45,7 @@ export class MenuItemRouter {
     router.delete("/api/menu/:menuId/item/:id", requireAuth, this.delete.handle.bind(this.delete));
     router.get("/api/menu/:menuId/item", requireAuth, this.getAll.handle.bind(this.getAll));
     router.get("/api/menu/:menuId/item/:id", requireAuth, this.get.handle.bind(this.get));
-    router.get(
-      "/api/menu/:menuId/item/published",
-      requireAuth,
-      this.getAllPublished.handle.bind(this.getAllPublished),
-    );
+    router.get("/api/menu/:menuId/item/published", this.getAllPublished.handle.bind(this.getAllPublished));
+    router.get("/api/menu/:menuId/item/published/:id", this.getPublished.handle.bind(this.getPublished));
   }
 }
