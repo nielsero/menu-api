@@ -23,6 +23,11 @@ export class InMemoryMenuRepository implements MenuRepository {
     this.menus.splice(menuIndex, 1);
   }
 
+  async findAllPublished(): Promise<Menu[]> {
+    const menus = this.menus.filter((menu) => menu.published);
+    return menus;
+  }
+
   async clear(): Promise<void> {
     this.menus.length = 0;
   }
