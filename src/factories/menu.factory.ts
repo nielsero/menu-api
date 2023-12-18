@@ -13,6 +13,7 @@ import {
   DeleteMenuService,
   EditMenuService,
   GetAllMenusService,
+  GetAllPublishedMenusService,
   PublishMenuService,
   UnpublishMenuService,
 } from "@/modules/menu/services";
@@ -24,6 +25,7 @@ import {
   DeleteMenuController,
   EditMenuController,
   GetAllMenusController,
+  GetAllPublishedMenusController,
   PublishMenuController,
   UnpublishMenuController,
 } from "@/modules/menu/controllers";
@@ -42,6 +44,8 @@ export type MenuTypes = {
   unpublishMenuService: UnpublishMenuService;
   getAllMenusController: GetAllMenusController;
   getAllMenusService: GetAllMenusService;
+  getAllPublishedMenusController: GetAllPublishedMenusController;
+  getAllPublishedMenusService: GetAllPublishedMenusService;
   menuRepository: MenuRepository;
   userRepository: UserRepository;
 };
@@ -86,6 +90,10 @@ export const makeMenu = (): MenuTypes => {
     menuRepository: inMemoryMenuRepository,
   });
   const getAllMenusController = new GetAllMenusController(getAllMenusService);
+  const getAllPublishedMenusService = new GetAllPublishedMenusService({
+    menuRepository: inMemoryMenuRepository,
+  });
+  const getAllPublishedMenusController = new GetAllPublishedMenusController(getAllPublishedMenusService);
   const menuRouter = new MenuRouter({
     createMenuController,
     editMenuController,
@@ -93,6 +101,7 @@ export const makeMenu = (): MenuTypes => {
     publishMenuController,
     unpublishMenuController,
     getAllMenusController,
+    getAllPublishedMenusController,
   });
   return {
     menuRouter,
@@ -108,6 +117,8 @@ export const makeMenu = (): MenuTypes => {
     unpublishMenuService,
     getAllMenusController,
     getAllMenusService,
+    getAllPublishedMenusController,
+    getAllPublishedMenusService,
     userRepository,
     menuRepository: inMemoryMenuRepository,
   };
