@@ -10,3 +10,4 @@ export * from "./delete-menu-item.controller";
 export * from "./get-all-menu-items.controller";
 export * from "./get-menu-item.controller";
 export * from "./get-all-published-menus.controller";
+export * from "./get-all-published-menu-items.controller";
