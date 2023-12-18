@@ -1,6 +1,5 @@
 import { RequestValidator } from "@/shared/protocols";
 import { MenuRepository } from "@/modules/menu/protocols";
-import { FindUserByIdService } from "@/modules/user/services";
 import { DuplicateMenuName, MenuNotFound, UserNotFound } from "@/shared/errors";
 
 export type EditMenuRequest = {
@@ -20,26 +19,21 @@ export type EditMenuResponse = {
 
 export type EditMenuProviders = {
   requestValidator: RequestValidator<EditMenuRequest>;
-  findUserByIdService: FindUserByIdService;
   menuRepository: MenuRepository;
 };
 
 export class EditMenuService {
   private readonly requestValidator: RequestValidator<EditMenuRequest>;
-  private readonly findUserByIdService: FindUserByIdService;
   private readonly menuRepository: MenuRepository;
 
   constructor(private readonly providers: EditMenuProviders) {
     this.requestValidator = providers.requestValidator;
-    this.findUserByIdService = providers.findUserByIdService;
     this.menuRepository = providers.menuRepository;
   }
 
   async execute(request: EditMenuRequest): Promise<EditMenuResponse> {
     await this.requestValidator.validate(request);
-    const user = await this.findUserByIdService.execute({ id: request.userId });
-    if (!user) throw new UserNotFound();
-    const menus = await this.menuRepository.findAllByUser(user.id);
+    const menus = await this.menuRepository.findAllByUser(request.userId);
     const menu = menus.find((menu) => menu.id === request.id);
     if (!menu) throw new MenuNotFound();
     const isNameAlreadyTaken = menus.some((menu) => menu.name === request.name && menu.id !== request.id);

@@ -46,16 +46,6 @@ describe("CreateMenuService", () => {
     expect(menus).toHaveLength(1);
   });
 
-  it("Should throw an error if user does not exist", async () => {
-    const { sut } = makeSut();
-    const invalidUserRequest = {
-      name: "Menu 1",
-      description: "Menu 1 description",
-      userId: "invalid-user-id",
-    };
-    await expect(sut.execute(invalidUserRequest)).rejects.toThrow();
-  });
-
   it("Should throw an error if request name is invalid", async () => {
     const { sut } = makeSut();
     const nameTooShortRequest = {

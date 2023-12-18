@@ -49,15 +49,13 @@ const publishMenuRequestValidator = new ZodPublishMenuRequestValidator();
 const unpublishMenuRequestValidator = new ZodUnpublishMenuRequestValidator();
 
 export const makeMenu = (): MenuTypes => {
-  const { findUserByIdService, userRepository } = makeUser();
+  const { userRepository } = makeUser();
   const createMenuService = new CreateMenuService({
-    findUserByIdService,
     requestValidator: createMenuRequestValidator,
     menuRepository: inMemoryMenuRepository,
   });
   const createMenuController = new CreateMenuController(createMenuService);
   const editMenuService = new EditMenuService({
-    findUserByIdService,
     requestValidator: editMenuRequestValidator,
     menuRepository: inMemoryMenuRepository,
   });
