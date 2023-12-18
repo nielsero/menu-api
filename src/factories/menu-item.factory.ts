@@ -27,7 +27,7 @@ export const makeMenuItem = (): MenuItemTypes => {
     menuItemRepository: inMemoryMenuItemRepository,
   });
   const addMenuItemController = new AddMenuItemController(addMenuItemService);
-  const menuItemRouter = new MenuItemRouter({ addMenuItemController });
+  const menuItemRouter = new MenuItemRouter({ add: addMenuItemController });
   return {
     menuItemRouter,
     addMenuItemController,
