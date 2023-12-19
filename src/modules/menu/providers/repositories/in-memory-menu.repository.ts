@@ -5,7 +5,8 @@ export class InMemoryMenuRepository implements MenuRepository {
   private readonly menus: Menu[] = [];
 
   async add(menu: Menu): Promise<void> {
-    this.menus.push(menu);
+    const newMenu = new Menu(menu);
+    this.menus.push(newMenu);
   }
 
   async findAllByUser(userId: string): Promise<Menu[]> {
@@ -15,7 +16,8 @@ export class InMemoryMenuRepository implements MenuRepository {
 
   async update(menu: Menu): Promise<void> {
     const menuIndex = this.menus.findIndex((m) => m.id === menu.id);
-    this.menus[menuIndex] = menu;
+    const updatedMenu = new Menu(menu);
+    this.menus[menuIndex] = updatedMenu;
   }
 
   async delete(id: string): Promise<void> {

@@ -19,9 +19,22 @@ const user = new User({
   password: "hashed-password",
 });
 
+const anotherUser = new User({
+  name: "Jane Doe",
+  email: "jane.doe@gmail.com",
+  password: "hashed-password",
+});
+
 const menu = new Menu({
   name: "Old Menu",
   description: "Old Menu description",
+  userId: user.id,
+});
+
+const publishedMenu = new Menu({
+  name: "Published Menu",
+  description: "Published Menu description",
+  published: true,
   userId: user.id,
 });
 
@@ -43,6 +56,7 @@ describe("MenuRouter", () => {
     app.use(errorHandler);
     api = supertest(app);
     await userRepository.add(user);
+    await userRepository.add(anotherUser);
   });
 
   afterEach(async () => {
@@ -229,12 +243,6 @@ describe("MenuRouter", () => {
     });
 
     it("Should return a 404 status code if if user doesn't own that menu", async () => {
-      const anotherUser = new User({
-        name: "Jane Doe",
-        email: "jane.doe@gmail.com",
-        password: "hashed-password",
-      });
-      await userRepository.add(anotherUser);
       const token = await tokenProvider.generate(anotherUser.email);
       const { status } = await api.delete(`/api/menus/${menu.id}`).set("Authorization", `Bearer ${token}`);
       expect(status).toBe(404);
@@ -258,20 +266,14 @@ describe("MenuRouter", () => {
       await menuRepository.add(menu3);
     });
 
-    it("Should return a 200 status code with all user menus", async () => {
+    it("Should return a 200 status code with all user menus if user is authorized", async () => {
       const token = await tokenProvider.generate(user.email);
       const { status, body } = await api.get("/api/menus").set("Authorization", `Bearer ${token}`);
       expect(status).toBe(200);
       expect(body.length).toBe(3);
     });
 
-    it("Should return a 200 with empty list if user doesn't have menus", async () => {
-      const anotherUser = new User({
-        name: "Jane Doe",
-        email: "jane.doe@gmail.com",
-        password: "hashed-password",
-      });
-      await userRepository.add(anotherUser);
+    it("Should return a 200 with empty list if user is authorized but doesn't have any menus", async () => {
       const token = await tokenProvider.generate(anotherUser.email);
       const { status, body } = await api.get("/api/menus").set("Authorization", `Bearer ${token}`);
       expect(status).toBe(200);
@@ -287,6 +289,135 @@ describe("MenuRouter", () => {
       const token = await tokenProvider.generate("wrong-email@gmail.com");
       const { status } = await api.get("/api/menus").set("Authorization", `Bearer ${token}`);
       expect(status).toBe(401);
+    });
+  });
+
+  describe("POST /api/menus/:id/publish", () => {
+    beforeEach(async () => {
+      await menuRepository.add(menu);
+    });
+
+    it("Should return a 200 status code with published menu if user is authorized", async () => {
+      const token = await tokenProvider.generate(user.email);
+      const { status, body } = await api
+        .post(`/api/menus/${menu.id}/publish`)
+        .set("Authorization", `Bearer ${token}`);
+      const expectedResponse = {
+        id: menu.id,
+        name: menu.name,
+        description: menu.description,
+        published: true,
+        userId: user.id,
+      };
+      expect(status).toBe(200);
+      expect(body).toEqual(expectedResponse);
+    });
+
+    it("Should return a 401 status code if authorization token is not given", async () => {
+      const { status } = await api.post(`/api/menus/${menu.id}/publish`);
+      expect(status).toBe(401);
+    });
+
+    it("Should return a 401 status code if user is not authorized", async () => {
+      const token = await tokenProvider.generate("wrong-email@gmail.com");
+      const { status } = await api
+        .post(`/api/menus/${menu.id}/publish`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(401);
+    });
+
+    it("Should return a 404 status code if menu was not found", async () => {
+      const token = await tokenProvider.generate(user.email);
+      const { status } = await api
+        .post("/api/menus/invalid-menu-id/publish")
+        .set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(404);
+    });
+
+    it("Should return a 404 status code if if user doesn't own that menu", async () => {
+      const token = await tokenProvider.generate(anotherUser.email);
+      const { status } = await api
+        .post(`/api/menus/${menu.id}/publish`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(404);
+    });
+  });
+
+  describe("POST /api/menus/:id/unpublish", () => {
+    beforeEach(async () => {
+      await menuRepository.add(publishedMenu);
+    });
+
+    it("Should return a 200 status code with unpublished menu if user is authorized", async () => {
+      const token = await tokenProvider.generate(user.email);
+      const { status, body } = await api
+        .post(`/api/menus/${publishedMenu.id}/unpublish`)
+        .set("Authorization", `Bearer ${token}`);
+      const expectedResponse = {
+        id: publishedMenu.id,
+        name: publishedMenu.name,
+        description: publishedMenu.description,
+        published: false,
+        userId: user.id,
+      };
+      expect(status).toBe(200);
+      expect(body).toEqual(expectedResponse);
+    });
+
+    it("Should return a 401 status code if authorization token is not given", async () => {
+      const { status } = await api.post(`/api/menus/${publishedMenu.id}/unpublish`);
+      expect(status).toBe(401);
+    });
+
+    it("Should return a 401 status code if user is not authorized", async () => {
+      const token = await tokenProvider.generate("wrong-email@gmail.com");
+      const { status } = await api
+        .post(`/api/menus/${publishedMenu.id}/unpublish`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(401);
+    });
+
+    it("Should return a 404 status code if menu was not found", async () => {
+      const token = await tokenProvider.generate(user.email);
+      const { status } = await api
+        .post("/api/menus/invalid-menu-id/unpublish")
+        .set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(404);
+    });
+
+    it("Should return a 404 status code if if user doesn't own that menu", async () => {
+      const token = await tokenProvider.generate(anotherUser.email);
+      const { status } = await api
+        .post(`/api/menus/${publishedMenu.id}/unpublish`)
+        .set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(404);
+    });
+  });
+
+  describe("GET /api/menus/published", () => {
+    beforeEach(async () => {
+      const publishedMenu2 = new Menu({
+        name: "Published Menu 2",
+        description: "Published Menu 2 description",
+        published: true,
+        userId: anotherUser.id,
+      });
+      await menuRepository.add(menu);
+      await menuRepository.add(publishedMenu);
+      await menuRepository.add(publishedMenu2);
+    });
+
+    it("Should return a 200 status code with all published menus", async () => {
+      const { status, body } = await api.get("/api/menus/published");
+      expect(status).toBe(200);
+      expect(body.length).toBe(2);
+    });
+
+    it("Should return a 200 with empty list if there are no published menus", async () => {
+      await menuRepository.clear();
+      const { status, body } = await api.get("/api/menus/published");
+      expect(status).toBe(200);
+      expect(body.length).toBe(0);
     });
   });
 });
