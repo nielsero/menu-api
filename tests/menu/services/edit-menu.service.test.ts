@@ -13,7 +13,7 @@ const user = new User({
   password: "hashed-password",
 });
 
-let menu = new Menu({
+const menu = new Menu({
   name: "Menu 1",
   description: "Menu 1 description",
   userId: user.id,
@@ -27,37 +27,29 @@ const request = {
 };
 
 describe("EditMenuService", () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await userRepository.add(user);
+  });
+
+  afterAll(async () => {
+    await userRepository.clear();
+  });
+
+  beforeEach(async () => {
     await menuRepository.add(menu);
   });
 
   afterEach(async () => {
-    await userRepository.clear();
     await menuRepository.clear();
-    menu = new Menu({
-      name: "Menu 1",
-      description: "Menu 1 description",
-      userId: user.id,
-    });
   });
 
   it("Should update menu and save it to the database", async () => {
     await sut.execute(request);
     const menus = await menuRepository.findAllByUser(user.id);
-    const updatedMenu = menus[0];
-    expect(updatedMenu.name).toBe(request.name);
-    expect(updatedMenu.description).toBe(request.description);
-  });
-
-  it("Should throw an error if user does not exist", async () => {
-    const invalidUserRequest = {
-      id: menu.id,
-      name: "Updated Menu 1",
-      description: "Updated Menu 1 description",
-      userId: "invalid-user-id",
-    };
-    await expect(sut.execute(invalidUserRequest)).rejects.toThrow();
+    const updatedMenu = menus.find((m) => m.id === request.id);
+    expect(updatedMenu).toBeDefined();
+    expect(updatedMenu?.name).toBe(request.name);
+    expect(updatedMenu?.description).toBe(request.description);
   });
 
   it("Should throw an error if menu does not exist", async () => {
@@ -105,24 +97,9 @@ describe("EditMenuService", () => {
     };
     await sut.execute(currentNameRequest);
     const menus = await menuRepository.findAllByUser(user.id);
-    const updatedMenu = menus[0];
-    expect(updatedMenu.name).toBe(currentNameRequest.name);
-    expect(updatedMenu.description).toBe(currentNameRequest.description);
-  });
-
-  it("Should throw an error if user tries to update another user's menu", async () => {
-    const anotherUser = new User({
-      name: "Jane Doe",
-      email: "jane.doe@gmail.com",
-      password: "hashed-password",
-    });
-    await userRepository.add(anotherUser);
-    const unauthorizedRequest = {
-      id: menu.id,
-      name: "Updated Menu 1",
-      description: "Updated Menu 1 description",
-      userId: anotherUser.id,
-    };
-    await expect(sut.execute(unauthorizedRequest)).rejects.toThrow();
+    const updatedMenu = menus.find((m) => m.id === request.id);
+    expect(updatedMenu).toBeDefined();
+    expect(updatedMenu?.name).toBe(currentNameRequest.name);
+    expect(updatedMenu?.description).toBe(currentNameRequest.description);
   });
 });

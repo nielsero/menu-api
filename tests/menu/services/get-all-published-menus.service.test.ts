@@ -34,15 +34,21 @@ const menu2 = new Menu({
 });
 
 describe("GetAllPublishedMenusService", () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await userRepository.add(user1);
     await userRepository.add(user2);
+  });
+
+  afterAll(async () => {
+    await userRepository.clear();
+  });
+
+  beforeEach(async () => {
     await menuRepository.add(menu1);
     await menuRepository.add(menu2);
   });
 
   afterEach(async () => {
-    await userRepository.clear();
     await menuRepository.clear();
   });
 

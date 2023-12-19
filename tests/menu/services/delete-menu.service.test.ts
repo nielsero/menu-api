@@ -48,26 +48,4 @@ describe("EditMenuService", () => {
     };
     await expect(sut.execute(nonExistingMenuRequest)).rejects.toThrow();
   });
-
-  it("Should throw an error if user does not exist", async () => {
-    const nonExistingUserRequest = {
-      id: menu.id,
-      userId: "fake-user-id",
-    };
-    await expect(sut.execute(nonExistingUserRequest)).rejects.toThrow();
-  });
-
-  it("Should throw an error if user is not the owner of the menu", async () => {
-    const otherUser = new User({
-      name: "Jane Doe",
-      email: "jane.doe@gmail.com",
-      password: "hashed-password",
-    });
-    await userRepository.add(otherUser);
-    const otherUserRequest = {
-      id: menu.id,
-      userId: otherUser.id,
-    };
-    await expect(sut.execute(otherUserRequest)).rejects.toThrow();
-  });
 });

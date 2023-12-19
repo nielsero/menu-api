@@ -19,12 +19,15 @@ const request = {
 };
 
 describe("CreateMenuService", () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await userRepository.add(user);
   });
 
-  afterEach(async () => {
+  afterAll(async () => {
     await userRepository.clear();
+  });
+
+  afterEach(async () => {
     await menuRepository.clear();
   });
 

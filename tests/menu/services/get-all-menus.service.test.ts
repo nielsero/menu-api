@@ -36,15 +36,21 @@ const request = {
 };
 
 describe("GetAllMenusService", () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await userRepository.add(user);
+  });
+
+  afterAll(async () => {
+    await userRepository.clear();
+  });
+
+  beforeEach(async () => {
     await menuRepository.add(menu1);
     await menuRepository.add(menu2);
     await menuRepository.add(menu3);
   });
 
   afterEach(async () => {
-    await userRepository.clear();
     await menuRepository.clear();
   });
 
