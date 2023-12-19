@@ -1,11 +1,11 @@
 import { app } from "@/app";
 import { PORT } from "@/config";
 import { domainErrorHandler, errorHandler, notFoundHandler, requestLogger } from "@/middleware";
-import { logger } from "@/utils";
-import { buyHealthRouter } from "./store/health";
-import { buyAuthRouter } from "./store/auth";
-import { buyMenuRouter } from "./store/menu";
-import { buyMenuItemRouter } from "./store/menu-item";
+import { logger } from "@/utils/log";
+import { buyHealthRouter } from "@/store/health";
+import { buyAuthRouter } from "@/store/auth";
+import { buyMenuRouter } from "@/store/menu";
+import { buyMenuItemRouter } from "@/store/menu-item";
 
 main();
 
