@@ -1,16 +1,19 @@
 import { app } from "@/app";
 import { PORT } from "@/config";
-import { makeAuth, makeHealth, makeMenu, makeMenuItem } from "@/factories";
 import { domainErrorHandler, errorHandler, notFoundHandler, requestLogger } from "@/middleware";
 import { logger } from "@/utils";
+import { buyHealthRouter } from "./store/health";
+import { buyAuthRouter } from "./store/auth";
+import { buyMenuRouter } from "./store/menu";
+import { buyMenuItemRouter } from "./store/menu-item";
 
 main();
 
 async function main(): Promise<void> {
-  const { healthRouter } = makeHealth();
-  const { authRouter } = makeAuth();
-  const { menuRouter } = makeMenu();
-  const { menuItemRouter } = makeMenuItem();
+  const healthRouter = buyHealthRouter();
+  const authRouter = buyAuthRouter();
+  const menuRouter = buyMenuRouter();
+  const menuItemRouter = buyMenuItemRouter();
   app.use(requestLogger);
   healthRouter.setup(app);
   authRouter.setup(app);
