@@ -23,6 +23,11 @@ export class InMemoryMenuItemRepository implements MenuItemRepository {
     this.menuItems.splice(index, 1);
   }
 
+  async deleteAllFromMenu(menuId: string): Promise<void> {
+    const menuItems = this.menuItems.filter((menuItem) => menuItem.menuId === menuId);
+    menuItems.forEach((menuItem) => this.delete(menuItem.id));
+  }
+
   async clear(): Promise<void> {
     this.menuItems.length = 0;
   }

@@ -31,6 +31,10 @@ export class MongoMenuItemRepository implements MenuItemRepository {
     await MenuItemModel.findOneAndDelete({ id });
   }
 
+  async deleteAllFromMenu(menuId: string): Promise<void> {
+    await MenuItemModel.deleteMany({ menuId });
+  }
+
   async clear(): Promise<void> {
     await MenuItemModel.deleteMany({});
   }

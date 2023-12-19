@@ -8,6 +8,7 @@ import {
   UnpublishMenuService,
 } from "@/modules/menu/services";
 import { buyMenuRepository, buyMenuValidators } from "@/store/menu";
+import { buyMenuItemRepository } from "../menu-item";
 
 type Store = {
   createMenuService: CreateMenuService;
@@ -20,6 +21,7 @@ type Store = {
 };
 
 const menuRepository = buyMenuRepository();
+const menuItemRepository = buyMenuItemRepository();
 const {
   createMenuValidator,
   deleteMenuValidator,
@@ -34,6 +36,7 @@ const createMenuService = new CreateMenuService({
 });
 const deleteMenuService = new DeleteMenuService({
   menuRepository,
+  menuItemRepository,
   requestValidator: deleteMenuValidator,
 });
 const getAllMenusService = new GetAllMenusService({

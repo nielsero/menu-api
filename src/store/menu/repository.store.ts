@@ -6,7 +6,7 @@ import { MongoMenuRepository } from "@/modules/menu/providers/repositories/mongo
 type Store = MenuRepository;
 
 const inMemoryMenuRepository = new InMemoryMenuRepository();
-const mongoMenuItemRepository = new MongoMenuRepository();
-const menuRepository = NODE_ENV === "test" ? inMemoryMenuRepository : mongoMenuItemRepository;
+const mongoMenuRepository = new MongoMenuRepository();
+const menuRepository = NODE_ENV === "test" ? inMemoryMenuRepository : mongoMenuRepository;
 
 export const buyMenuRepository = (): Store => menuRepository;
