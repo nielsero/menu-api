@@ -22,11 +22,11 @@ export class MongoMenuRepository implements MenuRepository {
   }
 
   async update(menu: Menu): Promise<void> {
-    await MenuModel.findByIdAndUpdate(menu.id, menu);
+    await MenuModel.findOneAndUpdate({ id: menu.id }, menu);
   }
 
   async delete(id: string): Promise<void> {
-    await MenuModel.findByIdAndDelete(id);
+    await MenuModel.findOneAndDelete({ id });
   }
 
   async findAllPublished(): Promise<Menu[]> {

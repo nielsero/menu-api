@@ -24,11 +24,11 @@ export class MongoMenuItemRepository implements MenuItemRepository {
   }
 
   async update(menuItem: MenuItem): Promise<void> {
-    await MenuItemModel.findByIdAndUpdate(menuItem.id, menuItem);
+    await MenuItemModel.findOneAndUpdate({ id: menuItem.id }, menuItem);
   }
 
   async delete(id: string): Promise<void> {
-    await MenuItemModel.findByIdAndDelete(id);
+    await MenuItemModel.findOneAndDelete({ id });
   }
 
   async clear(): Promise<void> {
