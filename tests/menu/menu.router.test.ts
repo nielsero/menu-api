@@ -43,12 +43,14 @@ describe("MenuRouter", () => {
     app.use(errorHandler);
     api = supertest(app);
     await userRepository.add(user);
-    await menuRepository.add(menu);
+  });
+
+  afterEach(async () => {
+    await menuRepository.clear();
   });
 
   afterAll(async () => {
     await userRepository.clear();
-    await menuRepository.clear();
   });
 
   describe("POST /api/menus", () => {
@@ -109,6 +111,12 @@ describe("MenuRouter", () => {
     });
 
     it("Should return a 409 status code if request name was already taken by user", async () => {
+      const newMenu = new Menu({
+        name: createMenuRequest.name,
+        description: createMenuRequest.description,
+        userId: user.id,
+      });
+      await menuRepository.add(newMenu);
       const token = await tokenProvider.generate(user.email);
       const { status } = await api
         .post("/api/menus")
@@ -119,6 +127,10 @@ describe("MenuRouter", () => {
   });
 
   describe("PATCH /api/menus/:id", () => {
+    beforeEach(async () => {
+      await menuRepository.add(menu);
+    });
+
     it("Should return a 200 status code with updated menu if user is authorized", async () => {
       const token = await tokenProvider.generate(user.email);
       const { status, body } = await api
@@ -159,19 +171,6 @@ describe("MenuRouter", () => {
       expect(status).toBe(404);
     });
 
-    it("Should return a 409 status code if request name was already taken by user", async () => {
-      const token = await tokenProvider.generate(user.email);
-      const nameAlreadyTakenRequest = {
-        id: menu.id,
-        name: createMenuRequest.name,
-      };
-      const { status } = await api
-        .patch(`/api/menus/${menu.id}`)
-        .set("Authorization", `Bearer ${token}`)
-        .send(nameAlreadyTakenRequest);
-      expect(status).toBe(409);
-    });
-
     it("Should return a 400 status code if request name is invalid", async () => {
       const token = await tokenProvider.generate(user.email);
       const nameTooShortRequest = {
@@ -184,9 +183,38 @@ describe("MenuRouter", () => {
         .send(nameTooShortRequest);
       expect(status).toBe(400);
     });
+
+    it("Should return a 409 status code if request name was already taken by user", async () => {
+      const newMenu = new Menu({
+        name: createMenuRequest.name,
+        description: createMenuRequest.description,
+        userId: user.id,
+      });
+      await menuRepository.add(newMenu);
+      const token = await tokenProvider.generate(user.email);
+      const nameAlreadyTakenRequest = {
+        id: menu.id,
+        name: createMenuRequest.name,
+      };
+      const { status } = await api
+        .patch(`/api/menus/${menu.id}`)
+        .set("Authorization", `Bearer ${token}`)
+        .send(nameAlreadyTakenRequest);
+      expect(status).toBe(409);
+    });
   });
 
   describe("DELETE /api/menus/:id", () => {
+    beforeEach(async () => {
+      await menuRepository.add(menu);
+    });
+
+    it("Should return a 204 status code if user is authorized to delete", async () => {
+      const token = await tokenProvider.generate(user.email);
+      const { status } = await api.delete(`/api/menus/${menu.id}`).set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(204);
+    });
+
     it("Should return a 401 status code if authorization token is not given", async () => {
       const { status } = await api.delete(`/api/menus/${menu.id}`);
       expect(status).toBe(401);
@@ -200,7 +228,7 @@ describe("MenuRouter", () => {
       expect(status).toBe(404);
     });
 
-    it("Should return a 404 status code if menu doesn't belong to user", async () => {
+    it("Should return a 404 status code if if user doesn't own that menu", async () => {
       const anotherUser = new User({
         name: "Jane Doe",
         email: "jane.doe@gmail.com",
@@ -211,11 +239,54 @@ describe("MenuRouter", () => {
       const { status } = await api.delete(`/api/menus/${menu.id}`).set("Authorization", `Bearer ${token}`);
       expect(status).toBe(404);
     });
+  });
 
-    it("Should return a 204 status code if user is authorized to delete", async () => {
+  describe("GET /api/menus", () => {
+    beforeEach(async () => {
+      const menu2 = new Menu({
+        name: "Menu 2",
+        description: "Menu 2 description",
+        userId: user.id,
+      });
+      const menu3 = new Menu({
+        name: "Menu 3",
+        description: "Menu 3 description",
+        userId: user.id,
+      });
+      await menuRepository.add(menu);
+      await menuRepository.add(menu2);
+      await menuRepository.add(menu3);
+    });
+
+    it("Should return a 200 status code with all user menus", async () => {
       const token = await tokenProvider.generate(user.email);
-      const { status } = await api.delete(`/api/menus/${menu.id}`).set("Authorization", `Bearer ${token}`);
-      expect(status).toBe(204);
+      const { status, body } = await api.get("/api/menus").set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(200);
+      expect(body.length).toBe(3);
+    });
+
+    it("Should return a 200 with empty list if user doesn't have menus", async () => {
+      const anotherUser = new User({
+        name: "Jane Doe",
+        email: "jane.doe@gmail.com",
+        password: "hashed-password",
+      });
+      await userRepository.add(anotherUser);
+      const token = await tokenProvider.generate(anotherUser.email);
+      const { status, body } = await api.get("/api/menus").set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(200);
+      expect(body.length).toBe(0);
+    });
+
+    it("Should return a 401 status code if authorization token is not given", async () => {
+      const { status } = await api.get("/api/menus");
+      expect(status).toBe(401);
+    });
+
+    it("Should return a 401 status code if user is not authorized", async () => {
+      const token = await tokenProvider.generate("wrong-email@gmail.com");
+      const { status } = await api.get("/api/menus").set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(401);
     });
   });
 });
