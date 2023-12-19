@@ -3,9 +3,10 @@ import { buyAuthProviders, buyAuthValidator } from "@/store/auth";
 import { buyUserServices } from "@/store/user";
 
 type Store = {
-  loginUserService: LoginUserService;
   registerUserService: RegisterUserService;
+  loginUserService: LoginUserService;
 };
+
 const { tokenProvider, hashProvider } = buyAuthProviders();
 const { registerUserValidator, loginUserValidator } = buyAuthValidator();
 const { createUserService, findUserByEmailService } = buyUserServices();
@@ -21,6 +22,7 @@ const loginUserService = new LoginUserService({
   findUserByEmailService,
   requestValidator: loginUserValidator,
 });
+
 export const buyAuthServices = (): Store => {
   return { loginUserService, registerUserService };
 };

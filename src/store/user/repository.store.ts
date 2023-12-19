@@ -5,6 +5,4 @@ type Store = UserRepository;
 
 const userRepository = new InMemoryUserRepository();
 
-export const buyUserRepository = (): Store => {
-  return userRepository;
-};
+export const buyUserRepository = (): Store => userRepository;
