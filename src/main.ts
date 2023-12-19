@@ -1,5 +1,6 @@
 import { app } from "@/app";
 import { PORT } from "@/config";
+import { mongoConnect } from "@/config/mongo";
 import { domainErrorHandler, errorHandler, notFoundHandler, requestLogger } from "@/middleware";
 import { logger } from "@/utils/log";
 import { buyHealthRouter } from "@/store/health";
@@ -10,6 +11,11 @@ import { buyMenuItemRouter } from "@/store/menu-item";
 main();
 
 async function main(): Promise<void> {
+  const isMongoConnected = await mongoConnect();
+  if (!isMongoConnected) {
+    logger.error("[main] Mongo connection failed");
+    process.exit(1);
+  }
   const healthRouter = buyHealthRouter();
   const authRouter = buyAuthRouter();
   const menuRouter = buyMenuRouter();
