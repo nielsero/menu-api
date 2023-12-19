@@ -43,8 +43,8 @@ export class MenuItemRouter {
     router.post("/api/menus/:menuId/items", requireAuth, this.add.handle.bind(this.add));
     router.patch("/api/menus/:menuId/items/:id", requireAuth, this.edit.handle.bind(this.edit));
     router.delete("/api/menus/:menuId/items/:id", requireAuth, this.delete.handle.bind(this.delete));
-    router.get("/api/menus/:menuId/items/published", this.getAllPublished.handle.bind(this.getAllPublished));
-    router.get("/api/menus/:menuId/items/published/:id", this.getPublished.handle.bind(this.getPublished));
+    router.get("/api/menus/published/:menuId/items", this.getAllPublished.handle.bind(this.getAllPublished));
+    router.get("/api/menus/published/:menuId/items/:id", this.getPublished.handle.bind(this.getPublished));
     router.get("/api/menus/:menuId/items", requireAuth, this.getAll.handle.bind(this.getAll));
     router.get("/api/menus/:menuId/items/:id", requireAuth, this.get.handle.bind(this.get));
   }

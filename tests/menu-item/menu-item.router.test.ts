@@ -589,37 +589,37 @@ describe("MenuItemRouter", () => {
     });
   });
 
-  describe("GET /api/menus/:menuId/items/published", () => {
+  describe("GET /api/menus/published/:menuId/items", () => {
     beforeEach(async () => {
       await menuItemRepository.add(publishedMenuItem1);
       await menuItemRepository.add(publishedMenuItem2);
     });
 
     it("Should return a 200 status code with all published menu items", async () => {
-      const { status, body } = await api.get(`/api/menus/${publishedMenu.id}/items/published`);
+      const { status, body } = await api.get(`/api/menus/published/${publishedMenu.id}/items`);
       expect(status).toBe(200);
       expect(body.length).toBe(2);
     });
 
     it("Should return a 200 status code with empty list if menu doesn't have any published items", async () => {
       menuItemRepository.clear();
-      const { status, body } = await api.get(`/api/menus/${publishedMenu.id}/items/published`);
+      const { status, body } = await api.get(`/api/menus/published/${publishedMenu.id}/items`);
       expect(status).toBe(200);
       expect(body.length).toBe(0);
     });
 
     it("Should return a 404 status code if menu doesn't exist", async () => {
-      const { status } = await api.get(`/api/menus/invalid-menu-id/items/published`);
+      const { status } = await api.get(`/api/menus/published/invalid-menu-id/items`);
       expect(status).toBe(404);
     });
 
     it("Should return a 404 status code if menu is not published", async () => {
-      const { status } = await api.get(`/api/menus/${menu.id}/items/published`);
+      const { status } = await api.get(`/api/menus/published/${menu.id}/items`);
       expect(status).toBe(404);
     });
   });
 
-  describe("GET /api/menus/:menuId/items/published/:id", () => {
+  describe("GET /api/menus/published/:menuId/items/:id", () => {
     beforeEach(async () => {
       await menuItemRepository.add(menuItem1);
       await menuItemRepository.add(publishedMenuItem1);
@@ -627,30 +627,30 @@ describe("MenuItemRouter", () => {
 
     it("Should return a 200 status code with published menu item", async () => {
       const { status, body } = await api.get(
-        `/api/menus/${publishedMenu.id}/items/published/${publishedMenuItem1.id}`,
+        `/api/menus/published/${publishedMenu.id}/items/${publishedMenuItem1.id}`,
       );
       expect(status).toBe(200);
       expect(body).toEqual(publishedMenuItem1);
     });
 
     it("Should return a 404 status code if menu doesn't exist", async () => {
-      const { status } = await api.get(`/api/menus/invalid-menu-id/items/published/${publishedMenuItem1.id}`);
+      const { status } = await api.get(`/api/menus/published/invalid-menu-id/items/${publishedMenuItem1.id}`);
       expect(status).toBe(404);
     });
 
     it("Should return a 404 status code if menu is not published", async () => {
-      const { status } = await api.get(`/api/menus/${menu.id}/items/published/${menuItem1.id}`);
+      const { status } = await api.get(`/api/menus/published/${menu.id}/items/${menuItem1.id}`);
       expect(status).toBe(404);
     });
 
     it("Should return a 404 status code if menu item doesn't exist", async () => {
-      const { status } = await api.get(`/api/menus/${publishedMenu.id}/items/published/invalid-item-id`);
+      const { status } = await api.get(`/api/menus/published/${publishedMenu.id}/items/invalid-item-id`);
       expect(status).toBe(404);
     });
 
     it("Should return a 404 status code if item doesn't belong to menu", async () => {
       await menuItemRepository.add(menuItem1);
-      const { status } = await api.get(`/api/menus/${publishedMenu.id}/items/published/${menuItem1.id}`);
+      const { status } = await api.get(`/api/menus/published/${publishedMenu.id}/items/${menuItem1.id}`);
       expect(status).toBe(404);
     });
   });
