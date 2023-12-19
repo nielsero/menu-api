@@ -1,23 +1,14 @@
-import { makeMenuItem } from "@/factories";
 import { Menu } from "@/modules/menu";
-import { MenuRepository } from "@/modules/menu/protocols";
-import { EditMenuItemService } from "@/modules/menu-item/services";
 import { User } from "@/modules/user";
-import { UserRepository } from "@/modules/user/protocols";
-import { MenuItemRepository } from "@/modules/menu-item/protocols";
 import { MenuItem } from "@/modules/menu-item";
+import { buyMenuItemRepository, buyMenuItemServices } from "@/store/menu-item";
+import { buyMenuRepository } from "@/store/menu";
+import { buyUserRepository } from "@/store/user";
 
-type SutTypes = {
-  sut: EditMenuItemService;
-  menuRepository: MenuRepository;
-  userRepository: UserRepository;
-  menuItemRepository: MenuItemRepository;
-};
-
-const makeSut = (): SutTypes => {
-  const { editMenuItemService: sut, menuRepository, userRepository, menuItemRepository } = makeMenuItem();
-  return { sut, menuRepository, userRepository, menuItemRepository };
-};
+const { editMenuItemService: sut } = buyMenuItemServices();
+const userRepository = buyUserRepository();
+const menuRepository = buyMenuRepository();
+const menuItemRepository = buyMenuItemRepository();
 
 const user = new User({
   name: "John Doe",
@@ -51,14 +42,12 @@ const request = {
 
 describe("EditMenuItemService", () => {
   beforeEach(async () => {
-    const { userRepository, menuRepository, menuItemRepository } = makeSut();
     await userRepository.add(user);
     await menuRepository.add(menu);
     await menuItemRepository.add(menuItem);
   });
 
   afterEach(async () => {
-    const { userRepository, menuRepository, menuItemRepository } = makeSut();
     await userRepository.clear();
     await menuRepository.clear();
     await menuItemRepository.clear();
@@ -72,7 +61,6 @@ describe("EditMenuItemService", () => {
   });
 
   it("Should update menu item and save it to the database", async () => {
-    const { sut, menuItemRepository } = makeSut();
     await sut.execute(request);
     const menuItems = await menuItemRepository.findAllInMenu(menu.id);
     const updatedMenuItem = menuItems.find((item) => item.id === request.id);
@@ -89,7 +77,6 @@ describe("EditMenuItemService", () => {
   });
 
   it("Should throw an error if menu does not exist", async () => {
-    const { sut } = makeSut();
     const invalidMenuRequest = {
       id: menuItem.id,
       name: "Updated Menu Item",
@@ -103,7 +90,6 @@ describe("EditMenuItemService", () => {
   });
 
   it("Should throw an error if menu item does not exist", async () => {
-    const { sut } = makeSut();
     const invalidMenuItemRequest = {
       id: "invalid-menu-item-id",
       name: "Updated Menu Item",
@@ -117,7 +103,6 @@ describe("EditMenuItemService", () => {
   });
 
   it("Should throw an error if menu item does not belong to the menu", async () => {
-    const { sut, menuRepository } = makeSut();
     const menu2 = new Menu({
       name: "Menu 2",
       description: "Menu 2 description",
@@ -137,7 +122,6 @@ describe("EditMenuItemService", () => {
   });
 
   it("Should throw an error if request is invalid", async () => {
-    const { sut } = makeSut();
     const nameTooShortRequest = {
       id: menuItem.id,
       name: "Me",
@@ -171,7 +155,6 @@ describe("EditMenuItemService", () => {
   });
 
   it("Should throw an error if user does not exist", async () => {
-    const { sut } = makeSut();
     const invalidUserRequest = {
       id: menuItem.id,
       name: "Updated Menu Item",
@@ -185,7 +168,6 @@ describe("EditMenuItemService", () => {
   });
 
   it("Should throw an error if name is already in use", async () => {
-    const { sut, menuItemRepository } = makeSut();
     const anotherMenuItem = new MenuItem({
       name: "Menu Item 2",
       description: "Menu Item 2 description",
@@ -207,7 +189,6 @@ describe("EditMenuItemService", () => {
   });
 
   it("Should update menu item if current name is sent", async () => {
-    const { sut, menuItemRepository } = makeSut();
     const currentNameRequest = {
       id: menuItem.id,
       name: menuItem.name,
@@ -233,7 +214,6 @@ describe("EditMenuItemService", () => {
   });
 
   it("Should throw an error if user is not the owner of the menu item", async () => {
-    const { sut, userRepository } = makeSut();
     const anotherUser = new User({
       name: "Jane Doe",
       email: "jane.doe@gmail.com",

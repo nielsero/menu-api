@@ -5,6 +5,8 @@ import { buyUserRepository } from "@/store/user";
 import supertest from "supertest";
 
 let api: supertest.SuperTest<supertest.Test>;
+const sut = buyAuthRouter();
+const userRepository = buyUserRepository();
 
 const registerRequest = {
   name: "John Doe",
@@ -23,7 +25,6 @@ const response = {
 
 describe("AuthRouter", () => {
   beforeAll(() => {
-    const sut = buyAuthRouter();
     sut.setup(app);
     app.use(domainErrorHandler);
     app.use(errorHandler);
@@ -31,7 +32,6 @@ describe("AuthRouter", () => {
   });
 
   afterAll(async () => {
-    const userRepository = buyUserRepository();
     await userRepository.clear();
   });
 

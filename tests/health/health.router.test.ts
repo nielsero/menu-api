@@ -3,10 +3,10 @@ import { buyHealthRouter } from "@/store/health";
 import supertest from "supertest";
 
 let api: supertest.SuperTest<supertest.Test>;
+const sut = buyHealthRouter();
 
 describe("HealthRouter", () => {
   beforeAll(() => {
-    const sut = buyHealthRouter();
     sut.setup(app);
     api = supertest(app);
   });
