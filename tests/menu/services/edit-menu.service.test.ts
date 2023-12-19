@@ -1,20 +1,11 @@
-import { makeMenu } from "@/factories";
 import { Menu } from "@/modules/menu";
-import { MenuRepository } from "@/modules/menu/protocols";
-import { EditMenuService } from "@/modules/menu/services";
 import { User } from "@/modules/user";
-import { UserRepository } from "@/modules/user/protocols";
+import { buyMenuRepository, buyMenuServices } from "@/store/menu";
+import { buyUserRepository } from "@/store/user";
 
-type SutTypes = {
-  sut: EditMenuService;
-  menuRepository: MenuRepository;
-  userRepository: UserRepository;
-};
-
-const makeSut = (): SutTypes => {
-  const { editMenuService: sut, menuRepository, userRepository } = makeMenu();
-  return { sut, menuRepository, userRepository };
-};
+const { editMenuService: sut } = buyMenuServices();
+const userRepository = buyUserRepository();
+const menuRepository = buyMenuRepository();
 
 const user = new User({
   name: "John Doe",
@@ -37,13 +28,11 @@ const request = {
 
 describe("EditMenuService", () => {
   beforeEach(async () => {
-    const { userRepository, menuRepository } = makeSut();
     await userRepository.add(user);
     await menuRepository.add(menu);
   });
 
   afterEach(async () => {
-    const { userRepository, menuRepository } = makeSut();
     await userRepository.clear();
     await menuRepository.clear();
     menu = new Menu({
@@ -54,7 +43,6 @@ describe("EditMenuService", () => {
   });
 
   it("Should update menu and save it to the database", async () => {
-    const { sut, menuRepository } = makeSut();
     await sut.execute(request);
     const menus = await menuRepository.findAllByUser(user.id);
     const updatedMenu = menus[0];
@@ -63,7 +51,6 @@ describe("EditMenuService", () => {
   });
 
   it("Should throw an error if user does not exist", async () => {
-    const { sut } = makeSut();
     const invalidUserRequest = {
       id: menu.id,
       name: "Updated Menu 1",
@@ -74,7 +61,6 @@ describe("EditMenuService", () => {
   });
 
   it("Should throw an error if menu does not exist", async () => {
-    const { sut } = makeSut();
     const invalidMenuRequest = {
       id: "invalid-menu-id",
       name: "Updated Menu 1",
@@ -85,7 +71,6 @@ describe("EditMenuService", () => {
   });
 
   it("Should throw an error if request name is invalid", async () => {
-    const { sut } = makeSut();
     const nameTooShortRequest = {
       id: menu.id,
       name: "Me",
@@ -96,7 +81,6 @@ describe("EditMenuService", () => {
   });
 
   it("Should throw an error if user already has menu with same name", async () => {
-    const { sut, menuRepository } = makeSut();
     const anotherMenu = new Menu({
       name: "Menu 2",
       description: "Menu 2 description",
@@ -113,7 +97,6 @@ describe("EditMenuService", () => {
   });
 
   it("Should update menu if current name is sent", async () => {
-    const { sut, menuRepository } = makeSut();
     const currentNameRequest = {
       id: menu.id,
       name: menu.name,
@@ -128,7 +111,6 @@ describe("EditMenuService", () => {
   });
 
   it("Should throw an error if user tries to update another user's menu", async () => {
-    const { sut, userRepository } = makeSut();
     const anotherUser = new User({
       name: "Jane Doe",
       email: "jane.doe@gmail.com",

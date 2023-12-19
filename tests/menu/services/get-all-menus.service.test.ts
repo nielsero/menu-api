@@ -1,20 +1,11 @@
-import { makeMenu } from "@/factories";
 import { Menu } from "@/modules/menu";
-import { MenuRepository } from "@/modules/menu/protocols";
-import { GetAllMenusService } from "@/modules/menu/services";
 import { User } from "@/modules/user";
-import { UserRepository } from "@/modules/user/protocols";
+import { buyMenuRepository, buyMenuServices } from "@/store/menu";
+import { buyUserRepository } from "@/store/user";
 
-type SutTypes = {
-  sut: GetAllMenusService;
-  menuRepository: MenuRepository;
-  userRepository: UserRepository;
-};
-
-const makeSut = (): SutTypes => {
-  const { getAllMenusService: sut, menuRepository, userRepository } = makeMenu();
-  return { sut, menuRepository, userRepository };
-};
+const { getAllMenusService: sut } = buyMenuServices();
+const userRepository = buyUserRepository();
+const menuRepository = buyMenuRepository();
 
 const user = new User({
   name: "John Doe",
@@ -46,7 +37,6 @@ const request = {
 
 describe("GetAllMenusService", () => {
   beforeEach(async () => {
-    const { userRepository, menuRepository } = makeSut();
     await userRepository.add(user);
     await menuRepository.add(menu1);
     await menuRepository.add(menu2);
@@ -54,19 +44,16 @@ describe("GetAllMenusService", () => {
   });
 
   afterEach(async () => {
-    const { userRepository, menuRepository } = makeSut();
     await userRepository.clear();
     await menuRepository.clear();
   });
 
   it("Should return all menus", async () => {
-    const { sut } = makeSut();
     const menus = await sut.execute(request);
     expect(menus.length).toBe(3);
   });
 
   it("Should return empty array if no menus are found", async () => {
-    const { sut, menuRepository } = makeSut();
     await menuRepository.clear();
     const menus = await sut.execute(request);
     expect(menus.length).toBe(0);

@@ -1,20 +1,11 @@
-import { makeMenu } from "@/factories";
 import { Menu } from "@/modules/menu";
-import { MenuRepository } from "@/modules/menu/protocols";
-import { PublishMenuService } from "@/modules/menu/services";
 import { User } from "@/modules/user";
-import { UserRepository } from "@/modules/user/protocols";
+import { buyMenuRepository, buyMenuServices } from "@/store/menu";
+import { buyUserRepository } from "@/store/user";
 
-type SutTypes = {
-  sut: PublishMenuService;
-  menuRepository: MenuRepository;
-  userRepository: UserRepository;
-};
-
-const makeSut = (): SutTypes => {
-  const { publishMenuService: sut, menuRepository, userRepository } = makeMenu();
-  return { sut, menuRepository, userRepository };
-};
+const { publishMenuService: sut } = buyMenuServices();
+const userRepository = buyUserRepository();
+const menuRepository = buyMenuRepository();
 
 const user = new User({
   name: "John Doe",
@@ -35,13 +26,11 @@ const request = {
 
 describe("PublishMenuService", () => {
   beforeEach(async () => {
-    const { userRepository, menuRepository } = makeSut();
     await userRepository.add(user);
     await menuRepository.add(menu);
   });
 
   afterEach(async () => {
-    const { userRepository, menuRepository } = makeSut();
     await userRepository.clear();
     await menuRepository.clear();
     menu = new Menu({
@@ -52,7 +41,6 @@ describe("PublishMenuService", () => {
   });
 
   it("Should publish a menu", async () => {
-    const { sut, menuRepository } = makeSut();
     await sut.execute(request);
     const menus = await menuRepository.findAllByUser(user.id);
     const publishedMenu = menus[0];
@@ -60,7 +48,6 @@ describe("PublishMenuService", () => {
   });
 
   it("Should throw if menu does not exist", async () => {
-    const { sut } = makeSut();
     const request = {
       id: "wrong-menu-id",
       userId: user.id,
@@ -69,7 +56,6 @@ describe("PublishMenuService", () => {
   });
 
   it("Should throw if user does not exist", async () => {
-    const { sut } = makeSut();
     const request = {
       id: menu.id,
       userId: "wrong-user-id",
@@ -78,7 +64,6 @@ describe("PublishMenuService", () => {
   });
 
   it("Should throw if user is not the owner of the menu", async () => {
-    const { sut, userRepository } = makeSut();
     const anotherUser = new User({
       name: "Jane Doe",
       email: "jane.doe@gmail.com",
