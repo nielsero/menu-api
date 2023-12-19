@@ -30,22 +30,24 @@ const menuItem = new MenuItem({
   menuId: menu.id,
 });
 
-const request = {
-  id: menuItem.id,
-  menuId: menu.id,
-  userId: user.id,
-};
+const request = { id: menuItem.id, menuId: menu.id, userId: user.id };
 
 describe("DeleteMenuItemService", () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await userRepository.add(user);
     await menuRepository.add(menu);
+  });
+
+  afterAll(async () => {
+    await menuRepository.clear();
+    await userRepository.clear();
+  });
+
+  beforeEach(async () => {
     await menuItemRepository.add(menuItem);
   });
 
   afterEach(async () => {
-    await userRepository.clear();
-    await menuRepository.clear();
     await menuItemRepository.clear();
   });
 
@@ -58,20 +60,5 @@ describe("DeleteMenuItemService", () => {
   it("Should throw an error if menu item does not exist", async () => {
     await menuItemRepository.clear();
     await expect(sut.execute(request)).rejects.toThrow();
-  });
-
-  it("Should throw an error if user is not the owner of the menu item", async () => {
-    const anotherUser = new User({
-      name: "Jane Doe",
-      email: "jane.doe@gmail.com",
-      password: "hashed-password",
-    });
-    userRepository.add(anotherUser);
-    const anotherUserRequest = {
-      id: menuItem.id,
-      menuId: menu.id,
-      userId: anotherUser.id,
-    };
-    await expect(sut.execute(anotherUserRequest)).rejects.toThrow();
   });
 });

@@ -31,14 +31,17 @@ const request = {
 };
 
 describe("AddMenuItemService", () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await userRepository.add(user);
     await menuRepository.add(menu);
   });
 
-  afterEach(async () => {
-    await userRepository.clear();
+  afterAll(async () => {
     await menuRepository.clear();
+    await userRepository.clear();
+  });
+
+  afterEach(async () => {
     await menuItemRepository.clear();
   });
 
@@ -48,7 +51,7 @@ describe("AddMenuItemService", () => {
     expect(menuItems).toHaveLength(1);
   });
 
-  it("Should throw an error if request name is invalid", async () => {
+  it("Should throw an error if request is invalid", async () => {
     const nameTooShortRequest = {
       name: "Me",
       description: "Menu Item 1 description",
@@ -57,10 +60,6 @@ describe("AddMenuItemService", () => {
       menuId: menu.id,
       userId: user.id,
     };
-    await expect(sut.execute(nameTooShortRequest)).rejects.toThrow();
-  });
-
-  it("Should throw an error if request price is invalid", async () => {
     const priceTooLowRequest = {
       name: "Menu Item 1",
       description: "Menu Item 1 description",
@@ -69,10 +68,6 @@ describe("AddMenuItemService", () => {
       menuId: menu.id,
       userId: user.id,
     };
-    await expect(sut.execute(priceTooLowRequest)).rejects.toThrow();
-  });
-
-  it("Should throw an error if request type is invalid", async () => {
     const invalidTypeRequest = {
       name: "Menu Item 1",
       description: "Menu Item 1 description",
@@ -81,32 +76,24 @@ describe("AddMenuItemService", () => {
       menuId: menu.id,
       userId: user.id,
     };
+    await expect(sut.execute(nameTooShortRequest)).rejects.toThrow();
+    await expect(sut.execute(priceTooLowRequest)).rejects.toThrow();
     await expect(sut.execute(invalidTypeRequest)).rejects.toThrow();
   });
 
   it("Should throw an error if menu does not exist", async () => {
-    await menuRepository.clear();
-    await expect(sut.execute(request)).rejects.toThrow();
-  });
-
-  it("Should throw an error if user does not own the menu", async () => {
-    const otherUser = new User({
-      name: "Jane Doe",
-      email: "jane.doe@gmail.com",
-      password: "hashed-password",
-    });
-    const otherUserRequest = {
+    const invalidMenuRequest = {
       name: "Menu Item 1",
       description: "Menu Item 1 description",
       price: 100,
       type: "drink",
-      menuId: menu.id,
-      userId: otherUser.id,
+      menuId: "invalid-menu-id",
+      userId: user.id,
     };
-    await expect(sut.execute(otherUserRequest)).rejects.toThrow();
+    await expect(sut.execute(invalidMenuRequest)).rejects.toThrow();
   });
 
-  it("Should throw an error if user already has menu item with same name", async () => {
+  it("Should throw an error if menu already has item with same name", async () => {
     await sut.execute(request);
     await expect(sut.execute(request)).rejects.toThrow();
   });

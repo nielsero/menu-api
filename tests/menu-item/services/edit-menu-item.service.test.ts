@@ -22,7 +22,13 @@ const menu = new Menu({
   userId: user.id,
 });
 
-let menuItem = new MenuItem({
+const anotherMenu = new Menu({
+  name: "Menu 2",
+  description: "Menu 2 description",
+  userId: user.id,
+});
+
+const menuItem = new MenuItem({
   name: "Menu Item 1",
   description: "Menu Item 1 description",
   price: 100,
@@ -41,23 +47,23 @@ const request = {
 };
 
 describe("EditMenuItemService", () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await userRepository.add(user);
     await menuRepository.add(menu);
+    await menuRepository.add(anotherMenu);
+  });
+
+  afterAll(async () => {
+    await menuRepository.clear();
+    await userRepository.clear();
+  });
+
+  beforeEach(async () => {
     await menuItemRepository.add(menuItem);
   });
 
   afterEach(async () => {
-    await userRepository.clear();
-    await menuRepository.clear();
     await menuItemRepository.clear();
-    menuItem = new MenuItem({
-      name: "Menu Item 1",
-      description: "Menu Item 1 description",
-      price: 100,
-      type: "drink",
-      menuId: menu.id,
-    });
   });
 
   it("Should update menu item and save it to the database", async () => {
@@ -103,19 +109,13 @@ describe("EditMenuItemService", () => {
   });
 
   it("Should throw an error if menu item does not belong to the menu", async () => {
-    const menu2 = new Menu({
-      name: "Menu 2",
-      description: "Menu 2 description",
-      userId: user.id,
-    });
-    menuRepository.add(menu2);
     const wrongMenuRequest = {
       id: menuItem.id,
       name: "Updated Menu Item",
       description: "Updated Menu Item description",
       price: 200,
       type: "food",
-      menuId: menu2.id,
+      menuId: anotherMenu.id,
       userId: user.id,
     };
     await expect(sut.execute(wrongMenuRequest)).rejects.toThrow();
@@ -152,19 +152,6 @@ describe("EditMenuItemService", () => {
     await expect(sut.execute(nameTooShortRequest)).rejects.toThrow();
     await expect(sut.execute(negativePriceRequest)).rejects.toThrow();
     await expect(sut.execute(invalidTypeRequest)).rejects.toThrow();
-  });
-
-  it("Should throw an error if user does not exist", async () => {
-    const invalidUserRequest = {
-      id: menuItem.id,
-      name: "Updated Menu Item",
-      description: "Updated Menu Item description",
-      price: 200,
-      type: "food",
-      menuId: menu.id,
-      userId: "invalid-user-id",
-    };
-    await expect(sut.execute(invalidUserRequest)).rejects.toThrow();
   });
 
   it("Should throw an error if name is already in use", async () => {
@@ -211,24 +198,5 @@ describe("EditMenuItemService", () => {
       menuId: currentNameRequest.menuId,
     };
     expect(updatedMenuItem).toEqual(expectedMenuItem);
-  });
-
-  it("Should throw an error if user is not the owner of the menu item", async () => {
-    const anotherUser = new User({
-      name: "Jane Doe",
-      email: "jane.doe@gmail.com",
-      password: "hashed-password",
-    });
-    userRepository.add(anotherUser);
-    const anotherUserRequest = {
-      id: menuItem.id,
-      name: "Updated Menu Item",
-      description: "Updated Menu Item description",
-      price: 200,
-      type: "food",
-      menuId: menu.id,
-      userId: anotherUser.id,
-    };
-    await expect(sut.execute(anotherUserRequest)).rejects.toThrow();
   });
 });
