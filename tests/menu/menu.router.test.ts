@@ -38,6 +38,13 @@ const publishedMenu = new Menu({
   userId: user.id,
 });
 
+const publishedMenu2 = new Menu({
+  name: "Published Menu 2",
+  description: "Published Menu 2 description",
+  published: true,
+  userId: anotherUser.id,
+});
+
 const createMenuRequest = {
   name: "New Menu",
   description: "New Menu description",
@@ -90,7 +97,7 @@ describe("MenuRouter", () => {
       expect(status).toBe(401);
     });
 
-    it("Should return a 401 status code if user is not authorized", async () => {
+    it("Should return a 401 status code if user does not exist", async () => {
       const token = await tokenProvider.generate("wrong-email@gmail.com");
       const { status } = await api
         .post("/api/menus")
@@ -190,6 +197,7 @@ describe("MenuRouter", () => {
       const nameTooShortRequest = {
         id: menu.id,
         name: "Me",
+        description: "Update Menu description",
       };
       const { status } = await api
         .patch(`/api/menus/${menu.id}`)
@@ -234,6 +242,12 @@ describe("MenuRouter", () => {
       expect(status).toBe(401);
     });
 
+    it("Should return a 401 status code if user does not exist", async () => {
+      const token = await tokenProvider.generate("wrong-email@gmail.com");
+      const { status } = await api.delete(`/api/menus/${menu.id}`).set("Authorization", `Bearer ${token}`);
+      expect(status).toBe(401);
+    });
+
     it("Should return a 404 status code if menu was not found", async () => {
       const token = await tokenProvider.generate(user.email);
       const { status } = await api
@@ -273,7 +287,7 @@ describe("MenuRouter", () => {
       expect(body.length).toBe(3);
     });
 
-    it("Should return a 200 with empty list if user is authorized but doesn't have any menus", async () => {
+    it("Should return a 200 status code with empty list if user doesn't have any menus", async () => {
       const token = await tokenProvider.generate(anotherUser.email);
       const { status, body } = await api.get("/api/menus").set("Authorization", `Bearer ${token}`);
       expect(status).toBe(200);
@@ -396,12 +410,6 @@ describe("MenuRouter", () => {
 
   describe("GET /api/menus/published", () => {
     beforeEach(async () => {
-      const publishedMenu2 = new Menu({
-        name: "Published Menu 2",
-        description: "Published Menu 2 description",
-        published: true,
-        userId: anotherUser.id,
-      });
       await menuRepository.add(menu);
       await menuRepository.add(publishedMenu);
       await menuRepository.add(publishedMenu2);

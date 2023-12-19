@@ -1,6 +1,8 @@
 import {
+  DuplicateMenuItemName,
   DuplicateMenuName,
   InvalidCredentials,
+  MenuItemNotFound,
   MenuNotFound,
   NotFound,
   Unauthorized,
@@ -17,5 +19,7 @@ export const domainErrorHandler = (err: Error, req: Request, res: Response, next
   if (err instanceof UserNotFound) throw new NotFound(err.message);
   if (err instanceof DuplicateMenuName) throw new Conflict(err.message);
   if (err instanceof MenuNotFound) throw new NotFound(err.message);
+  if (err instanceof DuplicateMenuItemName) throw new Conflict(err.message);
+  if (err instanceof MenuItemNotFound) throw new NotFound(err.message);
   throw err;
 };
