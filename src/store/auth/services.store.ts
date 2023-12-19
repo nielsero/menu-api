@@ -1,5 +1,5 @@
 import { LoginUserService, RegisterUserService } from "@/modules/auth/services";
-import { buyAuthProviders, buyAuthValidator } from "@/store/auth";
+import { buyAuthProviders, buyAuthValidators } from "@/store/auth";
 import { buyUserServices } from "@/store/user";
 
 type Store = {
@@ -8,8 +8,8 @@ type Store = {
 };
 
 const { tokenProvider, hashProvider } = buyAuthProviders();
-const { registerUserValidator, loginUserValidator } = buyAuthValidator();
 const { createUserService, findUserByEmailService } = buyUserServices();
+const { registerUserValidator, loginUserValidator } = buyAuthValidators();
 const registerUserService = new RegisterUserService({
   tokenProvider,
   hashProvider,

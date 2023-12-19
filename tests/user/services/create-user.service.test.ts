@@ -1,18 +1,6 @@
-import { makeUser } from "@/factories";
 import { User } from "@/modules/user";
-import { UserRepository } from "@/modules/user/protocols";
-import { CreateUserService } from "@/modules/user/services";
 import { UserAlreadyExists } from "@/shared/errors";
-
-type SutTypes = {
-  sut: CreateUserService;
-  repository: UserRepository;
-};
-
-const makeSut = (): SutTypes => {
-  const { createUserService: sut, userRepository: repository } = makeUser();
-  return { sut, repository };
-};
+import { buyUserRepository, buyUserServices } from "@/store/user";
 
 const request = {
   name: "John Doe",
@@ -22,7 +10,8 @@ const request = {
 
 describe("CreateUserService", () => {
   it("Should create user and add it to the database", async () => {
-    const { sut, repository } = makeSut();
+    const { createUserService: sut } = buyUserServices();
+    const repository = buyUserRepository();
     await sut.execute(request);
     const user = await repository.findByEmail(request.email);
     const expectedUser = {
@@ -35,7 +24,8 @@ describe("CreateUserService", () => {
   });
 
   it("Should throw an error if user already exists", async () => {
-    const { sut, repository } = makeSut();
+    const { createUserService: sut } = buyUserServices();
+    const repository = buyUserRepository();
     const user = new User(request);
     repository.add(user);
     await expect(sut.execute(request)).rejects.toThrow(UserAlreadyExists);

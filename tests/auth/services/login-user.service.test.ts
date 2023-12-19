@@ -1,20 +1,6 @@
-import { makeAuth } from "@/factories/auth.factory";
-import { HashProvider, TokenProvider } from "@/modules/auth/protocols";
-import { LoginUserService } from "@/modules/auth/services";
 import { User } from "@/modules/user";
-import { UserRepository } from "@/modules/user/protocols";
-
-type SutTypes = {
-  sut: LoginUserService;
-  hashProvider: HashProvider;
-  userRepository: UserRepository;
-  tokenProvider: TokenProvider;
-};
-
-const makeSut = (): SutTypes => {
-  const { loginUserService: sut, hashProvider, userRepository, tokenProvider } = makeAuth();
-  return { sut, hashProvider, userRepository, tokenProvider };
-};
+import { buyAuthProviders, buyAuthServices } from "@/store/auth";
+import { buyUserRepository } from "@/store/user";
 
 const request = {
   email: "john.doe@gmail.com",
@@ -23,12 +9,14 @@ const request = {
 
 describe("LoginUserService", () => {
   afterEach(async () => {
-    const { userRepository } = makeSut();
+    const userRepository = buyUserRepository();
     await userRepository.clear();
   });
 
   it("Should login a user if he's already registered", async () => {
-    const { sut, hashProvider, userRepository } = makeSut();
+    const { loginUserService: sut } = buyAuthServices();
+    const { hashProvider } = buyAuthProviders();
+    const userRepository = buyUserRepository();
     const hashedPassword = await hashProvider.hash("password");
     const user = new User({
       name: "John Doe",
@@ -41,7 +29,7 @@ describe("LoginUserService", () => {
   });
 
   it("Should throw an error if request is invalid", async () => {
-    const { sut } = makeSut();
+    const { loginUserService: sut } = buyAuthServices();
     const invalidEmailRequest = {
       email: "john.doe",
       password: "password",
@@ -50,12 +38,14 @@ describe("LoginUserService", () => {
   });
 
   it("Should throw an error if user is not found", async () => {
-    const { sut } = makeSut();
+    const { loginUserService: sut } = buyAuthServices();
     await expect(sut.execute(request)).rejects.toThrow();
   });
 
   it("Should throw an error if password is incorrect", async () => {
-    const { sut, hashProvider, userRepository } = makeSut();
+    const { loginUserService: sut } = buyAuthServices();
+    const { hashProvider } = buyAuthProviders();
+    const userRepository = buyUserRepository();
     const hashedPassword = await hashProvider.hash("password");
     const user = new User({
       name: "John Doe",
@@ -71,7 +61,9 @@ describe("LoginUserService", () => {
   });
 
   it("Should generate a valid token", async () => {
-    const { sut, hashProvider, userRepository, tokenProvider } = makeSut();
+    const { loginUserService: sut } = buyAuthServices();
+    const { hashProvider, tokenProvider } = buyAuthProviders();
+    const userRepository = buyUserRepository();
     const hashedPassword = await hashProvider.hash("password");
     const user = new User({
       name: "John Doe",

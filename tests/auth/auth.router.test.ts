@@ -1,21 +1,10 @@
 import { app } from "@/app";
-import { makeAuth } from "@/factories/auth.factory";
 import { domainErrorHandler, errorHandler } from "@/middleware";
-import { AuthRouter } from "@/modules/auth";
-import { UserRepository } from "@/modules/user/protocols";
+import { buyAuthRouter } from "@/store/auth";
+import { buyUserRepository } from "@/store/user";
 import supertest from "supertest";
 
 let api: supertest.SuperTest<supertest.Test>;
-
-type SutTypes = {
-  sut: AuthRouter;
-  userRepository: UserRepository;
-};
-
-const makeSut = (): SutTypes => {
-  const { authRouter: sut, userRepository } = makeAuth();
-  return { sut, userRepository };
-};
 
 const registerRequest = {
   name: "John Doe",
@@ -34,7 +23,7 @@ const response = {
 
 describe("AuthRouter", () => {
   beforeAll(() => {
-    const { sut } = makeSut();
+    const sut = buyAuthRouter();
     sut.setup(app);
     app.use(domainErrorHandler);
     app.use(errorHandler);
@@ -42,7 +31,7 @@ describe("AuthRouter", () => {
   });
 
   afterAll(async () => {
-    const { userRepository } = makeSut();
+    const userRepository = buyUserRepository();
     await userRepository.clear();
   });
 

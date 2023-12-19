@@ -13,9 +13,6 @@ type Store = {
 const registerUserValidator = new ZodRegisterUserRequestValidator();
 const loginUserValidator = new ZodLoginUserRequestValidator();
 
-export const buyAuthValidator = (): Store => {
-  return {
-    registerUserValidator,
-    loginUserValidator,
-  };
+export const buyAuthValidators = (): Store => {
+  return { registerUserValidator, loginUserValidator };
 };

@@ -1,10 +1,11 @@
-import { makeAuth, makeUser } from "@/factories";
 import { Unauthorized } from "@/shared/errors";
+import { buyAuthProviders } from "@/store/auth";
+import { buyUserServices } from "@/store/user";
 import { Request, Response, NextFunction } from "express";
 
 const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
-  const { tokenProvider } = makeAuth();
-  const { findUserByEmailService } = makeUser();
+  const { tokenProvider } = buyAuthProviders();
+  const { findUserByEmailService } = buyUserServices();
   const { authorization } = req.headers;
   if (!authorization) throw new Unauthorized("Authorization token required");
   const token = authorization.split(" ")[1]; // Remove the Bearer part

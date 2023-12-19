@@ -5,4 +5,4 @@ type Store = AuthRouter;
 
 const authRouter = new AuthRouter(buyAuthControllers());
 
-export const buyAuthRouters = (): Store => authRouter;
+export const buyAuthRouter = (): Store => authRouter;

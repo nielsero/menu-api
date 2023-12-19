@@ -1,29 +1,18 @@
-import { makeUser } from "@/factories";
 import { User } from "@/modules/user";
-import { UserRepository } from "@/modules/user/protocols";
-import { FindUserByEmailService } from "@/modules/user/services";
-
-type SutTypes = {
-  sut: FindUserByEmailService;
-  repository: UserRepository;
-};
+import { buyUserRepository, buyUserServices } from "@/store/user";
 
 const request = { email: "john.doe@gmail.com" };
 
-const makeSut = (): SutTypes => {
-  const { findUserByEmailService: sut, userRepository: repository } = makeUser();
-  return { sut, repository };
-};
-
 describe("FindUserByEmailService", () => {
   it("Should return null if user doesn't exist", async () => {
-    const { sut } = makeSut();
+    const { findUserByEmailService: sut } = buyUserServices();
     const response = await sut.execute(request);
     expect(response).toBeNull();
   });
 
   it("Should return user if it exists", async () => {
-    const { sut, repository } = makeSut();
+    const { findUserByEmailService: sut } = buyUserServices();
+    const repository = buyUserRepository();
     const user = new User({
       name: "John Doe",
       email: "john.doe@gmail.com",

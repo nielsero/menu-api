@@ -1,19 +1,5 @@
-import { makeAuth } from "@/factories/auth.factory";
-import { HashProvider, TokenProvider } from "@/modules/auth/protocols";
-import { RegisterUserService } from "@/modules/auth/services";
-import { UserRepository } from "@/modules/user/protocols";
-
-type SutTypes = {
-  sut: RegisterUserService;
-  hashProvider: HashProvider;
-  userRepository: UserRepository;
-  tokenProvider: TokenProvider;
-};
-
-const makeSut = (): SutTypes => {
-  const { registerUserService: sut, hashProvider, userRepository, tokenProvider } = makeAuth();
-  return { sut, hashProvider, userRepository, tokenProvider };
-};
+import { buyAuthProviders, buyAuthServices } from "@/store/auth";
+import { buyUserRepository } from "@/store/user";
 
 const request = {
   name: "John Doe",
@@ -23,18 +9,18 @@ const request = {
 
 describe("RegisterUserService", () => {
   afterEach(async () => {
-    const { userRepository } = makeSut();
+    const userRepository = buyUserRepository();
     await userRepository.clear();
   });
 
   it("Should register a user if request is valid", async () => {
-    const { sut } = makeSut();
+    const { registerUserService: sut } = buyAuthServices();
     const response = await sut.execute(request);
     expect(response).toEqual({ token: expect.any(String) });
   });
 
   it("Should throw an error if request is invalid", async () => {
-    const { sut } = makeSut();
+    const { registerUserService: sut } = buyAuthServices();
     const nameTooShortRequest = {
       name: "Jo",
       email: "john.doe@gmail.com",
@@ -56,7 +42,9 @@ describe("RegisterUserService", () => {
   });
 
   it("Should correctly hash user password", async () => {
-    const { sut, userRepository, hashProvider } = makeSut();
+    const { registerUserService: sut } = buyAuthServices();
+    const { hashProvider } = buyAuthProviders();
+    const userRepository = buyUserRepository();
     await sut.execute(request);
     const user = await userRepository.findByEmail(request.email);
     expect(user).toBeDefined();
@@ -66,7 +54,8 @@ describe("RegisterUserService", () => {
   });
 
   it("Should generate a valid token", async () => {
-    const { sut, tokenProvider } = makeSut();
+    const { registerUserService: sut } = buyAuthServices();
+    const { tokenProvider } = buyAuthProviders();
     const response = await sut.execute(request);
     expect(response.token).toBeDefined();
     const token = response.token;
@@ -75,7 +64,7 @@ describe("RegisterUserService", () => {
   });
 
   it("Should throw an error if user already exists", async () => {
-    const { sut } = makeSut();
+    const { registerUserService: sut } = buyAuthServices();
     await sut.execute(request);
     await expect(sut.execute(request)).rejects.toThrow();
   });
