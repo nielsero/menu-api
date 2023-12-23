@@ -6,6 +6,8 @@ import {
   GetAllPublishedMenusController,
   PublishMenuController,
   UnpublishMenuController,
+  GetMenuController,
+  GetPublishedMenuController,
 } from "@/modules/menu/controllers";
 import { buyMenuServices } from "@/store/menu";
 
@@ -17,6 +19,8 @@ type Store = {
   getAllPublishedMenusController: GetAllPublishedMenusController;
   publishMenuController: PublishMenuController;
   unpublishMenuController: UnpublishMenuController;
+  getMenuController: GetMenuController;
+  getPublishedMenuController: GetPublishedMenuController;
 };
 
 const {
@@ -27,6 +31,8 @@ const {
   getAllPublishedMenusService,
   publishMenuService,
   unpublishMenuService,
+  getMenuService,
+  getPublishedMenuService,
 } = buyMenuServices();
 const createMenuController = new CreateMenuController(createMenuService);
 const deleteMenuController = new DeleteMenuController(deleteMenuService);
@@ -35,6 +41,8 @@ const editMenuController = new EditMenuController(editMenuService);
 const getAllPublishedMenusController = new GetAllPublishedMenusController(getAllPublishedMenusService);
 const publishMenuController = new PublishMenuController(publishMenuService);
 const unpublishMenuController = new UnpublishMenuController(unpublishMenuService);
+const getMenuController = new GetMenuController(getMenuService);
+const getPublishedMenuController = new GetPublishedMenuController(getPublishedMenuService);
 
 export const buyMenuControllers = (): Store => {
   return {
@@ -45,5 +53,7 @@ export const buyMenuControllers = (): Store => {
     getAllPublishedMenusController,
     publishMenuController,
     unpublishMenuController,
+    getMenuController,
+    getPublishedMenuController,
   };
 };

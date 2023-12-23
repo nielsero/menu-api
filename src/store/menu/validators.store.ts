@@ -3,6 +3,8 @@ import {
   ZodDeleteMenuRequestValidator,
   ZodEditMenuRequestValidator,
   ZodGetAllMenusRequestValidator,
+  ZodGetMenuValidator,
+  ZodGetPublishedMenuValidator,
   ZodPublishMenuRequestValidator,
   ZodUnpublishMenuRequestValidator,
 } from "@/modules/menu/providers/validators";
@@ -11,6 +13,8 @@ import {
   DeleteMenuRequest,
   EditMenuRequest,
   GetAllMenusRequest,
+  GetMenuRequest,
+  GetPublishedMenuRequest,
   PublishMenuRequest,
   UnpublishMenuRequest,
 } from "@/modules/menu/services";
@@ -23,6 +27,8 @@ type Store = {
   publishMenuValidator: RequestValidator<PublishMenuRequest>;
   unpublishMenuValidator: RequestValidator<UnpublishMenuRequest>;
   getAllMenusValidator: RequestValidator<GetAllMenusRequest>;
+  getMenuValidator: RequestValidator<GetMenuRequest>;
+  getPublishedMenuValidator: RequestValidator<GetPublishedMenuRequest>;
 };
 
 const createMenuValidator = new ZodCreateMenuRequestValidator();
@@ -31,6 +37,8 @@ const deleteMenuValidator = new ZodDeleteMenuRequestValidator();
 const publishMenuValidator = new ZodPublishMenuRequestValidator();
 const unpublishMenuValidator = new ZodUnpublishMenuRequestValidator();
 const getAllMenusValidator = new ZodGetAllMenusRequestValidator();
+const getMenuValidator = new ZodGetMenuValidator();
+const getPublishedMenuValidator = new ZodGetPublishedMenuValidator();
 
 export const buyMenuValidators = (): Store => ({
   createMenuValidator,
@@ -39,4 +47,6 @@ export const buyMenuValidators = (): Store => ({
   publishMenuValidator,
   unpublishMenuValidator,
   getAllMenusValidator,
+  getMenuValidator,
+  getPublishedMenuValidator,
 });

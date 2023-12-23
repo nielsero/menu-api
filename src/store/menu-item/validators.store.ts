@@ -15,7 +15,7 @@ import {
   ZodGetAllPublishedMenuItemsRequestValidator,
   ZodGetMenuItemRequestValidator,
   ZodGetPublishedMenuItemRequestValidator,
-} from "@/modules/menu/providers/validators";
+} from "@/modules/menu-item/providers/validators";
 import { RequestValidator } from "@/shared/protocols";
 
 type Store = {

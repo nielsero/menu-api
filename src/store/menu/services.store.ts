@@ -6,6 +6,8 @@ import {
   GetAllPublishedMenusService,
   PublishMenuService,
   UnpublishMenuService,
+  GetMenuService,
+  GetPublishedMenuService,
 } from "@/modules/menu/services";
 import { buyMenuRepository, buyMenuValidators } from "@/store/menu";
 import { buyMenuItemRepository } from "../menu-item";
@@ -18,6 +20,8 @@ type Store = {
   getAllPublishedMenusService: GetAllPublishedMenusService;
   publishMenuService: PublishMenuService;
   unpublishMenuService: UnpublishMenuService;
+  getMenuService: GetMenuService;
+  getPublishedMenuService: GetPublishedMenuService;
 };
 
 const menuRepository = buyMenuRepository();
@@ -29,6 +33,8 @@ const {
   editMenuValidator,
   publishMenuValidator,
   unpublishMenuValidator,
+  getMenuValidator,
+  getPublishedMenuValidator,
 } = buyMenuValidators();
 const createMenuService = new CreateMenuService({
   menuRepository,
@@ -58,6 +64,14 @@ const unpublishMenuService = new UnpublishMenuService({
   menuRepository,
   requestValidator: unpublishMenuValidator,
 });
+const getMenuService = new GetMenuService({
+  menuRepository,
+  requestValidator: getMenuValidator,
+});
+const getPublishedMenuService = new GetPublishedMenuService({
+  menuRepository,
+  requestValidator: getPublishedMenuValidator,
+});
 
 export const buyMenuServices = (): Store => {
   return {
@@ -68,5 +82,7 @@ export const buyMenuServices = (): Store => {
     getAllPublishedMenusService,
     publishMenuService,
     unpublishMenuService,
+    getMenuService,
+    getPublishedMenuService,
   };
 };
