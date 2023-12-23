@@ -1,24 +1,24 @@
 import { User } from "@/modules/user";
 import { UserRepository } from "@/modules/user/protocols";
 
-export type FindUserByEmailRequest = {
+export type GetUserByEmailRequest = {
   email: string;
 };
 
-export type FindUserByEmailResponse = User | null;
+export type GetUserByEmailResponse = User | null;
 
-export type FindUserByEmailProviders = {
+export type GetUserByEmailProviders = {
   userRepository: UserRepository;
 };
 
-export class FindUserByEmailService {
+export class GetUserByEmailService {
   private readonly userRepository: UserRepository;
 
-  constructor(private readonly providers: FindUserByEmailProviders) {
+  constructor(private readonly providers: GetUserByEmailProviders) {
     this.userRepository = providers.userRepository;
   }
 
-  async execute(request: FindUserByEmailRequest): Promise<FindUserByEmailResponse> {
+  async execute(request: GetUserByEmailRequest): Promise<GetUserByEmailResponse> {
     return await this.userRepository.findByEmail(request.email);
   }
 }

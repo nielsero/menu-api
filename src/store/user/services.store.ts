@@ -1,18 +1,18 @@
-import { CreateUserService, FindUserByEmailService } from "@/modules/user/services";
+import { CreateUserService, GetUserByEmailService } from "@/modules/user/services";
 import { buyUserRepository } from "./repository.store";
 
 type Store = {
   createUserService: CreateUserService;
-  findUserByEmailService: FindUserByEmailService;
+  getUserByEmailService: GetUserByEmailService;
 };
 
 const userRepository = buyUserRepository();
 const createUserService = new CreateUserService({ userRepository });
-const findUserByEmailService = new FindUserByEmailService({ userRepository });
+const getUserByEmailService = new GetUserByEmailService({ userRepository });
 
 export const buyUserServices = (): Store => {
   return {
     createUserService,
-    findUserByEmailService,
+    getUserByEmailService,
   };
 };

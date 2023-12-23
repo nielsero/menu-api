@@ -8,7 +8,7 @@ type Store = {
 };
 
 const { tokenProvider, hashProvider } = buyAuthProviders();
-const { createUserService, findUserByEmailService } = buyUserServices();
+const { createUserService, getUserByEmailService } = buyUserServices();
 const { registerUserValidator, loginUserValidator } = buyAuthValidators();
 const registerUserService = new RegisterUserService({
   tokenProvider,
@@ -19,7 +19,7 @@ const registerUserService = new RegisterUserService({
 const loginUserService = new LoginUserService({
   tokenProvider,
   hashProvider,
-  findUserByEmailService,
+  getUserByEmailService,
   requestValidator: loginUserValidator,
 });
 
