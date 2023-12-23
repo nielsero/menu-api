@@ -2,7 +2,7 @@ import { GetUserByIdService } from "@/modules/user/services";
 import { UserNotFound } from "@/shared/errors";
 
 export type GetUserSessionRequest = {
-  id: string;
+  userId: string;
 };
 
 export type GetUserSessionResponse = {
@@ -23,7 +23,7 @@ export class GetUserSessionService {
   }
 
   async execute(request: GetUserSessionRequest): Promise<GetUserSessionResponse> {
-    const user = await this.getUserByIdService.execute({ id: request.id });
+    const user = await this.getUserByIdService.execute({ id: request.userId });
     if (!user) throw new UserNotFound();
     return {
       id: user.id,

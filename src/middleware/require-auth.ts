@@ -3,7 +3,7 @@ import { buyAuthProviders } from "@/store/auth";
 import { buyUserServices } from "@/store/user";
 import { Request, Response, NextFunction } from "express";
 
-const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
+export const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   const { tokenProvider } = buyAuthProviders();
   const { getUserByEmailService } = buyUserServices();
   const { authorization } = req.headers;
@@ -15,5 +15,3 @@ const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   res.locals.userId = user.id; // Instead of req.user
   next();
 };
-
-export default requireAuth;
