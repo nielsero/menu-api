@@ -5,10 +5,12 @@ import {
   EditMenuController,
   GetAllMenusController,
   GetAllPublishedMenusController,
+  GetMenuController,
+  GetPublishedMenuController,
   PublishMenuController,
   UnpublishMenuController,
 } from "@/modules/menu/controllers";
-import { requireAuth } from "@/middleware/";
+import { requireAuth } from "@/middleware";
 
 export type MenuControllers = {
   createMenuController: CreateMenuController;
@@ -18,6 +20,8 @@ export type MenuControllers = {
   unpublishMenuController: UnpublishMenuController;
   getAllMenusController: GetAllMenusController;
   getAllPublishedMenusController: GetAllPublishedMenusController;
+  getMenuController: GetMenuController;
+  getPublishedMenuController: GetPublishedMenuController;
 };
 
 export class MenuRouter {
@@ -28,6 +32,8 @@ export class MenuRouter {
   private readonly unpublish: UnpublishMenuController;
   private readonly getAll: GetAllMenusController;
   private readonly getAllPublished: GetAllPublishedMenusController;
+  private readonly getMenu: GetMenuController;
+  private readonly getPublishedMenu: GetPublishedMenuController;
 
   constructor(private readonly controllers: MenuControllers) {
     this.create = controllers.createMenuController;
@@ -37,6 +43,8 @@ export class MenuRouter {
     this.unpublish = controllers.unpublishMenuController;
     this.getAll = controllers.getAllMenusController;
     this.getAllPublished = controllers.getAllPublishedMenusController;
+    this.getMenu = controllers.getMenuController;
+    this.getPublishedMenu = controllers.getPublishedMenuController;
   }
 
   setup(router: Router) {
@@ -47,5 +55,7 @@ export class MenuRouter {
     router.post("/api/menus/:id/unpublish", requireAuth, this.unpublish.handle.bind(this.unpublish));
     router.get("/api/menus", requireAuth, this.getAll.handle.bind(this.getAll));
     router.get("/api/menus/published", this.getAllPublished.handle.bind(this.getAllPublished));
+    router.get("/api/menus/:id", requireAuth, this.getMenu.handle.bind(this.getMenu));
+    router.get("/api/menus/:id/published", this.getPublishedMenu.handle.bind(this.getPublishedMenu));
   }
 }

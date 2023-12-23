@@ -5,3 +5,5 @@ export * from "./publish-menu.controller";
 export * from "./unpublish-menu.controller";
 export * from "./get-all-menus.controller";
 export * from "./get-all-published-menus.controller";
+export * from "./get-menu.controller";
+export * from "./get-published-menu.controller";

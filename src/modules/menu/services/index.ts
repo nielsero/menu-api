@@ -5,3 +5,5 @@ export * from "./publish-menu.service";
 export * from "./unpublish-menu.service";
 export * from "./get-all-menus.service";
 export * from "./get-all-published-menus.service";
+export * from "./get-menu.service";
+export * from "./get-published-menu.service";
