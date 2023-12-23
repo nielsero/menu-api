@@ -43,6 +43,18 @@ export class MongoMenuRepository implements MenuRepository {
     return foundMenus;
   }
 
+  async findPublishedById(id: string): Promise<Menu | null> {
+    const menu = await MenuModel.findOne({ id, published: true });
+    if (!menu) return null;
+    return new Menu({
+      id: menu.id,
+      name: menu.name,
+      description: menu.description,
+      published: menu.published,
+      userId: menu.userId,
+    });
+  }
+
   async clear(): Promise<void> {
     await MenuModel.deleteMany({});
   }

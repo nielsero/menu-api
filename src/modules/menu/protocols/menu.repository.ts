@@ -6,5 +6,6 @@ export interface MenuRepository {
   update(menu: Menu): Promise<void>;
   delete(id: string): Promise<void>;
   findAllPublished(): Promise<Menu[]>;
+  findPublishedById(id: string): Promise<Menu | null>;
   clear(): Promise<void>;
 }

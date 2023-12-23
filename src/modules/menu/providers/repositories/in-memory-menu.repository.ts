@@ -30,6 +30,11 @@ export class InMemoryMenuRepository implements MenuRepository {
     return menus;
   }
 
+  async findPublishedById(id: string): Promise<Menu | null> {
+    const menu = this.menus.find((menu) => menu.id === id && menu.published);
+    return menu || null;
+  }
+
   async clear(): Promise<void> {
     this.menus.length = 0;
   }
