@@ -5,17 +5,20 @@ export class InMemoryUserRepository implements UserRepository {
   private readonly users: User[] = [];
 
   async add(user: User): Promise<void> {
+    const newUser = new User(user);
     this.users.push(user);
   }
 
   async findByEmail(email: string): Promise<User | null> {
     const user = this.users.find((user) => user.email === email);
-    return user || null;
+    const foundUser = user ? new User(user) : null;
+    return foundUser;
   }
 
   async findById(id: string): Promise<User | null> {
     const user = this.users.find((user) => user.id === id);
-    return user || null;
+    const foundUser = user ? new User(user) : null;
+    return foundUser;
   }
 
   async clear(): Promise<void> {
