@@ -13,7 +13,6 @@ const hashProvider = buyHashProvider();
 const createUserService = buyCreateUserService();
 const getUserByEmailService = buyGetUserByEmailService();
 const getUserByIdService = buyGetUserByIdService();
-const registerUserValidator = buyRegisterUserValidator();
 const loginUserValidator = buyLoginUserValidator();
 
 // Build
@@ -21,7 +20,6 @@ const registerUserService = new RegisterUserService({
   tokenProvider,
   hashProvider,
   createUserService,
-  requestValidator: registerUserValidator,
 });
 const loginUserService = new LoginUserService({
   tokenProvider,

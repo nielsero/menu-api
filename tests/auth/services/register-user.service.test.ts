@@ -17,30 +17,9 @@ describe("RegisterUserService", () => {
     await userRepository.clear();
   });
 
-  it("Should register a user if request is valid", async () => {
+  it("Should register a user", async () => {
     const response = await sut.execute(request);
     expect(response).toEqual({ token: expect.any(String) });
-  });
-
-  it("Should throw an error if request is invalid", async () => {
-    const nameTooShortRequest = {
-      name: "Jo",
-      email: "john.doe@gmail.com",
-      password: "password",
-    };
-    const invalidEmailRequest = {
-      name: "John Doe",
-      email: "john.doe",
-      password: "password",
-    };
-    const passwordTooShortRequest = {
-      name: "John Doe",
-      email: "john.doe@gmail.com",
-      password: "pass",
-    };
-    await expect(sut.execute(nameTooShortRequest)).rejects.toThrow();
-    await expect(sut.execute(invalidEmailRequest)).rejects.toThrow();
-    await expect(sut.execute(passwordTooShortRequest)).rejects.toThrow();
   });
 
   it("Should correctly hash user password", async () => {
