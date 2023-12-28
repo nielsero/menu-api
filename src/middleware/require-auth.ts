@@ -1,10 +1,10 @@
 import { Unauthorized } from "@/shared/errors";
-import { buyAuthProviders } from "@/modules/auth/store";
+import { buyTokenProvider } from "@/modules/auth/store";
 import { buyGetUserByEmailService } from "@/modules/user/store";
 import { Request, Response, NextFunction } from "express";
 
 export const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
-  const { tokenProvider } = buyAuthProviders();
+  const tokenProvider = buyTokenProvider();
   const getUserByEmailService = buyGetUserByEmailService();
   const { authorization } = req.headers;
   if (!authorization) throw new Unauthorized("Authorization token required");

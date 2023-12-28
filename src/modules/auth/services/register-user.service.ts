@@ -12,7 +12,7 @@ export type RegisterUserResponse = {
   token: string;
 };
 
-export type RegisterUserProviders = {
+type Providers = {
   requestValidator: RequestValidator<RegisterUserRequest>;
   hashProvider: HashProvider;
   createUserService: CreateUserService;
@@ -25,7 +25,7 @@ export class RegisterUserService {
   private readonly createUserService: CreateUserService;
   private readonly tokenProvider: TokenProvider;
 
-  constructor(private readonly providers: RegisterUserProviders) {
+  constructor(private readonly providers: Providers) {
     this.requestValidator = providers.requestValidator;
     this.hashProvider = providers.hashProvider;
     this.createUserService = providers.createUserService;

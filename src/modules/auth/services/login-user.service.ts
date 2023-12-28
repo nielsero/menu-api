@@ -12,7 +12,7 @@ export type LoginUserResponse = {
   token: string;
 };
 
-export type LoginUserProviders = {
+type Providers = {
   requestValidator: RequestValidator<LoginUserRequest>;
   hashProvider: HashProvider;
   getUserByEmailService: GetUserByEmailService;
@@ -25,7 +25,7 @@ export class LoginUserService {
   private readonly getUserByEmailService: GetUserByEmailService;
   private readonly tokenProvider: TokenProvider;
 
-  constructor(private readonly providers: LoginUserProviders) {
+  constructor(private readonly providers: Providers) {
     this.requestValidator = providers.requestValidator;
     this.hashProvider = providers.hashProvider;
     this.getUserByEmailService = providers.getUserByEmailService;

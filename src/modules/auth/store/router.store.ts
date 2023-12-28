@@ -1,8 +1,12 @@
 import { AuthRouter } from "@/modules/auth";
-import { buyAuthControllers } from "./controllers.store";
+import {
+  buyGetUserSessionController,
+  buyLoginUserController,
+  buyRegisterUserController,
+} from "@/modules/auth/store";
 
-type Store = AuthRouter;
-
-const authRouter = new AuthRouter(buyAuthControllers());
-
-export const buyAuthRouter = (): Store => authRouter;
+const registerUserController = buyRegisterUserController();
+const loginUserController = buyLoginUserController();
+const getUserSessionController = buyGetUserSessionController();
+const authRouter = new AuthRouter({ registerUserController, loginUserController, getUserSessionController });
+export const buyAuthRouter = () => authRouter;

@@ -11,19 +11,11 @@ export type GetUserSessionResponse = {
   email: string;
 };
 
-export type GetUserSessionProviders = {
-  getUserByIdService: GetUserByIdService;
-};
-
 export class GetUserSessionService {
-  private readonly getUserByIdService: GetUserByIdService;
-
-  constructor(private readonly providers: GetUserSessionProviders) {
-    this.getUserByIdService = providers.getUserByIdService;
-  }
+  constructor(private readonly service: GetUserByIdService) {}
 
   async execute(request: GetUserSessionRequest): Promise<GetUserSessionResponse> {
-    const user = await this.getUserByIdService.execute({ id: request.userId });
+    const user = await this.service.execute({ id: request.userId });
     if (!user) throw new UserNotFound();
     return {
       id: user.id,
