@@ -7,18 +7,10 @@ export type GetUserByEmailRequest = {
 
 export type GetUserByEmailResponse = User | null;
 
-export type GetUserByEmailProviders = {
-  userRepository: UserRepository;
-};
-
 export class GetUserByEmailService {
-  private readonly userRepository: UserRepository;
-
-  constructor(private readonly providers: GetUserByEmailProviders) {
-    this.userRepository = providers.userRepository;
-  }
+  constructor(private readonly repository: UserRepository) {}
 
   async execute(request: GetUserByEmailRequest): Promise<GetUserByEmailResponse> {
-    return await this.userRepository.findByEmail(request.email);
+    return await this.repository.findByEmail(request.email);
   }
 }

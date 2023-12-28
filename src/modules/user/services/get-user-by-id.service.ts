@@ -8,9 +8,9 @@ export type GetUserByIdRequest = {
 export type GetUserByIdResponse = User | null;
 
 export class GetUserByIdService {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly repository: UserRepository) {}
 
   async execute(request: GetUserByIdRequest): Promise<GetUserByIdResponse> {
-    return await this.userRepository.findById(request.id);
+    return await this.repository.findById(request.id);
   }
 }

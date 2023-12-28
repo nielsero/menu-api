@@ -8,21 +8,13 @@ export type CreateUserRequest = {
   password: string;
 };
 
-export type CreateUserResponse = void;
-
-export type CreateUserProviders = { userRepository: UserRepository };
-
 export class CreateUserService {
-  private readonly userRepository: UserRepository;
+  constructor(private readonly repository: UserRepository) {}
 
-  constructor(private readonly providers: CreateUserProviders) {
-    this.userRepository = providers.userRepository;
-  }
-
-  async execute(request: CreateUserRequest): Promise<CreateUserResponse> {
+  async execute(request: CreateUserRequest): Promise<void> {
     const user = new User(request);
-    const userExists = await this.userRepository.findByEmail(user.email);
+    const userExists = await this.repository.findByEmail(user.email);
     if (userExists) throw new UserAlreadyExists();
-    await this.userRepository.add(user);
+    await this.repository.add(user);
   }
 }

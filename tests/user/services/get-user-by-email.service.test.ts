@@ -1,17 +1,17 @@
 import { User } from "@/modules/user";
-import { buyUserRepository, buyUserServices } from "@/modules/user/store";
+import { buyGetUserByEmailService, buyUserRepository } from "@/modules/user/store";
 
 const request = { email: "john.doe@gmail.com" };
 
-describe("FindUserByEmailService", () => {
+describe("GetUserByEmailService", () => {
   it("Should return null if user doesn't exist", async () => {
-    const { getUserByEmailService: sut } = buyUserServices();
+    const sut = buyGetUserByEmailService();
     const response = await sut.execute(request);
     expect(response).toBeNull();
   });
 
   it("Should return user if it exists", async () => {
-    const { getUserByEmailService: sut } = buyUserServices();
+    const sut = buyGetUserByEmailService();
     const repository = buyUserRepository();
     const user = new User({
       name: "John Doe",

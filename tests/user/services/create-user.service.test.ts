@@ -1,6 +1,6 @@
 import { User } from "@/modules/user";
 import { UserAlreadyExists } from "@/shared/errors";
-import { buyUserRepository, buyUserServices } from "@/modules/user/store";
+import { buyCreateUserService, buyUserRepository } from "@/modules/user/store";
 
 const request = {
   name: "John Doe",
@@ -10,7 +10,7 @@ const request = {
 
 describe("CreateUserService", () => {
   it("Should create user and add it to the database", async () => {
-    const { createUserService: sut } = buyUserServices();
+    const sut = buyCreateUserService();
     const repository = buyUserRepository();
     await sut.execute(request);
     const user = await repository.findByEmail(request.email);
@@ -24,7 +24,7 @@ describe("CreateUserService", () => {
   });
 
   it("Should throw an error if user already exists", async () => {
-    const { createUserService: sut } = buyUserServices();
+    const sut = buyCreateUserService();
     const repository = buyUserRepository();
     const user = new User(request);
     repository.add(user);
