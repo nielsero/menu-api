@@ -9,58 +9,23 @@ import {
   GetMenuService,
   GetPublishedMenuService,
 } from "@/modules/menu/services";
-import { buyMenuRepository, buyMenuValidators } from "@/modules/menu/store";
+import { buyMenuRepository } from "@/modules/menu/store";
 import { buyMenuItemRepository } from "@/modules/menu-item/store";
 
 // Setup
 const menuRepository = buyMenuRepository();
 const menuItemRepository = buyMenuItemRepository();
-const {
-  createMenuValidator,
-  deleteMenuValidator,
-  getAllMenusValidator,
-  editMenuValidator,
-  publishMenuValidator,
-  unpublishMenuValidator,
-  getMenuValidator,
-  getPublishedMenuValidator,
-} = buyMenuValidators();
 
 // Build
-const createMenuService = new CreateMenuService({
-  menuRepository,
-  requestValidator: createMenuValidator,
-});
-const deleteMenuService = new DeleteMenuService({
-  menuRepository,
-  menuItemRepository,
-  requestValidator: deleteMenuValidator,
-});
-const getAllMenusService = new GetAllMenusService({
-  menuRepository,
-  requestValidator: getAllMenusValidator,
-});
-const editMenuService = new EditMenuService({
-  menuRepository,
-  requestValidator: editMenuValidator,
-});
-const getAllPublishedMenusService = new GetAllPublishedMenusService({ menuRepository });
-const publishMenuService = new PublishMenuService({
-  menuRepository,
-  requestValidator: publishMenuValidator,
-});
-const unpublishMenuService = new UnpublishMenuService({
-  menuRepository,
-  requestValidator: unpublishMenuValidator,
-});
-const getMenuService = new GetMenuService({
-  menuRepository,
-  requestValidator: getMenuValidator,
-});
-const getPublishedMenuService = new GetPublishedMenuService({
-  menuRepository,
-  requestValidator: getPublishedMenuValidator,
-});
+const createMenuService = new CreateMenuService(menuRepository);
+const deleteMenuService = new DeleteMenuService({ menuRepository, menuItemRepository });
+const getAllMenusService = new GetAllMenusService(menuRepository);
+const editMenuService = new EditMenuService(menuRepository);
+const getAllPublishedMenusService = new GetAllPublishedMenusService(menuRepository);
+const publishMenuService = new PublishMenuService(menuRepository);
+const unpublishMenuService = new UnpublishMenuService(menuRepository);
+const getMenuService = new GetMenuService(menuRepository);
+const getPublishedMenuService = new GetPublishedMenuService(menuRepository);
 
 // Export
 export const buyCreateMenuService = () => createMenuService;

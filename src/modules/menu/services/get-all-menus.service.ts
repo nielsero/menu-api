@@ -1,4 +1,3 @@
-import { RequestValidator } from "@/shared/protocols";
 import { MenuRepository } from "@/modules/menu/protocols";
 import { Menu } from "@/modules/menu";
 
@@ -8,23 +7,11 @@ export type GetAllMenusRequest = {
 
 export type GetAllMenusResponse = Menu[];
 
-export type GetAllMenusProviders = {
-  requestValidator: RequestValidator<GetAllMenusRequest>;
-  menuRepository: MenuRepository;
-};
-
 export class GetAllMenusService {
-  private readonly requestValidator: RequestValidator<GetAllMenusRequest>;
-  private readonly menuRepository: MenuRepository;
-
-  constructor(private readonly providers: GetAllMenusProviders) {
-    this.requestValidator = providers.requestValidator;
-    this.menuRepository = providers.menuRepository;
-  }
+  constructor(private readonly repository: MenuRepository) {}
 
   async execute(request: GetAllMenusRequest): Promise<GetAllMenusResponse> {
-    await this.requestValidator.validate(request);
-    const menus = await this.menuRepository.findAllByUser(request.userId);
+    const menus = await this.repository.findAllByUser(request.userId);
     return menus;
   }
 }

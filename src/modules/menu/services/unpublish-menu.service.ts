@@ -1,4 +1,3 @@
-import { RequestValidator } from "@/shared/protocols";
 import { MenuRepository } from "@/modules/menu/protocols";
 import { MenuNotFound } from "@/shared/errors";
 import { Menu } from "@/modules/menu";
@@ -10,28 +9,16 @@ export type UnpublishMenuRequest = {
 
 export type UnpublishMenuResponse = Menu;
 
-export type UnpublishMenuProviders = {
-  requestValidator: RequestValidator<UnpublishMenuRequest>;
-  menuRepository: MenuRepository;
-};
-
 export class UnpublishMenuService {
-  private readonly requestValidator: RequestValidator<UnpublishMenuRequest>;
-  private readonly menuRepository: MenuRepository;
-
-  constructor(private readonly providers: UnpublishMenuProviders) {
-    this.requestValidator = providers.requestValidator;
-    this.menuRepository = providers.menuRepository;
-  }
+  constructor(private readonly repository: MenuRepository) {}
 
   async execute(request: UnpublishMenuRequest): Promise<UnpublishMenuResponse> {
-    await this.requestValidator.validate(request);
-    const menus = await this.menuRepository.findAllByUser(request.userId);
+    const menus = await this.repository.findAllByUser(request.userId);
     const menu = menus.find((menu) => menu.id === request.id);
     if (!menu) throw new MenuNotFound();
     if (!menu.published) return menu;
     menu.published = false;
-    await this.menuRepository.update(menu);
+    await this.repository.update(menu);
     return menu;
   }
 }
