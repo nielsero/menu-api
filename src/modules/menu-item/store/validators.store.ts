@@ -1,47 +1,24 @@
+import { AddMenuItemRequest, EditMenuItemRequest } from "@/modules/menu-item/services";
 import {
-  AddMenuItemRequest,
-  DeleteMenuItemRequest,
-  EditMenuItemRequest,
-  GetAllMenuItemsRequest,
-  GetAllPublishedMenuItemsRequest,
-  GetMenuItemRequest,
-  GetPublishedMenuItemRequest,
-} from "@/modules/menu-item/services";
-import {
+  ZodRequestWithIdAndMenuIdValidator,
+  ZodRequestWithMenuIdValidator,
   ZodAddMenuItemRequestValidator,
   ZodEditMenuItemRequestValidator,
-  ZodDeleteMenuItemRequestValidator,
-  ZodGetAllMenuItemsRequestValidator,
-  ZodGetAllPublishedMenuItemsRequestValidator,
-  ZodGetMenuItemRequestValidator,
-  ZodGetPublishedMenuItemRequestValidator,
 } from "@/modules/menu-item/providers/validators";
 import { RequestValidator } from "@/shared/protocols";
 
-type Store = {
-  addMenuItemValidator: RequestValidator<AddMenuItemRequest>;
-  editMenuItemValidator: RequestValidator<EditMenuItemRequest>;
-  deleteMenuItemValidator: RequestValidator<DeleteMenuItemRequest>;
-  getAllMenuItemsValidator: RequestValidator<GetAllMenuItemsRequest>;
-  getAllPublishedMenuItemsValidator: RequestValidator<GetAllPublishedMenuItemsRequest>;
-  getMenuItemValidator: RequestValidator<GetMenuItemRequest>;
-  getPublishedMenuItemValidator: RequestValidator<GetPublishedMenuItemRequest>;
-};
-
+// Build
+const requestWithIdAndMenuIdValidator = new ZodRequestWithIdAndMenuIdValidator();
+const requestWithMenuIdValidator = new ZodRequestWithMenuIdValidator();
 const addMenuItemValidator = new ZodAddMenuItemRequestValidator();
 const editMenuItemValidator = new ZodEditMenuItemRequestValidator();
-const deleteMenuItemValidator = new ZodDeleteMenuItemRequestValidator();
-const getAllMenuItemsValidator = new ZodGetAllMenuItemsRequestValidator();
-const getAllPublishedMenuItemsValidator = new ZodGetAllPublishedMenuItemsRequestValidator();
-const getMenuItemValidator = new ZodGetMenuItemRequestValidator();
-const getPublishedMenuItemValidator = new ZodGetPublishedMenuItemRequestValidator();
 
-export const buyMenuItemValidators = (): Store => ({
-  addMenuItemValidator,
-  editMenuItemValidator,
-  deleteMenuItemValidator,
-  getAllMenuItemsValidator,
-  getAllPublishedMenuItemsValidator,
-  getMenuItemValidator,
-  getPublishedMenuItemValidator,
-});
+// Export
+export const buyRequestWithIdValidator = (): RequestValidator<{ id: string }> =>
+  requestWithIdAndMenuIdValidator;
+export const buyRequestWithMenuIdValidator = (): RequestValidator<{ menuId: string }> =>
+  requestWithMenuIdValidator;
+export const buyAddMenuItemRequestValidator = (): RequestValidator<Omit<AddMenuItemRequest, "userId">> =>
+  addMenuItemValidator;
+export const buyEditMenuItemRequestValidator = (): RequestValidator<Omit<EditMenuItemRequest, "userId">> =>
+  editMenuItemValidator;
