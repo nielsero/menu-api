@@ -37,15 +37,6 @@ describe("CreateMenuService", () => {
     expect(menus).toHaveLength(1);
   });
 
-  it("Should throw an error if request name is invalid", async () => {
-    const nameTooShortRequest = {
-      name: "Me",
-      description: "Menu 1 description",
-      userId: user.id,
-    };
-    await expect(sut.execute(nameTooShortRequest)).rejects.toThrow();
-  });
-
   it("Should throw an error if user already has menu with same name", async () => {
     await sut.execute(request);
     await expect(sut.execute(request)).rejects.toThrow();

@@ -24,14 +24,20 @@ const request = {
   userId: user.id,
 };
 
-describe("EditMenuService", () => {
-  beforeEach(async () => {
+describe("DeleteMenuService", () => {
+  beforeAll(async () => {
     await userRepository.add(user);
+  });
+
+  afterAll(async () => {
+    await userRepository.clear();
+  });
+
+  beforeEach(async () => {
     await menuRepository.add(menu);
   });
 
   afterEach(async () => {
-    await userRepository.clear();
     await menuRepository.clear();
   });
 

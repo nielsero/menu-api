@@ -42,7 +42,7 @@ describe("UnpublishMenuService", () => {
     await menuRepository.clear();
   });
 
-  it("Should unpublish a menu", async () => {
+  it("Should unpublish and update menu in database", async () => {
     await sut.execute(request);
     const menus = await menuRepository.findAllByUser(user.id);
     const unpublishedMenu = menus.find((m) => m.id === request.id);

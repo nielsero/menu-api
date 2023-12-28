@@ -2,13 +2,13 @@ import { LoginUserRequest } from "@/modules/auth/services";
 import { ZodRequestValidator } from "@/shared/providers/validators";
 import { z } from "zod";
 
-const loginUserSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
+const schema = z.object({
+  email: z.string({ required_error: "Email is required" }).email(),
+  password: z.string({ required_error: "Password is required" }),
 });
 
 export class ZodLoginUserRequestValidator extends ZodRequestValidator<LoginUserRequest> {
   constructor() {
-    super(loginUserSchema);
+    super(schema);
   }
 }

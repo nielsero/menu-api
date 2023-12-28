@@ -13,27 +13,25 @@ const user = new User({
   password: "hashed-password",
 });
 
-const menu1 = new Menu({
-  name: "Menu 1",
-  description: "Menu 1 description",
-  userId: user.id,
-});
+const menus = [
+  new Menu({
+    name: "Menu 1",
+    description: "Menu 1 description",
+    userId: user.id,
+  }),
+  new Menu({
+    name: "Menu 2",
+    description: "Menu 2 description",
+    userId: user.id,
+  }),
+  new Menu({
+    name: "Menu 3",
+    description: "Menu 3 description",
+    userId: user.id,
+  }),
+];
 
-const menu2 = new Menu({
-  name: "Menu 2",
-  description: "Menu 2 description",
-  userId: user.id,
-});
-
-const menu3 = new Menu({
-  name: "Menu 3",
-  description: "Menu 3 description",
-  userId: user.id,
-});
-
-const request = {
-  userId: user.id,
-};
+const request = { userId: user.id };
 
 describe("GetAllMenusService", () => {
   beforeAll(async () => {
@@ -45,9 +43,9 @@ describe("GetAllMenusService", () => {
   });
 
   beforeEach(async () => {
-    await menuRepository.add(menu1);
-    await menuRepository.add(menu2);
-    await menuRepository.add(menu3);
+    await menuRepository.add(menus[0]);
+    await menuRepository.add(menus[1]);
+    await menuRepository.add(menus[2]);
   });
 
   afterEach(async () => {

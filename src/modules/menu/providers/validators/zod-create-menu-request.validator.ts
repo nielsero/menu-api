@@ -2,14 +2,13 @@ import { CreateMenuRequest } from "@/modules/menu/services";
 import { ZodRequestValidator } from "@/shared/providers/validators";
 import { z } from "zod";
 
-const createMenuSchema = z.object({
-  name: z.string().min(3),
+const schema = z.object({
+  name: z.string({ required_error: "Name is required" }).min(3, "Name must be at least 3 characters"),
   description: z.string().optional(),
-  userId: z.string(),
 });
 
-export class ZodCreateMenuRequestValidator extends ZodRequestValidator<CreateMenuRequest> {
+export class ZodCreateMenuRequestValidator extends ZodRequestValidator<Omit<CreateMenuRequest, "userId">> {
   constructor() {
-    super(createMenuSchema);
+    super(schema);
   }
 }

@@ -7,36 +7,44 @@ const sut = buyGetAllPublishedMenusService();
 const userRepository = buyUserRepository();
 const menuRepository = buyMenuRepository();
 
-const user1 = new User({
-  name: "John Doe",
-  email: "john.doe@gmail.com",
-  password: "hashed-password",
-});
+const users = [
+  new User({
+    name: "John Doe",
+    email: "john.doe@gmail.com",
+    password: "hashed-password",
+  }),
+  new User({
+    name: "Jane Doe",
+    email: "jane.doe@gmail.com",
+    password: "hashed-password",
+  }),
+];
 
-const menu1 = new Menu({
-  name: "Menu 1",
-  description: "Menu 1 description",
-  published: true,
-  userId: user1.id,
-});
-
-const user2 = new User({
-  name: "Jane Doe",
-  email: "jane.doe@gmail.com",
-  password: "hashed-password",
-});
-
-const menu2 = new Menu({
-  name: "Menu 2",
-  description: "Menu 2 description",
-  published: true,
-  userId: user2.id,
-});
+const menus = [
+  new Menu({
+    name: "Menu 1",
+    description: "Menu 1 description",
+    published: true,
+    userId: users[0].id,
+  }),
+  new Menu({
+    name: "Menu 2",
+    description: "Menu 2 description",
+    published: true,
+    userId: users[1].id,
+  }),
+  new Menu({
+    name: "Menu 3",
+    description: "Menu 3 description",
+    published: false,
+    userId: users[0].id,
+  }),
+];
 
 describe("GetAllPublishedMenusService", () => {
   beforeAll(async () => {
-    await userRepository.add(user1);
-    await userRepository.add(user2);
+    await userRepository.add(users[0]);
+    await userRepository.add(users[1]);
   });
 
   afterAll(async () => {
@@ -44,8 +52,9 @@ describe("GetAllPublishedMenusService", () => {
   });
 
   beforeEach(async () => {
-    await menuRepository.add(menu1);
-    await menuRepository.add(menu2);
+    await menuRepository.add(menus[0]);
+    await menuRepository.add(menus[1]);
+    await menuRepository.add(menus[2]);
   });
 
   afterEach(async () => {

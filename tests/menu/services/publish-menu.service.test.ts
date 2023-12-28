@@ -41,7 +41,7 @@ describe("PublishMenuService", () => {
     await menuRepository.clear();
   });
 
-  it("Should publish a menu", async () => {
+  it("Should publish and update menu in database ", async () => {
     await sut.execute(request);
     const menus = await menuRepository.findAllByUser(user.id);
     const publishedMenu = menus.find((m) => m.id === request.id);
