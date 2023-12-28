@@ -7,46 +7,39 @@ import {
   GetMenuItemController,
   GetPublishedMenuItemController,
 } from "@/modules/menu-item/controllers";
-import { buyMenuItemServices } from "@/modules/menu-item/store";
+import {
+  buyAddMenuItemService,
+  buyDeleteMenuItemService,
+  buyEditMenuItemService,
+  buyGetAllMenuItemsService,
+  buyGetAllPublishedMenuItemsService,
+  buyGetMenuItemService,
+  buyGetPublishedMenuItemService,
+} from "@/modules/menu-item/store";
 
-type Store = {
-  addMenuItemController: AddMenuItemController;
-  deleteMenuItemController: DeleteMenuItemController;
-  getAllMenuItemsController: GetAllMenuItemsController;
-  editMenuItemController: EditMenuItemController;
-  getAllPublishedMenuItemsController: GetAllPublishedMenuItemsController;
-  getMenuItemController: GetMenuItemController;
-  getPublishedMenuItemController: GetPublishedMenuItemController;
-};
+// Setup
+const addMenuItemService = buyAddMenuItemService();
+const deleteMenuItemService = buyDeleteMenuItemService();
+const getAllMenuItemsService = buyGetAllMenuItemsService();
+const editMenuItemService = buyEditMenuItemService();
+const getAllPublishedMenuItemsService = buyGetAllPublishedMenuItemsService();
+const getMenuItemService = buyGetMenuItemService();
+const getPublishedMenuItemService = buyGetPublishedMenuItemService();
 
-const {
-  addMenuItemService,
-  deleteMenuItemService,
-  getAllMenuItemsService,
-  editMenuItemService,
-  getAllPublishedMenuItemsService,
-  getMenuItemService,
-  getPublishedMenuItemService,
-} = buyMenuItemServices();
+// Build
+const addMenuItem = new AddMenuItemController(addMenuItemService);
+const deleteMenuItem = new DeleteMenuItemController(deleteMenuItemService);
+const getAllMenuItems = new GetAllMenuItemsController(getAllMenuItemsService);
+const editMenuItem = new EditMenuItemController(editMenuItemService);
+const getAllPublishedMenuItems = new GetAllPublishedMenuItemsController(getAllPublishedMenuItemsService);
+const getMenuItem = new GetMenuItemController(getMenuItemService);
+const getPublishedMenuItem = new GetPublishedMenuItemController(getPublishedMenuItemService);
 
-const addMenuItemController = new AddMenuItemController(addMenuItemService);
-const deleteMenuItemController = new DeleteMenuItemController(deleteMenuItemService);
-const getAllMenuItemsController = new GetAllMenuItemsController(getAllMenuItemsService);
-const editMenuItemController = new EditMenuItemController(editMenuItemService);
-const getAllPublishedMenuItemsController = new GetAllPublishedMenuItemsController(
-  getAllPublishedMenuItemsService,
-);
-const getMenuItemController = new GetMenuItemController(getMenuItemService);
-const getPublishedMenuItemController = new GetPublishedMenuItemController(getPublishedMenuItemService);
-
-export const buyMenuItemControllers = (): Store => {
-  return {
-    addMenuItemController,
-    deleteMenuItemController,
-    getAllMenuItemsController,
-    editMenuItemController,
-    getAllPublishedMenuItemsController,
-    getMenuItemController,
-    getPublishedMenuItemController,
-  };
-};
+// Export
+export const buyAddMenuItemController = () => addMenuItem;
+export const buyDeleteMenuItemController = () => deleteMenuItem;
+export const buyGetAllMenuItemsController = () => getAllMenuItems;
+export const buyEditMenuItemController = () => editMenuItem;
+export const buyGetAllPublishedMenuItemsController = () => getAllPublishedMenuItems;
+export const buyGetMenuItemController = () => getMenuItem;
+export const buyGetPublishedMenuItemController = () => getPublishedMenuItem;

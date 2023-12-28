@@ -1,11 +1,11 @@
 import { Menu } from "@/modules/menu";
 import { User } from "@/modules/user";
 import { MenuItem } from "@/modules/menu-item";
-import { buyMenuItemRepository, buyMenuItemServices } from "@/modules/menu-item/store";
+import { buyDeleteMenuItemService, buyMenuItemRepository } from "@/modules/menu-item/store";
 import { buyMenuRepository } from "@/modules/menu/store";
 import { buyUserRepository } from "@/modules/user/store";
 
-const { deleteMenuItemService: sut } = buyMenuItemServices();
+const sut = buyDeleteMenuItemService();
 const userRepository = buyUserRepository();
 const menuRepository = buyMenuRepository();
 const menuItemRepository = buyMenuItemRepository();

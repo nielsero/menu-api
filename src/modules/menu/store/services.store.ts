@@ -12,6 +12,7 @@ import {
 import { buyMenuRepository, buyMenuValidators } from "@/modules/menu/store";
 import { buyMenuItemRepository } from "@/modules/menu-item/store";
 
+// Setup
 const menuRepository = buyMenuRepository();
 const menuItemRepository = buyMenuItemRepository();
 const {
@@ -24,25 +25,44 @@ const {
   getMenuValidator,
   getPublishedMenuValidator,
 } = buyMenuValidators();
-const createMenuService = new CreateMenuService({ menuRepository, requestValidator: createMenuValidator });
+
+// Build
+const createMenuService = new CreateMenuService({
+  menuRepository,
+  requestValidator: createMenuValidator,
+});
 const deleteMenuService = new DeleteMenuService({
   menuRepository,
   menuItemRepository,
   requestValidator: deleteMenuValidator,
 });
-const getAllMenusService = new GetAllMenusService({ menuRepository, requestValidator: getAllMenusValidator });
-const editMenuService = new EditMenuService({ menuRepository, requestValidator: editMenuValidator });
+const getAllMenusService = new GetAllMenusService({
+  menuRepository,
+  requestValidator: getAllMenusValidator,
+});
+const editMenuService = new EditMenuService({
+  menuRepository,
+  requestValidator: editMenuValidator,
+});
 const getAllPublishedMenusService = new GetAllPublishedMenusService({ menuRepository });
-const publishMenuService = new PublishMenuService({ menuRepository, requestValidator: publishMenuValidator });
+const publishMenuService = new PublishMenuService({
+  menuRepository,
+  requestValidator: publishMenuValidator,
+});
 const unpublishMenuService = new UnpublishMenuService({
   menuRepository,
   requestValidator: unpublishMenuValidator,
 });
-const getMenuService = new GetMenuService({ menuRepository, requestValidator: getMenuValidator });
+const getMenuService = new GetMenuService({
+  menuRepository,
+  requestValidator: getMenuValidator,
+});
 const getPublishedMenuService = new GetPublishedMenuService({
   menuRepository,
   requestValidator: getPublishedMenuValidator,
 });
+
+// Export
 export const buyCreateMenuService = () => createMenuService;
 export const buyDeleteMenuService = () => deleteMenuService;
 export const buyGetAllMenusService = () => getAllMenusService;

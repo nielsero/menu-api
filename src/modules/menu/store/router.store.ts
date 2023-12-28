@@ -11,6 +11,7 @@ import {
   buyUnpublishMenuController,
 } from "@/modules/menu/store";
 
+// Setup
 const createMenuController = buyCreateMenuController();
 const deleteMenuController = buyDeleteMenuController();
 const getAllMenusController = buyGetAllMenusController();
@@ -20,6 +21,8 @@ const publishMenuController = buyPublishMenuController();
 const unpublishMenuController = buyUnpublishMenuController();
 const getMenuController = buyGetMenuController();
 const getPublishedMenuController = buyGetPublishedMenuController();
+
+// Build
 const menuRouter = new MenuRouter({
   createMenuController,
   deleteMenuController,
@@ -32,4 +35,5 @@ const menuRouter = new MenuRouter({
   getPublishedMenuController,
 });
 
+// Export
 export const buyMenuRouter = () => menuRouter;

@@ -1,8 +1,33 @@
 import { MenuItemRouter } from "@/modules/menu-item";
-import { buyMenuItemControllers } from "@/modules/menu-item/store";
+import {
+  buyAddMenuItemController,
+  buyDeleteMenuItemController,
+  buyEditMenuItemController,
+  buyGetAllMenuItemsController,
+  buyGetAllPublishedMenuItemsController,
+  buyGetMenuItemController,
+  buyGetPublishedMenuItemController,
+} from "@/modules/menu-item/store";
 
-type Store = MenuItemRouter;
+// Setup
+const addMenuItemController = buyAddMenuItemController();
+const deleteMenuItemController = buyDeleteMenuItemController();
+const getAllMenuItemsController = buyGetAllMenuItemsController();
+const editMenuItemController = buyEditMenuItemController();
+const getAllPublishedMenuItemsController = buyGetAllPublishedMenuItemsController();
+const getMenuItemController = buyGetMenuItemController();
+const getPublishedMenuItemController = buyGetPublishedMenuItemController();
 
-const menuItemRouter = new MenuItemRouter(buyMenuItemControllers());
+// Build
+const menuItemRouter = new MenuItemRouter({
+  addMenuItemController,
+  deleteMenuItemController,
+  getAllMenuItemsController,
+  editMenuItemController,
+  getAllPublishedMenuItemsController,
+  getMenuItemController,
+  getPublishedMenuItemController,
+});
 
-export const buyMenuItemRouter = (): Store => menuItemRouter;
+// Export
+export const buyMenuItemRouter = () => menuItemRouter;

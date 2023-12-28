@@ -21,6 +21,7 @@ import {
   buyUnpublishMenuService,
 } from "@/modules/menu/store";
 
+// Setup
 const createMenuService = buyCreateMenuService();
 const deleteMenuService = buyDeleteMenuService();
 const getAllMenusService = buyGetAllMenusService();
@@ -30,6 +31,8 @@ const publishMenuService = buyPublishMenuService();
 const unpublishMenuService = buyUnpublishMenuService();
 const getMenuService = buyGetMenuService();
 const getPublishedMenuService = buyGetPublishedMenuService();
+
+// Build
 const createMenuController = new CreateMenuController(createMenuService);
 const deleteMenuController = new DeleteMenuController(deleteMenuService);
 const getAllMenusController = new GetAllMenusController(getAllMenusService);
@@ -39,6 +42,8 @@ const publishMenuController = new PublishMenuController(publishMenuService);
 const unpublishMenuController = new UnpublishMenuController(unpublishMenuService);
 const getMenuController = new GetMenuController(getMenuService);
 const getPublishedMenuController = new GetPublishedMenuController(getPublishedMenuService);
+
+// Export
 export const buyCreateMenuController = () => createMenuController;
 export const buyDeleteMenuController = () => deleteMenuController;
 export const buyGetAllMenusController = () => getAllMenusController;

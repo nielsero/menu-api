@@ -10,16 +10,7 @@ import {
 import { buyMenuRepository } from "@/modules/menu/store";
 import { buyMenuItemRepository, buyMenuItemValidators } from "@/modules/menu-item/store";
 
-type Store = {
-  addMenuItemService: AddMenuItemService;
-  deleteMenuItemService: DeleteMenuItemService;
-  getAllMenuItemsService: GetAllMenuItemsService;
-  editMenuItemService: EditMenuItemService;
-  getAllPublishedMenuItemsService: GetAllPublishedMenuItemsService;
-  getMenuItemService: GetMenuItemService;
-  getPublishedMenuItemService: GetPublishedMenuItemService;
-};
-
+// Setup
 const menuRepository = buyMenuRepository();
 const menuItemRepository = buyMenuItemRepository();
 const {
@@ -31,6 +22,8 @@ const {
   getMenuItemValidator,
   getPublishedMenuItemValidator,
 } = buyMenuItemValidators();
+
+// Build
 const addMenuItemService = new AddMenuItemService({
   menuRepository,
   menuItemRepository,
@@ -67,14 +60,11 @@ const getPublishedMenuItemService = new GetPublishedMenuItemService({
   requestValidator: getPublishedMenuItemValidator,
 });
 
-export const buyMenuItemServices = (): Store => {
-  return {
-    addMenuItemService,
-    deleteMenuItemService,
-    getAllMenuItemsService,
-    editMenuItemService,
-    getAllPublishedMenuItemsService,
-    getMenuItemService,
-    getPublishedMenuItemService,
-  };
-};
+// Export
+export const buyAddMenuItemService = () => addMenuItemService;
+export const buyDeleteMenuItemService = () => deleteMenuItemService;
+export const buyGetAllMenuItemsService = () => getAllMenuItemsService;
+export const buyEditMenuItemService = () => editMenuItemService;
+export const buyGetAllPublishedMenuItemsService = () => getAllPublishedMenuItemsService;
+export const buyGetMenuItemService = () => getMenuItemService;
+export const buyGetPublishedMenuItemService = () => getPublishedMenuItemService;

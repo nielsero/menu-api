@@ -2,10 +2,10 @@ import { Menu } from "@/modules/menu";
 import { MenuItem } from "@/modules/menu-item";
 import { User } from "@/modules/user";
 import { buyMenuRepository } from "@/modules/menu/store";
-import { buyMenuItemServices, buyMenuItemRepository } from "@/modules/menu-item/store";
+import { buyMenuItemRepository, buyGetAllPublishedMenuItemsService } from "@/modules/menu-item/store";
 import { buyUserRepository } from "@/modules/user/store";
 
-const { getAllPublishedMenuItemsService: sut } = buyMenuItemServices();
+const sut = buyGetAllPublishedMenuItemsService();
 const userRepository = buyUserRepository();
 const menuRepository = buyMenuRepository();
 const menuItemRepository = buyMenuItemRepository();
