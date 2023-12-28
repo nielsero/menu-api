@@ -2,7 +2,6 @@ import { MenuItemNotFound, MenuNotFound } from "@/shared/errors";
 import { MenuItem } from "@/modules/menu-item";
 import { MenuRepository } from "@/modules/menu/protocols";
 import { MenuItemRepository } from "@/modules/menu-item/protocols";
-import { RequestValidator } from "@/shared/protocols";
 
 export type GetPublishedMenuItemRequest = {
   id: string;
@@ -11,25 +10,21 @@ export type GetPublishedMenuItemRequest = {
 
 export type GetPublishedMenuItemResponse = MenuItem;
 
-export type GetPublishedMenuItemProviders = {
-  requestValidator: RequestValidator<GetPublishedMenuItemRequest>;
+type Providers = {
   menuRepository: MenuRepository;
   menuItemRepository: MenuItemRepository;
 };
 
 export class GetPublishedMenuItemService {
-  private readonly requestValidator: RequestValidator<GetPublishedMenuItemRequest>;
   private readonly menuRepository: MenuRepository;
   private readonly menuItemRepository: MenuItemRepository;
 
-  constructor(private readonly providers: GetPublishedMenuItemProviders) {
-    this.requestValidator = providers.requestValidator;
+  constructor(private readonly providers: Providers) {
     this.menuRepository = providers.menuRepository;
     this.menuItemRepository = providers.menuItemRepository;
   }
 
   async execute(request: GetPublishedMenuItemRequest): Promise<GetPublishedMenuItemResponse> {
-    await this.requestValidator.validate(request);
     const menus = await this.menuRepository.findAllPublished();
     const menu = menus.find((menu) => menu.id === request.menuId);
     if (!menu) throw new MenuNotFound();

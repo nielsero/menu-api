@@ -1,4 +1,3 @@
-import { checkRequiredFields } from "@/utils/check-required-fields";
 import { Request, Response } from "express";
 import { EditMenuItemRequest, EditMenuItemService } from "@/modules/menu-item/services";
 
@@ -12,7 +11,6 @@ export class EditMenuItemController {
   ) {
     const { menuId, id } = req.params;
     const userId = res.locals.userId;
-    checkRequiredFields({ id, menuId }, ["id", "menuId"]);
     const response = await this.service.execute({ ...req.body, id, userId, menuId });
     return res.status(200).send(response);
   }

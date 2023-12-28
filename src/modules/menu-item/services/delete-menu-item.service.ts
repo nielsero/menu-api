@@ -1,4 +1,3 @@
-import { RequestValidator } from "@/shared/protocols";
 import { MenuRepository } from "@/modules/menu/protocols";
 import { MenuItemRepository } from "@/modules/menu-item/protocols";
 import { MenuItemNotFound, MenuNotFound } from "@/shared/errors";
@@ -9,27 +8,21 @@ export type DeleteMenuItemRequest = {
   userId: string;
 };
 
-export type DeleteMenuItemResponse = void;
-
-export type DeleteMenuItemProviders = {
-  requestValidator: RequestValidator<DeleteMenuItemRequest>;
+type Providers = {
   menuRepository: MenuRepository;
   menuItemRepository: MenuItemRepository;
 };
 
 export class DeleteMenuItemService {
-  private readonly requestValidator: RequestValidator<DeleteMenuItemRequest>;
   private readonly menuRepository: MenuRepository;
   private readonly menuItemRepository: MenuItemRepository;
 
-  constructor(private readonly providers: DeleteMenuItemProviders) {
-    this.requestValidator = providers.requestValidator;
+  constructor(private readonly providers: Providers) {
     this.menuRepository = providers.menuRepository;
     this.menuItemRepository = providers.menuItemRepository;
   }
 
-  async execute(request: DeleteMenuItemRequest): Promise<DeleteMenuItemResponse> {
-    await this.requestValidator.validate(request);
+  async execute(request: DeleteMenuItemRequest): Promise<void> {
     const menus = await this.menuRepository.findAllByUser(request.userId);
     const menu = menus.find((menu) => menu.id === request.menuId);
     if (!menu) throw new MenuNotFound();

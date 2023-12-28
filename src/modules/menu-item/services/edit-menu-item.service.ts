@@ -1,4 +1,3 @@
-import { RequestValidator } from "@/shared/protocols";
 import { MenuItem } from "@/modules/menu-item";
 import { MenuRepository } from "@/modules/menu/protocols";
 import { MenuItemRepository } from "@/modules/menu-item/protocols";
@@ -17,25 +16,21 @@ export type EditMenuItemRequest = {
 
 export type EditMenuItemResponse = MenuItem;
 
-export type EditMenuItemProviders = {
-  requestValidator: RequestValidator<EditMenuItemRequest>;
+type Providers = {
   menuRepository: MenuRepository;
   menuItemRepository: MenuItemRepository;
 };
 
 export class EditMenuItemService {
-  private readonly requestValidator: RequestValidator<EditMenuItemRequest>;
   private readonly menuRepository: MenuRepository;
   private readonly menuItemRepository: MenuItemRepository;
 
-  constructor(private readonly providers: EditMenuItemProviders) {
-    this.requestValidator = providers.requestValidator;
+  constructor(private readonly providers: Providers) {
     this.menuRepository = providers.menuRepository;
     this.menuItemRepository = providers.menuItemRepository;
   }
 
   async execute(request: EditMenuItemRequest): Promise<EditMenuItemResponse> {
-    await this.requestValidator.validate(request);
     const menus = await this.menuRepository.findAllByUser(request.userId);
     const menu = menus.find((menu) => menu.id === request.menuId);
     if (!menu) throw new MenuNotFound();

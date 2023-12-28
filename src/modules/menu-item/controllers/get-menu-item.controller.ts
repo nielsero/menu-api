@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { checkRequiredFields } from "@/utils/check-required-fields";
 import { GetMenuItemService } from "@/modules/menu-item/services";
 
 export class GetMenuItemController {
@@ -8,8 +7,7 @@ export class GetMenuItemController {
   async handle(req: Request<{ menuId: string; id: string }>, res: Response) {
     const { menuId, id } = req.params;
     const userId = res.locals.userId;
-    checkRequiredFields({ id, menuId }, ["id", "menuId"]);
-    const menuItem = await this.service.execute({ id, userId, menuId });
-    return res.status(200).json(menuItem);
+    const response = await this.service.execute({ id, userId, menuId });
+    return res.status(200).json(response);
   }
 }
