@@ -1,4 +1,4 @@
-import { ZodRequestValidator } from "@/shared/providers";
+import { ZodRequestValidator } from "@/shared/providers/validators";
 import { z } from "zod";
 import { GetAllMenuItemsRequest } from "@/modules/menu-item/services";
 

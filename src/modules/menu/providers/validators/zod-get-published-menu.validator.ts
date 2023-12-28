@@ -1,5 +1,5 @@
 import { GetPublishedMenuRequest } from "@/modules/menu/services";
-import { ZodRequestValidator } from "@/shared/providers";
+import { ZodRequestValidator } from "@/shared/providers/validators";
 import { z } from "zod";
 
 const schema = z.object({
