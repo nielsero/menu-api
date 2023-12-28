@@ -6,12 +6,14 @@ import {
 import {
   buyGetUserSessionService,
   buyLoginUserService,
+  buyLoginUserValidator,
   buyRegisterUserService,
   buyRegisterUserValidator,
 } from "@/modules/auth/store";
 
 // Setup
 const registerUserValidator = buyRegisterUserValidator();
+const loginUserValidator = buyLoginUserValidator();
 const registerUserService = buyRegisterUserService();
 const loginUserService = buyLoginUserService();
 const getUserSessionService = buyGetUserSessionService();
@@ -21,7 +23,10 @@ const registerUserController = new RegisterUserController({
   requestValidator: registerUserValidator,
   service: registerUserService,
 });
-const loginUserController = new LoginUserController(loginUserService);
+const loginUserController = new LoginUserController({
+  requestValidator: loginUserValidator,
+  service: loginUserService,
+});
 const getUserSessionController = new GetUserSessionController(getUserSessionService);
 
 // Export

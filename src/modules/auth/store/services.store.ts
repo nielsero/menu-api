@@ -1,10 +1,5 @@
 import { GetUserSessionService, LoginUserService, RegisterUserService } from "@/modules/auth/services";
-import {
-  buyHashProvider,
-  buyLoginUserValidator,
-  buyRegisterUserValidator,
-  buyTokenProvider,
-} from "@/modules/auth/store";
+import { buyHashProvider, buyTokenProvider } from "@/modules/auth/store";
 import { buyCreateUserService, buyGetUserByEmailService, buyGetUserByIdService } from "@/modules/user/store";
 
 // Setup
@@ -13,7 +8,6 @@ const hashProvider = buyHashProvider();
 const createUserService = buyCreateUserService();
 const getUserByEmailService = buyGetUserByEmailService();
 const getUserByIdService = buyGetUserByIdService();
-const loginUserValidator = buyLoginUserValidator();
 
 // Build
 const registerUserService = new RegisterUserService({
@@ -25,7 +19,6 @@ const loginUserService = new LoginUserService({
   tokenProvider,
   hashProvider,
   getUserByEmailService,
-  requestValidator: loginUserValidator,
 });
 const getUserSessionService = new GetUserSessionService(getUserByIdService);
 

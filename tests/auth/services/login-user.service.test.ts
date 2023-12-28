@@ -29,14 +29,6 @@ describe("LoginUserService", () => {
     expect(response.token).toBeDefined();
   });
 
-  it("Should throw an error if request is invalid", async () => {
-    const invalidEmailRequest = {
-      email: "john.doe",
-      password: "password",
-    };
-    await expect(sut.execute(invalidEmailRequest)).rejects.toThrow();
-  });
-
   it("Should throw an error if user is not found", async () => {
     await expect(sut.execute(request)).rejects.toThrow();
   });
