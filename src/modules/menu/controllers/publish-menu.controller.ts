@@ -1,15 +1,25 @@
 import { Request, Response } from "express";
-import { PublishMenuService } from "@/modules/menu/services";
-import { checkRequiredFields } from "@/utils/check-required-fields";
+import { PublishMenuRequest, PublishMenuService } from "@/modules/menu/services";
+import { RequestValidator } from "@/shared/protocols";
+
+type Providers = {
+  validator: RequestValidator<Omit<PublishMenuRequest, "userId">>;
+  service: PublishMenuService;
+};
 
 export class PublishMenuController {
-  constructor(private readonly service: PublishMenuService) {}
+  private readonly validator: RequestValidator<Omit<PublishMenuRequest, "userId">>;
+  private readonly service: PublishMenuService;
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  constructor(private readonly providers: Providers) {
+    this.validator = providers.validator;
+    this.service = providers.service;
+  }
+
   async handle(req: Request<{ id: string }>, res: Response) {
-    const { id } = req.params;
     const userId = res.locals.userId;
-    checkRequiredFields({ id }, ["id"]);
+    const { id } = req.params;
+    await this.validator.validate({ id });
     const response = await this.service.execute({ id, userId });
     return res.status(200).json(response);
   }

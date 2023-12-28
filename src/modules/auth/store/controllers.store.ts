@@ -20,11 +20,11 @@ const getUserSessionService = buyGetUserSessionService();
 
 // Build
 const registerUserController = new RegisterUserController({
-  requestValidator: registerUserValidator,
+  validator: registerUserValidator,
   service: registerUserService,
 });
 const loginUserController = new LoginUserController({
-  requestValidator: loginUserValidator,
+  validator: loginUserValidator,
   service: loginUserService,
 });
 const getUserSessionController = new GetUserSessionController(getUserSessionService);

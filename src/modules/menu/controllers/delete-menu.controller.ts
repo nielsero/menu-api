@@ -1,15 +1,25 @@
 import { Request, Response } from "express";
-import { DeleteMenuService } from "@/modules/menu/services";
-import { checkRequiredFields } from "@/utils/check-required-fields";
+import { DeleteMenuRequest, DeleteMenuService } from "@/modules/menu/services";
+import { RequestValidator } from "@/shared/protocols";
+
+type Providers = {
+  validator: RequestValidator<Omit<DeleteMenuRequest, "userId">>;
+  service: DeleteMenuService;
+};
 
 export class DeleteMenuController {
-  constructor(private readonly service: DeleteMenuService) {}
+  private readonly validator: RequestValidator<Omit<DeleteMenuRequest, "userId">>;
+  private readonly service: DeleteMenuService;
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  constructor(private readonly providers: Providers) {
+    this.validator = providers.validator;
+    this.service = providers.service;
+  }
+
   async handle(req: Request<{ id: string }>, res: Response) {
-    const { id } = req.params;
     const userId = res.locals.userId;
-    checkRequiredFields({ id }, ["id"]);
+    const { id } = req.params;
+    await this.validator.validate({ id });
     await this.service.execute({ id, userId });
     return res.sendStatus(204);
   }

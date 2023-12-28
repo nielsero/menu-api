@@ -17,23 +17,23 @@ const menuRepository = buyMenuRepository();
 const menuItemRepository = buyMenuItemRepository();
 
 // Build
-const createMenuService = new CreateMenuService(menuRepository);
-const deleteMenuService = new DeleteMenuService({ menuRepository, menuItemRepository });
-const getAllMenusService = new GetAllMenusService(menuRepository);
-const editMenuService = new EditMenuService(menuRepository);
-const getAllPublishedMenusService = new GetAllPublishedMenusService(menuRepository);
-const publishMenuService = new PublishMenuService(menuRepository);
-const unpublishMenuService = new UnpublishMenuService(menuRepository);
-const getMenuService = new GetMenuService(menuRepository);
-const getPublishedMenuService = new GetPublishedMenuService(menuRepository);
+const createMenu = new CreateMenuService(menuRepository);
+const deleteMenu = new DeleteMenuService({ menuRepository, menuItemRepository });
+const getAllMenus = new GetAllMenusService(menuRepository);
+const editMenu = new EditMenuService(menuRepository);
+const getAllPublishedMenus = new GetAllPublishedMenusService(menuRepository);
+const publishMenu = new PublishMenuService(menuRepository);
+const unpublishMenu = new UnpublishMenuService(menuRepository);
+const getMenu = new GetMenuService(menuRepository);
+const getPublishedMenu = new GetPublishedMenuService(menuRepository);
 
 // Export
-export const buyCreateMenuService = () => createMenuService;
-export const buyDeleteMenuService = () => deleteMenuService;
-export const buyGetAllMenusService = () => getAllMenusService;
-export const buyEditMenuService = () => editMenuService;
-export const buyGetAllPublishedMenusService = () => getAllPublishedMenusService;
-export const buyPublishMenuService = () => publishMenuService;
-export const buyUnpublishMenuService = () => unpublishMenuService;
-export const buyGetMenuService = () => getMenuService;
-export const buyGetPublishedMenuService = () => getPublishedMenuService;
+export const buyCreateMenuService = () => createMenu;
+export const buyDeleteMenuService = () => deleteMenu;
+export const buyGetAllMenusService = () => getAllMenus;
+export const buyEditMenuService = () => editMenu;
+export const buyGetAllPublishedMenusService = () => getAllPublishedMenus;
+export const buyPublishMenuService = () => publishMenu;
+export const buyUnpublishMenuService = () => unpublishMenu;
+export const buyGetMenuService = () => getMenu;
+export const buyGetPublishedMenuService = () => getPublishedMenu;

@@ -11,8 +11,10 @@ import {
 } from "@/modules/menu/controllers";
 import {
   buyCreateMenuService,
+  buyCreateMenuValidator,
   buyDeleteMenuService,
   buyEditMenuService,
+  buyEditMenuValidator,
   buyGetAllMenusService,
   buyGetAllPublishedMenusService,
   buyGetMenuService,
@@ -20,8 +22,13 @@ import {
   buyPublishMenuService,
   buyUnpublishMenuService,
 } from "@/modules/menu/store";
+import { buyRequestWithIdValidator } from "@/shared/store";
+import { get } from "http";
 
 // Setup
+const requestWithIdValidator = buyRequestWithIdValidator();
+const createMenuValidator = buyCreateMenuValidator();
+const editMenuValidator = buyEditMenuValidator();
 const createMenuService = buyCreateMenuService();
 const deleteMenuService = buyDeleteMenuService();
 const getAllMenusService = buyGetAllMenusService();
@@ -33,15 +40,36 @@ const getMenuService = buyGetMenuService();
 const getPublishedMenuService = buyGetPublishedMenuService();
 
 // Build
-const createMenuController = new CreateMenuController(createMenuService);
-const deleteMenuController = new DeleteMenuController(deleteMenuService);
+const createMenuController = new CreateMenuController({
+  validator: createMenuValidator,
+  service: createMenuService,
+});
+const deleteMenuController = new DeleteMenuController({
+  validator: requestWithIdValidator,
+  service: deleteMenuService,
+});
 const getAllMenusController = new GetAllMenusController(getAllMenusService);
-const editMenuController = new EditMenuController(editMenuService);
+const editMenuController = new EditMenuController({
+  validator: editMenuValidator,
+  service: editMenuService,
+});
 const getAllPublishedMenusController = new GetAllPublishedMenusController(getAllPublishedMenusService);
-const publishMenuController = new PublishMenuController(publishMenuService);
-const unpublishMenuController = new UnpublishMenuController(unpublishMenuService);
-const getMenuController = new GetMenuController(getMenuService);
-const getPublishedMenuController = new GetPublishedMenuController(getPublishedMenuService);
+const publishMenuController = new PublishMenuController({
+  validator: requestWithIdValidator,
+  service: publishMenuService,
+});
+const unpublishMenuController = new UnpublishMenuController({
+  validator: requestWithIdValidator,
+  service: unpublishMenuService,
+});
+const getMenuController = new GetMenuController({
+  validator: requestWithIdValidator,
+  service: getMenuService,
+});
+const getPublishedMenuController = new GetPublishedMenuController({
+  validator: requestWithIdValidator,
+  service: getPublishedMenuService,
+});
 
 // Export
 export const buyCreateMenuController = () => createMenuController;
