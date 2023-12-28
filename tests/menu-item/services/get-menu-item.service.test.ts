@@ -16,33 +16,34 @@ const user = new User({
   password: "hashed-password",
 });
 
-const menu = new Menu({
-  name: "Menu 1",
-  description: "Menu 1 description",
-  userId: user.id,
-});
-
-const anotherMenu = new Menu({
-  name: "Menu 2",
-  description: "Menu 2 description",
-  userId: user.id,
-});
+const menus = [
+  new Menu({
+    name: "Menu 1",
+    description: "Menu 1 description",
+    userId: user.id,
+  }),
+  new Menu({
+    name: "Menu 2",
+    description: "Menu 2 description",
+    userId: user.id,
+  }),
+];
 
 const menuItem = new MenuItem({
   name: "Menu Item 1",
   description: "Menu Item 1 description",
   price: 100,
   type: "drink",
-  menuId: menu.id,
+  menuId: menus[0].id,
 });
 
-const request = { id: menuItem.id, menuId: menu.id, userId: user.id };
+const request = { id: menuItem.id, menuId: menus[0].id, userId: user.id };
 
 describe("GetMenuItemService", () => {
   beforeAll(async () => {
     await userRepository.add(user);
-    await menuRepository.add(menu);
-    await menuRepository.add(anotherMenu);
+    await menuRepository.add(menus[0]);
+    await menuRepository.add(menus[1]);
     await menuItemRepository.add(menuItem);
   });
 
@@ -68,7 +69,7 @@ describe("GetMenuItemService", () => {
   });
 
   it("Should throw an error if menu item does not belong to the menu", async () => {
-    const wrongMenuRequest = { ...request, menuId: anotherMenu.id };
+    const wrongMenuRequest = { ...request, menuId: menus[1].id };
     await expect(sut.execute(wrongMenuRequest)).rejects.toThrow();
   });
 });

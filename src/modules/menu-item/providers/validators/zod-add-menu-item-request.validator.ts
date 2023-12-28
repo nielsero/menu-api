@@ -4,7 +4,7 @@ import { AddMenuItemRequest } from "@/modules/menu-item/services";
 
 const schema = z
   .object({
-    name: z.string().min(3).optional(),
+    name: z.string().min(3),
     price: z.number().min(0),
     type: z.enum(["food", "drink"]),
     description: z.string().optional(),

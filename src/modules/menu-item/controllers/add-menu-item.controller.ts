@@ -20,7 +20,7 @@ export class AddMenuItemController {
   async handle(req: Request<{ menuId: string }, {}, Omit<AddMenuItemRequest, "userId">>, res: Response) {
     const userId = res.locals.userId;
     const { menuId } = req.params;
-    this.validator.validate({ ...req.body, menuId });
+    await this.validator.validate({ ...req.body, menuId });
     const response = await this.service.execute({ ...req.body, userId, menuId });
     return res.status(201).json(response);
   }

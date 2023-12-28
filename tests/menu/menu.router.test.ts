@@ -103,7 +103,6 @@ describe("MenuRouter", () => {
         published: false,
         userId: users[0].id,
       };
-      console.log(body);
       expect(status).toBe(201);
       expect(body).toEqual(expectedResponse);
     });

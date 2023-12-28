@@ -29,21 +29,22 @@ const unpublishedMenu = new Menu({
   userId: user.id,
 });
 
-const publishedMenuItem1 = new MenuItem({
-  name: "Published Menu Item 1",
-  description: "Published Menu Item description",
-  price: 100,
-  type: "drink",
-  menuId: publishedMenu.id,
-});
-
-const publishedMenuItem2 = new MenuItem({
-  name: "Published Menu Item 2",
-  description: "Published Menu Item description",
-  price: 100,
-  type: "drink",
-  menuId: publishedMenu.id,
-});
+const publishedMenuItems = [
+  new MenuItem({
+    name: "Published Menu Item 1",
+    description: "Published Menu Item description",
+    price: 100,
+    type: "drink",
+    menuId: publishedMenu.id,
+  }),
+  new MenuItem({
+    name: "Published Menu Item 2",
+    description: "Published Menu Item description",
+    price: 200,
+    type: "food",
+    menuId: publishedMenu.id,
+  }),
+];
 
 const request = { menuId: publishedMenu.id };
 
@@ -60,8 +61,8 @@ describe("GetAllPublishedMenuItemsService", () => {
   });
 
   beforeEach(async () => {
-    await menuItemRepository.add(publishedMenuItem1);
-    await menuItemRepository.add(publishedMenuItem2);
+    await menuItemRepository.add(publishedMenuItems[0]);
+    await menuItemRepository.add(publishedMenuItems[1]);
   });
 
   afterEach(async () => {

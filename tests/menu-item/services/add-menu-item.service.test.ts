@@ -48,37 +48,17 @@ describe("AddMenuItemService", () => {
   it("Should add menu item to the database", async () => {
     await sut.execute(request);
     const menuItems = await menuItemRepository.findAllInMenu(menu.id);
+    const expectedMenuItem = {
+      id: expect.any(String),
+      name: request.name,
+      description: request.description,
+      image: expect.any(String),
+      price: request.price,
+      type: request.type,
+      menuId: request.menuId,
+    };
     expect(menuItems).toHaveLength(1);
-  });
-
-  it("Should throw an error if request is invalid", async () => {
-    const nameTooShortRequest = {
-      name: "Me",
-      description: "Menu Item 1 description",
-      price: 100,
-      type: "drink",
-      menuId: menu.id,
-      userId: user.id,
-    };
-    const priceTooLowRequest = {
-      name: "Menu Item 1",
-      description: "Menu Item 1 description",
-      price: -1,
-      type: "drink",
-      menuId: menu.id,
-      userId: user.id,
-    };
-    const invalidTypeRequest = {
-      name: "Menu Item 1",
-      description: "Menu Item 1 description",
-      price: 100,
-      type: "invalid",
-      menuId: menu.id,
-      userId: user.id,
-    };
-    await expect(sut.execute(nameTooShortRequest)).rejects.toThrow();
-    await expect(sut.execute(priceTooLowRequest)).rejects.toThrow();
-    await expect(sut.execute(invalidTypeRequest)).rejects.toThrow();
+    expect(menuItems[0]).toEqual(expectedMenuItem);
   });
 
   it("Should throw an error if menu does not exist", async () => {

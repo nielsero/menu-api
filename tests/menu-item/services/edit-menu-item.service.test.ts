@@ -16,24 +16,25 @@ const user = new User({
   password: "hashed-password",
 });
 
-const menu = new Menu({
-  name: "Menu 1",
-  description: "Menu 1 description",
-  userId: user.id,
-});
-
-const anotherMenu = new Menu({
-  name: "Menu 2",
-  description: "Menu 2 description",
-  userId: user.id,
-});
+const menus = [
+  new Menu({
+    name: "Menu 1",
+    description: "Menu 1 description",
+    userId: user.id,
+  }),
+  new Menu({
+    name: "Menu 2",
+    description: "Menu 2 description",
+    userId: user.id,
+  }),
+];
 
 const menuItem = new MenuItem({
   name: "Menu Item 1",
   description: "Menu Item 1 description",
   price: 100,
   type: "drink",
-  menuId: menu.id,
+  menuId: menus[0].id,
 });
 
 const request = {
@@ -42,15 +43,15 @@ const request = {
   description: "Updated Menu Item description",
   price: 200,
   type: "food",
-  menuId: menu.id,
+  menuId: menus[0].id,
   userId: user.id,
 };
 
 describe("EditMenuItemService", () => {
   beforeAll(async () => {
     await userRepository.add(user);
-    await menuRepository.add(menu);
-    await menuRepository.add(anotherMenu);
+    await menuRepository.add(menus[0]);
+    await menuRepository.add(menus[1]);
   });
 
   afterAll(async () => {
@@ -68,7 +69,7 @@ describe("EditMenuItemService", () => {
 
   it("Should update menu item and save it to the database", async () => {
     await sut.execute(request);
-    const menuItems = await menuItemRepository.findAllInMenu(menu.id);
+    const menuItems = await menuItemRepository.findAllInMenu(menus[0].id);
     const updatedMenuItem = menuItems.find((item) => item.id === request.id);
     const expectedMenuItem = {
       id: request.id,
@@ -102,7 +103,7 @@ describe("EditMenuItemService", () => {
       description: "Updated Menu Item description",
       price: 200,
       type: "food",
-      menuId: menu.id,
+      menuId: menus[0].id,
       userId: user.id,
     };
     await expect(sut.execute(invalidMenuItemRequest)).rejects.toThrow();
@@ -115,43 +116,10 @@ describe("EditMenuItemService", () => {
       description: "Updated Menu Item description",
       price: 200,
       type: "food",
-      menuId: anotherMenu.id,
+      menuId: menus[1].id,
       userId: user.id,
     };
     await expect(sut.execute(wrongMenuRequest)).rejects.toThrow();
-  });
-
-  it("Should throw an error if request is invalid", async () => {
-    const nameTooShortRequest = {
-      id: menuItem.id,
-      name: "Me",
-      description: "Updated Menu Item description",
-      price: 200,
-      type: "food",
-      menuId: menu.id,
-      userId: user.id,
-    };
-    const negativePriceRequest = {
-      id: menuItem.id,
-      name: "Updated Menu Item",
-      description: "Updated Menu Item description",
-      price: -200,
-      type: "food",
-      menuId: menu.id,
-      userId: user.id,
-    };
-    const invalidTypeRequest = {
-      id: menuItem.id,
-      name: "Updated Menu Item",
-      description: "Updated Menu Item description",
-      price: 200,
-      type: "invalid-type",
-      menuId: menu.id,
-      userId: user.id,
-    };
-    await expect(sut.execute(nameTooShortRequest)).rejects.toThrow();
-    await expect(sut.execute(negativePriceRequest)).rejects.toThrow();
-    await expect(sut.execute(invalidTypeRequest)).rejects.toThrow();
   });
 
   it("Should throw an error if name is already in use", async () => {
@@ -160,7 +128,7 @@ describe("EditMenuItemService", () => {
       description: "Menu Item 2 description",
       price: 200,
       type: "food",
-      menuId: menu.id,
+      menuId: menus[0].id,
     });
     await menuItemRepository.add(anotherMenuItem);
     const sameNameRequest = {
@@ -169,7 +137,7 @@ describe("EditMenuItemService", () => {
       description: "Updated Menu Item description",
       price: 200,
       type: "food",
-      menuId: menu.id,
+      menuId: menus[0].id,
       userId: user.id,
     };
     await expect(sut.execute(sameNameRequest)).rejects.toThrow();
@@ -182,11 +150,11 @@ describe("EditMenuItemService", () => {
       description: "Updated Menu Item description",
       price: 200,
       type: "food",
-      menuId: menu.id,
+      menuId: menus[0].id,
       userId: user.id,
     };
     await sut.execute(currentNameRequest);
-    const menuItems = await menuItemRepository.findAllInMenu(menu.id);
+    const menuItems = await menuItemRepository.findAllInMenu(menus[0].id);
     const updatedMenuItem = menuItems.find((item) => item.id === currentNameRequest.id);
     const expectedMenuItem = {
       id: currentNameRequest.id,

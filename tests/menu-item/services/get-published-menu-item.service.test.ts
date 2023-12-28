@@ -29,20 +29,20 @@ const unpublishedMenu = new Menu({
   userId: user.id,
 });
 
-const unpublishedMenuItem = new MenuItem({
-  name: "Menu Item 1",
-  description: "Menu Item 1 description",
-  price: 100,
-  type: "drink",
-  menuId: unpublishedMenu.id,
-});
-
 const publishedMenuItem = new MenuItem({
   name: "Published Menu Item",
   description: "Published Menu Item description",
   price: 100,
   type: "drink",
   menuId: publishedMenu.id,
+});
+
+const unpublishedMenuItem = new MenuItem({
+  name: "Menu Item 1",
+  description: "Menu Item 1 description",
+  price: 200,
+  type: "food",
+  menuId: unpublishedMenu.id,
 });
 
 const request = { id: publishedMenuItem.id, menuId: publishedMenu.id, userId: user.id };

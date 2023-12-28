@@ -22,29 +22,29 @@ const menu = new Menu({
   userId: user.id,
 });
 
-const menuItem1 = new MenuItem({
-  name: "Menu Item 1",
-  description: "Menu Item 1 description",
-  price: 100,
-  type: "drink",
-  menuId: menu.id,
-});
-
-const menuItem2 = new MenuItem({
-  name: "Menu Item 2",
-  description: "Menu Item 2 description",
-  price: 200,
-  type: "food",
-  menuId: menu.id,
-});
-
-const menuItem3 = new MenuItem({
-  name: "Menu Item 3",
-  description: "Menu Item 3 description",
-  price: 300,
-  type: "drink",
-  menuId: menu.id,
-});
+const menuItems = [
+  new MenuItem({
+    name: "Menu Item 1",
+    description: "Menu Item 1 description",
+    price: 100,
+    type: "drink",
+    menuId: menu.id,
+  }),
+  new MenuItem({
+    name: "Menu Item 2",
+    description: "Menu Item 2 description",
+    price: 200,
+    type: "food",
+    menuId: menu.id,
+  }),
+  new MenuItem({
+    name: "Menu Item 3",
+    description: "Menu Item 3 description",
+    price: 300,
+    type: "drink",
+    menuId: menu.id,
+  }),
+];
 
 const request = { menuId: menu.id, userId: user.id };
 
@@ -60,9 +60,9 @@ describe("GetAllMenuItemsService", () => {
   });
 
   beforeEach(async () => {
-    await menuItemRepository.add(menuItem1);
-    await menuItemRepository.add(menuItem2);
-    await menuItemRepository.add(menuItem3);
+    await menuItemRepository.add(menuItems[0]);
+    await menuItemRepository.add(menuItems[1]);
+    await menuItemRepository.add(menuItems[2]);
   });
 
   afterEach(async () => {

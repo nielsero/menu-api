@@ -19,7 +19,7 @@ export class DeleteMenuItemController {
   async handle(req: Request<{ menuId: string; id: string }>, res: Response) {
     const userId = res.locals.userId;
     const { menuId, id } = req.params;
-    this.validator.validate({ menuId, id });
+    await this.validator.validate({ menuId, id });
     await this.service.execute({ id, userId, menuId });
     return res.sendStatus(204);
   }
