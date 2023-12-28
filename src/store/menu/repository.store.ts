@@ -1,4 +1,4 @@
-import { NODE_ENV } from "@/config";
+import { NODE_ENV } from "@/config/constants";
 import { MenuRepository } from "@/modules/menu/protocols";
 import { InMemoryMenuRepository } from "@/modules/menu/providers/repositories";
 import { MongoMenuRepository } from "@/modules/menu/providers/repositories/mongo";

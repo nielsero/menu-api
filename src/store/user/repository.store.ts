@@ -1,4 +1,4 @@
-import { NODE_ENV } from "@/config";
+import { NODE_ENV } from "@/config/constants";
 import { UserRepository } from "@/modules/user/protocols";
 import { InMemoryUserRepository } from "@/modules/user/providers/repositories";
 import { MongoUserRepository } from "@/modules/user/providers/repositories/mongo";

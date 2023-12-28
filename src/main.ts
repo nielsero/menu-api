@@ -1,5 +1,5 @@
 import { app } from "@/app";
-import { PORT } from "@/config";
+import { PORT } from "@/config/constants";
 import { mongoConnect } from "@/config/mongo";
 import { domainErrorHandler, errorHandler, notFoundHandler, requestLogger } from "@/middleware";
 import { logger } from "@/utils/log";

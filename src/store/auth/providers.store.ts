@@ -1,4 +1,4 @@
-import { SALT_ROUNDS, TOKEN_SECRET } from "@/config";
+import { SALT_ROUNDS, TOKEN_SECRET } from "@/config/constants";
 import { HashProvider, TokenProvider } from "@/modules/auth/protocols";
 import { BcryptHashProvider, JwtTokenProvider } from "@/modules/auth/providers";
 
