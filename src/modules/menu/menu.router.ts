@@ -10,7 +10,7 @@ import {
   PublishMenuController,
   UnpublishMenuController,
 } from "@/modules/menu/controllers";
-import { requireAuth } from "@/middleware";
+import { requireAuth } from "@/middleware/require-auth";
 
 export type MenuControllers = {
   createMenuController: CreateMenuController;

@@ -1,12 +1,15 @@
 import { app } from "@/app";
 import { PORT } from "@/config/constants";
 import { mongoConnect } from "@/config/mongo";
-import { domainErrorHandler, errorHandler, notFoundHandler, requestLogger } from "@/middleware";
-import { logger } from "@/utils/log";
+import { logger } from "@/utils/logger";
 import { buyHealthRouter } from "@/modules/health/store";
 import { buyAuthRouter } from "@/modules/auth/store";
 import { buyMenuRouter } from "@/modules/menu/store";
 import { buyMenuItemRouter } from "@/modules/menu-item/store";
+import { notFoundHandler } from "@/middleware/404-handler";
+import { domainErrorHandler } from "@/middleware/domain-error-handler";
+import { errorHandler } from "@/middleware/error-handler";
+import { requestLogger } from "@/middleware/request-logger";
 
 main();
 

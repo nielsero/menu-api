@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { GetAllPublishedMenusService } from "../services";
+import { GetAllPublishedMenusService } from "@/modules/menu/services";
 
 export class GetAllPublishedMenusController {
   constructor(private readonly service: GetAllPublishedMenusService) {}

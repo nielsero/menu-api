@@ -1,10 +1,11 @@
 import { User } from "@/modules/user";
-import { buyAuthProviders, buyAuthServices } from "@/modules/auth/store";
+import { buyHashProvider, buyLoginUserService, buyTokenProvider } from "@/modules/auth/store";
 import { buyUserRepository } from "@/modules/user/store";
 
-const { loginUserService: sut } = buyAuthServices();
+const sut = buyLoginUserService();
 const userRepository = buyUserRepository();
-const { hashProvider, tokenProvider } = buyAuthProviders();
+const hashProvider = buyHashProvider();
+const tokenProvider = buyTokenProvider();
 
 const request = {
   email: "john.doe@gmail.com",

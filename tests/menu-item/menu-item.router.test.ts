@@ -1,20 +1,21 @@
 import { app } from "@/app";
-import { domainErrorHandler, errorHandler } from "@/middleware";
 import { Menu } from "@/modules/menu";
 import { MenuItem } from "@/modules/menu-item";
 import { User } from "@/modules/user";
-import { buyAuthProviders } from "@/modules/auth/store";
+import { buyTokenProvider } from "@/modules/auth/store";
 import { buyMenuRepository } from "@/modules/menu/store";
 import { buyMenuItemRepository, buyMenuItemRouter } from "@/modules/menu-item/store";
 import { buyUserRepository } from "@/modules/user/store";
 import supertest from "supertest";
+import { domainErrorHandler } from "@/middleware/domain-error-handler";
+import { errorHandler } from "@/middleware/error-handler";
 
 let api: supertest.SuperTest<supertest.Test>;
 const sut = buyMenuItemRouter();
 const userRepository = buyUserRepository();
 const menuRepository = buyMenuRepository();
 const menuItemRepository = buyMenuItemRepository();
-const { tokenProvider } = buyAuthProviders();
+const tokenProvider = buyTokenProvider();
 
 const user = new User({
   name: "John Doe",

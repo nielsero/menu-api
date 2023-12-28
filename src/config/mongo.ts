@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { MONGO_URI } from "@/config/constants";
-import { logger } from "@/utils/log";
+import { logger } from "@/utils/logger";
 
 export const mongoConnect = async (): Promise<boolean> => {
   try {

@@ -1,4 +1,4 @@
-import { checkRequiredFields } from "@/utils";
+import { checkRequiredFields } from "@/utils/check-required-fields";
 import { Request, Response } from "express";
 import { EditMenuItemRequest, EditMenuItemService } from "@/modules/menu-item/services";
 

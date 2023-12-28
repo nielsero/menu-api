@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { DeleteMenuItemService } from "@/modules/menu-item/services";
-import { checkRequiredFields } from "@/utils";
+import { checkRequiredFields } from "@/utils/check-required-fields";
 
 export class DeleteMenuItemController {
   constructor(private readonly service: DeleteMenuItemService) {}

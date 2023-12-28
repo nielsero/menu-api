@@ -4,7 +4,7 @@ import {
   LoginUserController,
   RegisterUserController,
 } from "@/modules/auth/controllers";
-import { requireAuth } from "@/middleware";
+import { requireAuth } from "@/middleware/require-auth";
 
 export type AuthControllers = {
   registerUserController: RegisterUserController;

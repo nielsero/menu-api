@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PublishMenuService } from "@/modules/menu/services";
-import { checkRequiredFields } from "@/utils";
+import { checkRequiredFields } from "@/utils/check-required-fields";
 
 export class PublishMenuController {
   constructor(private readonly service: PublishMenuService) {}

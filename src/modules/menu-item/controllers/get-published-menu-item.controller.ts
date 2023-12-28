@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { checkRequiredFields } from "@/utils";
+import { checkRequiredFields } from "@/utils/check-required-fields";
 import { GetPublishedMenuItemService } from "@/modules/menu-item/services";
 
 export class GetPublishedMenuItemController {

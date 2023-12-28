@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { RegisterUserRequest, RegisterUserService } from "@/modules/auth/services";
-import { checkRequiredFields } from "@/utils";
+import { checkRequiredFields } from "@/utils/check-required-fields";
 
 export class RegisterUserController {
   constructor(private readonly service: RegisterUserService) {}

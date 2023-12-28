@@ -1,8 +1,9 @@
 import { app } from "@/app";
-import { domainErrorHandler, errorHandler } from "@/middleware";
+import { domainErrorHandler } from "@/middleware/domain-error-handler";
+import { errorHandler } from "@/middleware/error-handler";
 import { Menu } from "@/modules/menu";
 import { User } from "@/modules/user";
-import { buyAuthProviders } from "@/modules/auth/store";
+import { buyTokenProvider } from "@/modules/auth/store";
 import { buyMenuRepository, buyMenuRouter } from "@/modules/menu/store";
 import { buyUserRepository } from "@/modules/user/store";
 import supertest from "supertest";
@@ -11,7 +12,7 @@ let api: supertest.SuperTest<supertest.Test>;
 const sut = buyMenuRouter();
 const userRepository = buyUserRepository();
 const menuRepository = buyMenuRepository();
-const { tokenProvider } = buyAuthProviders();
+const tokenProvider = buyTokenProvider();
 
 const user = new User({
   name: "John Doe",

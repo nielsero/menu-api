@@ -1,4 +1,4 @@
-import { requireAuth } from "@/middleware";
+import { requireAuth } from "@/middleware/require-auth";
 import {
   AddMenuItemController,
   DeleteMenuItemController,

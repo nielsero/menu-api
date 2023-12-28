@@ -1,5 +1,6 @@
 import { app } from "@/app";
-import { domainErrorHandler, errorHandler } from "@/middleware";
+import { domainErrorHandler } from "@/middleware/domain-error-handler";
+import { errorHandler } from "@/middleware/error-handler";
 import { buyAuthRouter } from "@/modules/auth/store";
 import { buyUserRepository } from "@/modules/user/store";
 import supertest from "supertest";

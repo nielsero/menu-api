@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AddMenuItemRequest, AddMenuItemService } from "@/modules/menu-item/services";
-import { checkRequiredFields } from "@/utils";
+import { checkRequiredFields } from "@/utils/check-required-fields";
 
 export class AddMenuItemController {
   constructor(private readonly service: AddMenuItemService) {}

@@ -1,9 +1,10 @@
-import { buyAuthProviders, buyAuthServices } from "@/modules/auth/store";
+import { buyHashProvider, buyRegisterUserService, buyTokenProvider } from "@/modules/auth/store";
 import { buyUserRepository } from "@/modules/user/store";
 
-const { registerUserService: sut } = buyAuthServices();
+const sut = buyRegisterUserService();
 const userRepository = buyUserRepository();
-const { hashProvider, tokenProvider } = buyAuthProviders();
+const hashProvider = buyHashProvider();
+const tokenProvider = buyTokenProvider();
 
 const request = {
   name: "John Doe",
