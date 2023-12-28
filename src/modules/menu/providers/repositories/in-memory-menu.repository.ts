@@ -11,7 +11,8 @@ export class InMemoryMenuRepository implements MenuRepository {
 
   async findAllByUser(userId: string): Promise<Menu[]> {
     const menus = this.menus.filter((menu) => menu.userId === userId);
-    return menus;
+    const foundMenus = menus.map((menu) => new Menu(menu));
+    return foundMenus;
   }
 
   async update(menu: Menu): Promise<void> {
@@ -27,12 +28,14 @@ export class InMemoryMenuRepository implements MenuRepository {
 
   async findAllPublished(): Promise<Menu[]> {
     const menus = this.menus.filter((menu) => menu.published);
-    return menus;
+    const foundMenus = menus.map((menu) => new Menu(menu));
+    return foundMenus;
   }
 
   async findPublishedById(id: string): Promise<Menu | null> {
     const menu = this.menus.find((menu) => menu.id === id && menu.published);
-    return menu || null;
+    const foundMenu = menu ? new Menu(menu) : null;
+    return foundMenu;
   }
 
   async clear(): Promise<void> {
