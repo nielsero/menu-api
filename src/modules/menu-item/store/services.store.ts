@@ -7,8 +7,8 @@ import {
   GetMenuItemService,
   GetPublishedMenuItemService,
 } from "@/modules/menu-item/services";
-import { buyMenuRepository } from "@/store/menu";
-import { buyMenuItemRepository, buyMenuItemValidators } from "@/store/menu-item";
+import { buyMenuRepository } from "@/modules/menu/store";
+import { buyMenuItemRepository, buyMenuItemValidators } from "@/modules/menu-item/store";
 
 type Store = {
   addMenuItemService: AddMenuItemService;

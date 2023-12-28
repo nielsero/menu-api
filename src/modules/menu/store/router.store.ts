@@ -1,5 +1,5 @@
 import { MenuRouter } from "@/modules/menu";
-import { buyMenuControllers } from "@/store/menu";
+import { buyMenuControllers } from "@/modules/menu/store";
 
 type Store = MenuRouter;
 

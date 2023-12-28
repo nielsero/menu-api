@@ -1,7 +1,7 @@
 import { app } from "@/app";
 import { domainErrorHandler, errorHandler } from "@/middleware";
-import { buyAuthRouter } from "@/store/auth";
-import { buyUserRepository } from "@/store/user";
+import { buyAuthRouter } from "@/modules/auth/store";
+import { buyUserRepository } from "@/modules/user/store";
 import supertest from "supertest";
 
 let api: supertest.SuperTest<supertest.Test>;

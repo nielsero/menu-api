@@ -1,6 +1,6 @@
 import { GetUserSessionService, LoginUserService, RegisterUserService } from "@/modules/auth/services";
-import { buyAuthProviders, buyAuthValidators } from "@/store/auth";
-import { buyUserServices } from "@/store/user";
+import { buyAuthProviders, buyAuthValidators } from "@/modules/auth/store";
+import { buyUserServices } from "@/modules/user/store";
 
 type Store = {
   registerUserService: RegisterUserService;

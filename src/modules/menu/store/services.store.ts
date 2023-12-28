@@ -9,8 +9,8 @@ import {
   GetMenuService,
   GetPublishedMenuService,
 } from "@/modules/menu/services";
-import { buyMenuRepository, buyMenuValidators } from "@/store/menu";
-import { buyMenuItemRepository } from "../menu-item";
+import { buyMenuRepository, buyMenuValidators } from "@/modules/menu/store";
+import { buyMenuItemRepository } from "../../menu-item/store";
 
 type Store = {
   createMenuService: CreateMenuService;

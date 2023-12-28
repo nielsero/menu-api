@@ -1,6 +1,6 @@
 import { Unauthorized } from "@/shared/errors";
-import { buyAuthProviders } from "@/store/auth";
-import { buyUserServices } from "@/store/user";
+import { buyAuthProviders } from "@/modules/auth/store";
+import { buyUserServices } from "@/modules/user/store";
 import { Request, Response, NextFunction } from "express";
 
 export const requireAuth = async (req: Request, res: Response, next: NextFunction) => {

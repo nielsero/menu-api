@@ -1,5 +1,5 @@
 import { User } from "@/modules/user";
-import { buyUserRepository, buyUserServices } from "@/store/user";
+import { buyUserRepository, buyUserServices } from "@/modules/user/store";
 
 const request = { email: "john.doe@gmail.com" };
 

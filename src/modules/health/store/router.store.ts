@@ -1,5 +1,5 @@
 import { HealthRouter } from "@/modules/health";
-import { buyHealthControllers } from "@/store/health";
+import { buyHealthControllers } from "@/modules/health/store";
 
 type Store = HealthRouter;
 

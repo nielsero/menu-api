@@ -2,9 +2,9 @@ import { app } from "@/app";
 import { domainErrorHandler, errorHandler } from "@/middleware";
 import { Menu } from "@/modules/menu";
 import { User } from "@/modules/user";
-import { buyAuthProviders } from "@/store/auth";
-import { buyMenuRepository, buyMenuRouter } from "@/store/menu";
-import { buyUserRepository } from "@/store/user";
+import { buyAuthProviders } from "@/modules/auth/store";
+import { buyMenuRepository, buyMenuRouter } from "@/modules/menu/store";
+import { buyUserRepository } from "@/modules/user/store";
 import supertest from "supertest";
 
 let api: supertest.SuperTest<supertest.Test>;

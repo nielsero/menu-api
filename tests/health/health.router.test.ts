@@ -1,5 +1,5 @@
 import { app } from "@/app";
-import { buyHealthRouter } from "@/store/health";
+import { buyHealthRouter } from "@/modules/health/store";
 import supertest from "supertest";
 
 let api: supertest.SuperTest<supertest.Test>;

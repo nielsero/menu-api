@@ -3,7 +3,7 @@ import {
   LoginUserController,
   GetUserSessionController,
 } from "@/modules/auth/controllers";
-import { buyAuthServices } from "@/store/auth";
+import { buyAuthServices } from "@/modules/auth/store";
 
 type Store = {
   registerUserController: RegisterUserController;

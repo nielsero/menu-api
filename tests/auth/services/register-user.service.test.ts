@@ -1,5 +1,5 @@
-import { buyAuthProviders, buyAuthServices } from "@/store/auth";
-import { buyUserRepository } from "@/store/user";
+import { buyAuthProviders, buyAuthServices } from "@/modules/auth/store";
+import { buyUserRepository } from "@/modules/user/store";
 
 const { registerUserService: sut } = buyAuthServices();
 const userRepository = buyUserRepository();

@@ -3,10 +3,10 @@ import { domainErrorHandler, errorHandler } from "@/middleware";
 import { Menu } from "@/modules/menu";
 import { MenuItem } from "@/modules/menu-item";
 import { User } from "@/modules/user";
-import { buyAuthProviders } from "@/store/auth";
-import { buyMenuRepository } from "@/store/menu";
-import { buyMenuItemRepository, buyMenuItemRouter } from "@/store/menu-item";
-import { buyUserRepository } from "@/store/user";
+import { buyAuthProviders } from "@/modules/auth/store";
+import { buyMenuRepository } from "@/modules/menu/store";
+import { buyMenuItemRepository, buyMenuItemRouter } from "@/modules/menu-item/store";
+import { buyUserRepository } from "@/modules/user/store";
 import supertest from "supertest";
 
 let api: supertest.SuperTest<supertest.Test>;

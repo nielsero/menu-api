@@ -9,7 +9,7 @@ import {
   GetMenuController,
   GetPublishedMenuController,
 } from "@/modules/menu/controllers";
-import { buyMenuServices } from "@/store/menu";
+import { buyMenuServices } from "@/modules/menu/store";
 
 type Store = {
   createMenuController: CreateMenuController;

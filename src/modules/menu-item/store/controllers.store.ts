@@ -7,7 +7,7 @@ import {
   GetMenuItemController,
   GetPublishedMenuItemController,
 } from "@/modules/menu-item/controllers";
-import { buyMenuItemServices } from "@/store/menu-item";
+import { buyMenuItemServices } from "@/modules/menu-item/store";
 
 type Store = {
   addMenuItemController: AddMenuItemController;
