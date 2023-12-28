@@ -1,11 +1,4 @@
-import { GetHealthController } from "@/modules/health";
-
-type Store = {
-  getHealthController: GetHealthController;
-};
+import { GetHealthController } from "@/modules/health/controllers";
 
 const getHealthController = new GetHealthController();
-
-export const buyHealthControllers = (): Store => {
-  return { getHealthController };
-};
+export const buyGetHealthController = () => getHealthController;

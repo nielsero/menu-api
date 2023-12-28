@@ -1,8 +1,7 @@
 import { HealthRouter } from "@/modules/health";
-import { buyHealthControllers } from "@/modules/health/store";
+import { buyGetHealthController } from "@/modules/health/store";
 
-type Store = HealthRouter;
+const getHealthController = buyGetHealthController();
+const healthRouter = new HealthRouter(getHealthController);
 
-const healthRouter = new HealthRouter(buyHealthControllers());
-
-export const buyHealthRouter = (): Store => healthRouter;
+export const buyHealthRouter = () => healthRouter;
