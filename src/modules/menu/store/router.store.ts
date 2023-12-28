@@ -1,8 +1,35 @@
 import { MenuRouter } from "@/modules/menu";
-import { buyMenuControllers } from "@/modules/menu/store";
+import {
+  buyCreateMenuController,
+  buyDeleteMenuController,
+  buyEditMenuController,
+  buyGetAllMenusController,
+  buyGetAllPublishedMenusController,
+  buyGetMenuController,
+  buyGetPublishedMenuController,
+  buyPublishMenuController,
+  buyUnpublishMenuController,
+} from "@/modules/menu/store";
 
-type Store = MenuRouter;
+const createMenuController = buyCreateMenuController();
+const deleteMenuController = buyDeleteMenuController();
+const getAllMenusController = buyGetAllMenusController();
+const editMenuController = buyEditMenuController();
+const getAllPublishedMenusController = buyGetAllPublishedMenusController();
+const publishMenuController = buyPublishMenuController();
+const unpublishMenuController = buyUnpublishMenuController();
+const getMenuController = buyGetMenuController();
+const getPublishedMenuController = buyGetPublishedMenuController();
+const menuRouter = new MenuRouter({
+  createMenuController,
+  deleteMenuController,
+  getAllMenusController,
+  editMenuController,
+  getAllPublishedMenusController,
+  publishMenuController,
+  unpublishMenuController,
+  getMenuController,
+  getPublishedMenuController,
+});
 
-const menuRouter = new MenuRouter(buyMenuControllers());
-
-export const buyMenuRouter = (): Store => menuRouter;
+export const buyMenuRouter = () => menuRouter;

@@ -1,9 +1,9 @@
 import { Menu } from "@/modules/menu";
 import { User } from "@/modules/user";
-import { buyMenuRepository, buyMenuServices } from "@/modules/menu/store";
+import { buyGetAllMenusService, buyMenuRepository } from "@/modules/menu/store";
 import { buyUserRepository } from "@/modules/user/store";
 
-const { getAllMenusService: sut } = buyMenuServices();
+const sut = buyGetAllMenusService();
 const userRepository = buyUserRepository();
 const menuRepository = buyMenuRepository();
 

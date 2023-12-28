@@ -12,7 +12,7 @@ import {
 } from "@/modules/menu/controllers";
 import { requireAuth } from "@/middleware/require-auth";
 
-export type MenuControllers = {
+type Controllers = {
   createMenuController: CreateMenuController;
   editMenuController: EditMenuController;
   deleteMenuController: DeleteMenuController;
@@ -35,7 +35,7 @@ export class MenuRouter {
   private readonly getMenu: GetMenuController;
   private readonly getPublishedMenu: GetPublishedMenuController;
 
-  constructor(private readonly controllers: MenuControllers) {
+  constructor(private readonly controllers: Controllers) {
     this.create = controllers.createMenuController;
     this.edit = controllers.editMenuController;
     this.delete = controllers.deleteMenuController;
