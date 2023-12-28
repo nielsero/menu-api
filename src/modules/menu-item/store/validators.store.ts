@@ -14,11 +14,11 @@ const addMenuItemValidator = new ZodAddMenuItemRequestValidator();
 const editMenuItemValidator = new ZodEditMenuItemRequestValidator();
 
 // Export
-export const buyRequestWithIdValidator = (): RequestValidator<{ id: string }> =>
+export const buyRequestWithIdAndMenuIdValidator = (): RequestValidator<{ id: string; menuId: string }> =>
   requestWithIdAndMenuIdValidator;
 export const buyRequestWithMenuIdValidator = (): RequestValidator<{ menuId: string }> =>
   requestWithMenuIdValidator;
-export const buyAddMenuItemRequestValidator = (): RequestValidator<Omit<AddMenuItemRequest, "userId">> =>
+export const buyAddMenuItemValidator = (): RequestValidator<Omit<AddMenuItemRequest, "userId">> =>
   addMenuItemValidator;
-export const buyEditMenuItemRequestValidator = (): RequestValidator<Omit<EditMenuItemRequest, "userId">> =>
+export const buyEditMenuItemValidator = (): RequestValidator<Omit<EditMenuItemRequest, "userId">> =>
   editMenuItemValidator;
