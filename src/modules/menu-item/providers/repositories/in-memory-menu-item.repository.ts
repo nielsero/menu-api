@@ -5,17 +5,20 @@ export class InMemoryMenuItemRepository implements MenuItemRepository {
   private readonly menuItems: MenuItem[] = [];
 
   async add(menuItem: MenuItem): Promise<void> {
-    this.menuItems.push(menuItem);
+    const newMenuItem = new MenuItem(menuItem);
+    this.menuItems.push(newMenuItem);
   }
 
   async findAllInMenu(menuId: string): Promise<MenuItem[]> {
     const menuItems = this.menuItems.filter((menuItem) => menuItem.menuId === menuId);
-    return menuItems;
+    const foundMenuItems = menuItems.map((menuItem) => new MenuItem(menuItem));
+    return foundMenuItems;
   }
 
   async update(menuItem: MenuItem): Promise<void> {
     const index = this.menuItems.findIndex((item) => item.id === menuItem.id);
-    this.menuItems[index] = menuItem;
+    const updatedMenuItem = new MenuItem(menuItem);
+    this.menuItems[index] = updatedMenuItem;
   }
 
   async delete(id: string): Promise<void> {
